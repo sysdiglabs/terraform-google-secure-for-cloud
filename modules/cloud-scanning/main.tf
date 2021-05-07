@@ -1,67 +1,83 @@
 locals {
-  single_account = length(var.accounts_and_regions) == 0
-  //  queue_url                   = local.single_account ? "https://sqs.${data.aws_region.current.name}.amazonaws.com/${data.aws_caller_identity.current.account_id}/${var.naming_prefix}-CloudScanning" : ""
-  //  accounts_and_regions_string = join(",", [for a in var.accounts_and_regions : "${a.account_id}:${a.region}"])
-  account_role   = local.single_account ? "" : "${var.naming_prefix}-CloudScanningRole"
-  queue_name     = local.single_account ? "" : "${var.naming_prefix}-CloudScanning"
-  task_env_vars  = concat([
+  task_env_vars = concat([
+    {
+      name  = "SECURE_URL"
+      value = var.sysdig_secure_endpoint
+    },
     {
       name  = "VERIFY_SSL"
       value = tostring(var.verify_ssl)
     },
     {
-      name  = "SQS_QUEUE_INTERVAL"
+      name  = "GCP_PROJECT"
+      value = var.project_name
+    },
+    {
+      name  = "GCR_DEPLOYED"
+      value = tostring(var.deploy_gcr)
+    },
+    {
+      name  = "CLOUDRUN_DEPLOYED"
+      value = tostring(var.deploy_cloudrun)
+    },
+    {
+      name  = "AUDITLOG_INTERVAL"
       value = "30s"
     },
-    //    {
-    //      name  = "CODEBUILD_PROJECT"
-    //      value = module.scanning_codebuild.project_id
-    //    },
-    //    {
-    //      name  = "ECR_DEPLOYED"
-    //      value = tostring(var.deploy_ecr)
-    //    },
-    //    {
-    //      name  = "ECS_DEPLOYED"
-    //      value = tostring(var.deploy_ecs)
-    //    },
     {
       name  = "TELEMETRY_DEPLOYMENT_METHOD"
       value = "cft"
-    },
-    //    {
-    //      name  = "SQS_QUEUE_URL"
-    //      value = local.queue_url
-    //    },
-    {
-      name  = "SQS_QUEUE_NAME"
-      value = local.queue_name
-    },
-    //    {
-    //      name  = "ACCOUNTS_AND_REGIONS"
-    //      value = local.accounts_and_regions_string
-    //    },
-    {
-      name  = "ACCOUNT_ROLE"
-      value = local.account_role
-    },
-  ], flatten([for env_key, env_value in var.extra_env_vars : [{
-    name  = env_key,
-    value = env_value
-  }]])
+    }]
+    , var.deploy_gcr ? [
+      {
+        name  = "GCR_PUBSUB_SUBSCRIPTION"
+        value = google_pubsub_subscription.gcr_sub.name
+      }
+    ] : []
+    , [for env_key, env_value in var.extra_envs :
+      {
+        name  = env_key,
+        value = env_value
+      }
+    ]
   )
 }
 
-
 resource "google_service_account" "sa" {
-  account_id   = "${var.naming_prefix}-cloud-scanning-sa"
-  display_name = "Service account for cloud-scanning"
+  account_id   = "${lower(var.naming_prefix)}-cloudscanning"
+  display_name = "Service account for cloudscanning"
+}
+
+
+#TODO: Specific role for reading from specific logs only?
+resource "google_project_iam_member" "logging" {
+  member = "serviceAccount:${google_service_account.sa.email}"
+  role   = "roles/logging.viewer"
+}
+
+resource "google_pubsub_subscription_iam_member" "editor" {
+  subscription = google_pubsub_subscription.gcr_sub.name
+  role         = "roles/editor"
+  member       = "serviceAccount:${google_service_account.sa.email}"
+}
+
+resource "google_pubsub_subscription" "gcr_sub" {
+  name = "${lower(var.naming_prefix)}-cloudscanning"
+
+  #TODO: Must exist, otherwise error or create?
+  topic = "gcr"
+
+  expiration_policy {
+    ttl = ""
+  }
+
+  enable_message_ordering = false
 }
 
 resource "google_cloud_run_service" "cloud_connector" {
-  //  depends_on = [google_project_iam_binding.logging, google_project_iam_binding.storage]
-  location = var.location
-  name     = "${var.naming_prefix}-cloud-scanning"
+  depends_on = [google_project_iam_member.logging]
+  location   = var.location
+  name       = "${substr(lower(var.naming_prefix), 0, 49)}-cloudscanning"
 
   lifecycle {
     # We ignore changes in some annotations Cloud Run adds to the resource so we can
@@ -89,30 +105,28 @@ resource "google_cloud_run_service" "cloud_connector" {
     spec {
       container_concurrency = 1
       containers {
-        image = var.image
+        image = var.image_name
 
         ports {
           container_port = 5000
         }
 
         env {
-          name      = "SECURE_URL"
-          valueFrom = var.secure_api_url
-        }
-        env {
-          name      = "SECURE_API_TOKEN"
-          valueFrom = var.secure_api_token
+          #TODO: Put secrets in secretsmanager?
+          name  = "SECURE_API_TOKEN"
+          value = var.sysdig_secure_api_token
         }
 
         dynamic "env" {
           for_each = toset(local.task_env_vars)
+
           content {
             name  = env.value.name
-            value = env.value.vale
+            value = env.value.value
           }
         }
       }
-      service_account_name  = google_service_account.sa.email
+      service_account_name = google_service_account.sa.email
     }
   }
 }

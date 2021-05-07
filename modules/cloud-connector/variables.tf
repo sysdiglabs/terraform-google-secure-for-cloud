@@ -1,12 +1,12 @@
-variable "project_name" {
-  type        = string
-  description = "Project name of the Google Cloud Platform"
-}
-
-variable "secure_api_token" {
+variable "sysdig_secure_api_token" {
   type        = string
   description = "Sysdig's Secure API Token"
   sensitive   = true
+}
+
+variable "sysdig_secure_endpoint" {
+  type        = string
+  description = "Sysdig's Secure API URL"
 }
 
 variable "verify_ssl" {
@@ -15,10 +15,15 @@ variable "verify_ssl" {
   default     = true
 }
 
-variable "name" {
+variable "naming_prefix" {
   type        = string
-  default     = "cloud-connector"
-  description = "Name for the Cloud Connector deployment"
+  default     = "SysdigCloud"
+  description = "Prefix for resource names. Use the default unless you need to install multiple instances, and modify the deployment at the main account accordingly"
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9\\-]+$", var.naming_prefix)) && length(var.naming_prefix) > 1 && length(var.naming_prefix) <= 64
+    error_message = "Must enter a naming prefix up to 64 alphanumeric characters."
+  }
 }
 
 variable "location" {
@@ -29,7 +34,7 @@ variable "location" {
 
 variable "image_name" {
   type        = string
-  default     = "us-central1-docker.pkg.dev/mateo-burillo-ns/cloud-connector/cloud-connector:config"
+  default     = "us-central1-docker.pkg.dev/mateo-burillo-ns/cloud-connector/cloud-connector:gcp"
   description = "Cloud Connector image to deploy"
 }
 

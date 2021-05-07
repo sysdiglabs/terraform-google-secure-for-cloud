@@ -1,20 +1,52 @@
-provider "google" {
-  project = var.project_name
+locals {
+  task_env_vars = concat([
+    # This allows the revision to be created again if the configuration changes.
+    # Annotations can't be used or they can't be ignored in the lifecycle, thus triggering
+    # recreations even if the config hasn't changed.
+    {
+      name  = "CONFIG_MD5"
+      value = google_storage_bucket_object.config.md5hash
+    },
+    {
+      name  = "CONFIG_PATH"
+      value = "${google_storage_bucket.bucket.url}/${google_storage_bucket_object.config.output_name}"
+    },
+    {
+      name  = "SECURE_URL"
+      value = var.sysdig_secure_endpoint
+    },
+    {
+      name  = "VERIFY_SSL"
+      value = tostring(var.verify_ssl)
+    }]
+    , [for env_key, env_value in var.extra_envs :
+      {
+        name  = env_key,
+        value = env_value
+      }
+    ]
+  )
+
+
 }
 
+
+
 resource "google_service_account" "sa" {
-  account_id   = "${var.name}-sa"
+  account_id   = "${lower(var.naming_prefix)}-cloudconnector"
   display_name = "Service account for cloud-connector"
 }
 
-resource "google_project_iam_binding" "logging" {
-  members = ["serviceAccount:${google_service_account.sa.email}"]
-  role    = "roles/logging.viewer"
+#TODO: Specific role for reading from required logs only?
+resource "google_project_iam_member" "logging" {
+  member = "serviceAccount:${google_service_account.sa.email}"
+  role   = "roles/logging.viewer"
 }
 
-resource "google_project_iam_binding" "storage" {
-  members = ["serviceAccount:${google_service_account.sa.email}"]
-  role    = "roles/storage.objectViewer"
+#TODO: Specific role for reading from the config bucket only?
+resource "google_project_iam_member" "storage" {
+  member = "serviceAccount:${google_service_account.sa.email}"
+  role   = "roles/storage.objectViewer"
 }
 
 resource "google_storage_bucket" "bucket" {
@@ -34,9 +66,9 @@ resource "google_storage_bucket_object" "config" {
 }
 
 resource "google_cloud_run_service" "cloud_connector" {
-  depends_on = [google_project_iam_binding.logging, google_project_iam_binding.storage]
+  depends_on = [google_project_iam_member.logging, google_project_iam_member.storage]
   location   = var.location
-  name       = var.name
+  name       = "${substr(lower(var.naming_prefix), 0, 48)}-cloudconnector"
 
   lifecycle {
     # We ignore changes in some annotations Cloud Run adds to the resource so we can
@@ -71,33 +103,17 @@ resource "google_cloud_run_service" "cloud_connector" {
         }
 
         env {
-          # This allows the revision to be created again if the configuration changes.
-          # Annotations can't be used or they can't be ignored in the lifecycle, thus triggering
-          # recreations even if the config hasn't changed.
-          name  = "CONFIG_MD5"
-          value = google_storage_bucket_object.config.md5hash
-        }
-
-        env {
-          name  = "CONFIG_PATH"
-          value = "${google_storage_bucket.bucket.url}/${google_storage_bucket_object.config.output_name}"
-        }
-
-        env {
+          #TODO: Put secrets in secretsmanager?
           name  = "SECURE_API_TOKEN"
-          value = var.secure_api_token
-        }
-
-        env {
-          name  = "VERIFY_SSL"
-          value = var.verify_ssl
+          value = var.sysdig_secure_api_token
         }
 
         dynamic "env" {
-          for_each = var.extra_envs
+          for_each = toset(local.task_env_vars)
+
           content {
-            name  = env.key
-            value = env.value
+            name  = env.value.name
+            value = env.value.value
           }
         }
       }
