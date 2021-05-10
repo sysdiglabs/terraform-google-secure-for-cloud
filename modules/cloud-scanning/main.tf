@@ -13,6 +13,10 @@ locals {
       value = var.project_name
     },
     {
+      name  = "GCP_LOCATION"
+      value = var.location
+    },
+    {
       name  = "GCR_DEPLOYED"
       value = tostring(var.deploy_gcr)
     },
