@@ -30,7 +30,7 @@ jobs:
 
     - name: Terraform Init
       id: init
-      run: terraform init modules/cloudvision-singleaccount
+      run: terraform -chdir=modules/cloudvision-singleaccount init
 
     - name: Terraform Validate
       id: validate
