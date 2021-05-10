@@ -41,11 +41,8 @@ jobs:
       if: github.event_name == 'pull_request'
       run: terraform -chdir=modules/cloudvision-singleaccount plan -no-color
       env:
-        TF_VAR_name: ci-test
         TF_VAR_project_name: mateo-burillo-ns
-        TF_VAR_secure_api_token: foo
-        TF_VAR_secure_api_url: https://secure.sysdig.com
-        TF_VAR_verify_ssl: "true"
+        TF_VAR_sysdig_secure_api_token: foo
         TF_VAR_location: us-central1
       continue-on-error: true
 
