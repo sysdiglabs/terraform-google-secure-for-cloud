@@ -39,7 +39,7 @@ jobs:
     - name: Terraform Plan
       id: plan
       if: github.event_name == 'pull_request'
-      run: terraform plan -no-color -var name=ci-test -var project_name=mateo-burillo-ns -var secure_api_token=foo -var secure_api_url=https://secure.sysdig.com modules/cloudvision-singleaccount
+      run: terraform -chdir=modules/cloudvision-singleaccount  plan -no-color -var name=ci-test -var project_name=mateo-burillo-ns -var secure_api_token=foo -var secure_api_url=https://secure.sysdig.com -var verify_ssl=true -var location=us-central1
       continue-on-error: true
 
     - name: Update Pull Request
