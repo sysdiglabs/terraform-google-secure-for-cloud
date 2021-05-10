@@ -13,10 +13,6 @@ locals {
       value = var.project_name
     },
     {
-      name  = "GCP_LOCATION"
-      value = var.location
-    },
-    {
       name  = "GCR_DEPLOYED"
       value = tostring(var.deploy_gcr)
     },
@@ -57,6 +53,11 @@ resource "google_service_account" "sa" {
 resource "google_project_iam_member" "logging" {
   member = "serviceAccount:${google_service_account.sa.email}"
   role   = "roles/logging.viewer"
+}
+
+resource "google_project_iam_member" "cloudbuild" {
+  member = "serviceAccount:${google_service_account.sa.email}"
+  role   = "roles/cloudbuild.builds.editor"
 }
 
 resource "google_pubsub_subscription_iam_member" "editor" {
