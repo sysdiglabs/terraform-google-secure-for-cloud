@@ -21,7 +21,7 @@ module "cloud_scanning_gcp" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12.26 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.67.0 |
 
 ## Providers
