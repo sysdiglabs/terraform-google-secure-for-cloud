@@ -18,21 +18,29 @@ locals {
     {
       name  = "VERIFY_SSL"
       value = tostring(var.verify_ssl)
-    }]
-    , [for env_key, env_value in var.extra_envs :
-      {
-        name  = env_key,
-        value = env_value
-      }
+    }], [for env_key, env_value in var.extra_envs :
+    {
+      name  = env_key,
+      value = env_value
+    }
     ]
   )
-
-
+  default_config = <<EOF
+rules: []
+ingestors:
+- auditlog:
+    project: ${data.google_project.project.name}
+    interval: 1m
+notifiers: []
+EOF
+  config_content = var.config_content == null && var.config_source == null ? local.default_config : var.config_content
 }
 
-
+data "google_project" "project" {
+}
 
 resource "google_service_account" "sa" {
+  project      = data.google_project.project.name
   account_id   = "${lower(var.naming_prefix)}-cloudconnector"
   display_name = "Service account for cloud-connector"
 }
@@ -43,13 +51,20 @@ resource "google_project_iam_member" "logging" {
   role   = "roles/logging.viewer"
 }
 
-#TODO: Specific role for reading from the config bucket only?
-resource "google_project_iam_member" "storage" {
+resource "google_storage_bucket_iam_member" "read_access" {
+  bucket = google_storage_bucket.bucket.id
+  member = "serviceAccount:${google_service_account.sa.email}"
+  role   = "roles/storage.legacyBucketReader"
+}
+
+resource "google_storage_bucket_iam_member" "list_objects" {
+  bucket = google_storage_bucket.bucket.id
   member = "serviceAccount:${google_service_account.sa.email}"
   role   = "roles/storage.objectViewer"
 }
 
 resource "google_storage_bucket" "bucket" {
+  project       = data.google_project.project.name
   name          = var.bucket_config_name
   force_destroy = true
   versioning {
@@ -61,12 +76,12 @@ resource "google_storage_bucket" "bucket" {
 resource "google_storage_bucket_object" "config" {
   bucket  = google_storage_bucket.bucket.id
   name    = "config.yaml"
-  content = var.config_content
+  content = local.config_content
   source  = var.config_source
 }
 
 resource "google_cloud_run_service" "cloud_connector" {
-  depends_on = [google_project_iam_member.logging, google_project_iam_member.storage]
+  depends_on = [google_project_iam_member.logging, google_storage_bucket_iam_member.read_access, google_storage_bucket_iam_member.list_objects]
   location   = var.location
   name       = "${substr(lower(var.naming_prefix), 0, 48)}-cloudconnector"
 
@@ -74,9 +89,9 @@ resource "google_cloud_run_service" "cloud_connector" {
     # We ignore changes in some annotations Cloud Run adds to the resource so we can
     # avoid unwanted recreations.
     ignore_changes = [
-      metadata.0.annotations,
-      metadata.0.labels,
-      template.0.metadata.0.annotations,
+      metadata[0].annotations,
+      metadata[0].labels,
+      template[0].metadata[0].annotations,
     ]
   }
 

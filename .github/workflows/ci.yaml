@@ -41,7 +41,7 @@ jobs:
       if: github.event_name == 'pull_request'
       run: terraform -chdir=modules/cloudvision-singleaccount plan -no-color
       env:
-        TF_VAR_project_name: mateo-burillo-ns
+        GOOGLE_PROJECT: mateo-burillo-ns
         TF_VAR_sysdig_secure_api_token: foo
         TF_VAR_location: us-central1
       continue-on-error: true

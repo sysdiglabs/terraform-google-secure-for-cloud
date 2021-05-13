@@ -12,38 +12,17 @@ CONFIG
       name  = "VERIFY_SSL"
       value = tostring(var.verify_ssl)
     },
-  ], flatten([for env_key, env_value in var.extra_env_vars : [{
-    name  = env_key,
-    value = env_value
-  }]])
+    ], flatten([for env_key, env_value in var.extra_env_vars : [{
+      name  = env_key,
+      value = env_value
+    }]])
   )
-  config_env_vars = [
-    {
-      name  = "BUCKET"
-      value = var.config_bucket
-    },
-    {
-      name  = "KEY"
-      value = "cloud-bench.yaml"
-    },
-    {
-      name  = "OUTPUT"
-      value = "/etc/cloud-bench/cloud-bench.yaml"
-    },
-    {
-      name  = "CONFIG"
-      value = base64encode(local.default_config)
-    }
-  ]
 }
 
-data "google_storage_bucket" "config" {
-  bucket = var.config_bucket
-}
 
 resource "google_storage_bucket_object" "config" {
-  bucket = data.google_storage_bucket.config.bucket
-  name   = "cloud-bench.yaml"
+  bucket  = var.config_bucket
+  name    = "cloud-bench.yaml"
   content = var.config_content == null && var.config_source == null ? local.default_config : var.config_content
   source  = var.config_source
 }
@@ -54,7 +33,7 @@ resource "google_service_account" "sa" {
 }
 
 resource "google_cloud_run_service" "cloud_connector" {
-  //  depends_on = [google_project_iam_binding.logging, google_project_iam_binding.storage]
+  # depends_on = [google_project_iam_binding.logging, google_project_iam_binding.storage]
   location = var.location
   name     = "${var.naming_prefix}-cloud-bench"
 
@@ -62,9 +41,9 @@ resource "google_cloud_run_service" "cloud_connector" {
     # We ignore changes in some annotations Cloud Run adds to the resource so we can
     # avoid unwanted recreations.
     ignore_changes = [
-      metadata.0.annotations,
-      metadata.0.labels,
-      template.0.metadata.0.annotations,
+      metadata[0].annotations,
+      metadata[0].labels,
+      template[0].metadata[0].annotations,
     ]
   }
 
@@ -91,12 +70,12 @@ resource "google_cloud_run_service" "cloud_connector" {
         }
 
         env {
-          name      = "SECURE_URL"
-          valueFrom = var.secure_api_url
+          name  = "SECURE_URL"
+          value = var.secure_api_url
         }
         env {
-          name      = "SECURE_API_TOKEN"
-          valueFrom = var.secure_api_token
+          name  = "SECURE_API_TOKEN"
+          value = var.secure_api_token
         }
 
         dynamic "env" {
@@ -107,7 +86,7 @@ resource "google_cloud_run_service" "cloud_connector" {
           }
         }
       }
-      service_account_name  = google_service_account.sa.email
+      service_account_name = google_service_account.sa.email
     }
   }
 }

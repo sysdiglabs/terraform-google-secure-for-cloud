@@ -37,11 +37,6 @@ variable "naming_prefix" {
   }
 }
 
-variable "project_name" {
-  type        = string
-  description = "Project name of the Google Cloud Platform"
-}
-
 variable "location" {
   type        = string
   default     = "us-central1"
