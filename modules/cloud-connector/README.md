@@ -9,55 +9,67 @@ deployment that will detect events in your infrastructure.
 module "cloud_connector_gcp" {
   source = "sysdiglabs/cloudvision/google/modules/cloud-connector"
 
-  project_name       = "project-name"
-  secure_api_token   = "00000000-1111-2222-3333-444444444444"
-  bucket_config_name = "cloud-connector-config-bucket"
-  config_content     = <<EOF
-rules:
-  - directory:
-      path: ./rules
-  - secure:
-      url: https://secure.sysdig.com
-ingestors:
-  - auditlog:
-      project: project-name
-      interval: 10m
-notifiers:
-  - secure:
-      url: https://secure.sysdig.com
-  EOF
-
-  name     = "cloud-connector"
-  location = "us-central1"
+  sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
+  sysdig_secure_endpoint  = "https://secure.sysdig.com"
+  bucket_config_name      = "cloud-connector-config-bucket"
+  location                = "us-central1"
 }
 ```
 
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.67.0 |
+
 ## Providers
 
-| Name   | Versions |
-| ------ | -------- |
-| google | >= v3.57 |
+| Name | Version |
+|------|---------|
+| <a name="provider_google"></a> [google](#provider\_google) | >= 3.67.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [google_cloud_run_service.cloud_connector](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_service) | resource |
+| [google_project_iam_member.logging](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
+| [google_service_account.sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
+| [google_storage_bucket.bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket) | resource |
+| [google_storage_bucket_iam_member.list_objects](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_member) | resource |
+| [google_storage_bucket_iam_member.read_access](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_member) | resource |
+| [google_storage_bucket_object.config](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_object) | resource |
+| [google_project.project](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project) | data source |
 
 ## Inputs
 
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_bucket_config_name"></a> [bucket\_config\_name](#input\_bucket\_config\_name) | Google Cloud Storage Bucket where the configuration will be saved | `string` | n/a | yes |
+| <a name="input_config_content"></a> [config\_content](#input\_config\_content) | Contents of the configuration file to be saved in the bucket | `string` | `null` | no |
+| <a name="input_config_source"></a> [config\_source](#input\_config\_source) | Path to a file that contains the contents of the configuration file to be saved in the bucket | `string` | `null` | no |
+| <a name="input_extra_envs"></a> [extra\_envs](#input\_extra\_envs) | Extra environment variables for the Cloud Connector instance | `map(string)` | `{}` | no |
+| <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Cloud Connector image to deploy | `string` | `"us-central1-docker.pkg.dev/mateo-burillo-ns/cloud-connector/cloud-connector:gcp"` | no |
+| <a name="input_location"></a> [location](#input\_location) | Zone where the cloud connector will be deployed | `string` | `"us-central1"` | no |
+| <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Prefix for resource names. Use the default unless you need to install multiple instances, and modify the deployment at the main account accordingly | `string` | `"SysdigCloud"` | no |
+| <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
+| <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig's Secure API URL | `string` | n/a | yes |
+| <a name="input_verify_ssl"></a> [verify\_ssl](#input\_verify\_ssl) | Verify the SSL certificate of the Secure endpoint | `bool` | `true` | no |
 
-| Name               | Description                                                                                   | Type          | Default                                                                              | Required                             |
-| ------------------ | --------------------------------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------ | ------------------------------------ |
-| project_name       | Project name of the Google Cloud Platform                                                     | `string`      |                                                                                      | Yes                                  |
-| secure_api_token   | Sysdig Secure API Token                                                                       | `string`      |                                                                                      | Yes                                  |
-| bucket_config_name | Google Cloud Storage Bucket where the configuration will be saved                             | `string`      |                                                                                      | Yes                                  |
-| config_content     | Contents of the configuration file to be saved in the bucket                                  | `string`      | `null`                                                                               | Only if `config_source` is not set.  |
-| config_source      | Path to a file that contains the contents of the configuration file to be saved in the bucket | `string`      | `null`                                                                               | Only if `config_content` is not set. |
-| verify_ssl         | Verify the SSL certificate of the Secure endpoint                                             | `bool`        | `true`                                                                               | No                                   |
-| name               | Name for the Cloud Connector deployment                                                       | `string`      | `cloud-connector`                                                                    | No                                   |
-| location           | Zone where the cloud connector will be deployed                                               | `string`      | `us-central1`                                                                        | No                                   |
-| image_name         | Cloud Connector image to deploy                                                               | `string`      | `us-central1-docker.pkg.dev/mateo-burillo-ns/cloud-connector/cloud-connector:config` | No                                   |
-| extra_envs         | Extra environment variables for the Cloud Connector instance                                  | `map(string)` | `{}`                                                                                 | No                                   |
+## Outputs
 
+No outputs.
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Authors
 
-Module is maintained by [Sysdig](https://github.com/sysdiglabs/terraform-sysdig-cloudconnector-gcp).
+Module is maintained by [Sysdig](https://github.com/sysdiglabs/terraform-google-cloudvision).
 
 ## License
 

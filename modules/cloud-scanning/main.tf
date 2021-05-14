@@ -10,7 +10,7 @@ locals {
     },
     {
       name  = "GCP_PROJECT"
-      value = var.project_name
+      value = data.google_project.project.name
     },
     {
       name  = "GCR_DEPLOYED"
@@ -42,6 +42,8 @@ locals {
     ]
   )
 }
+
+data "google_project" "project" {}
 
 resource "google_service_account" "sa" {
   account_id   = "${lower(var.naming_prefix)}-cloudscanning"
@@ -88,9 +90,9 @@ resource "google_cloud_run_service" "cloud_connector" {
     # We ignore changes in some annotations Cloud Run adds to the resource so we can
     # avoid unwanted recreations.
     ignore_changes = [
-      metadata.0.annotations,
-      metadata.0.labels,
-      template.0.metadata.0.annotations,
+      metadata[0].annotations,
+      metadata[0].labels,
+      template[0].metadata[0].annotations,
     ]
   }
 

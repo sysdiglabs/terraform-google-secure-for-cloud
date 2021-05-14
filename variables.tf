@@ -9,34 +9,33 @@ variable "naming_prefix" {
   }
 }
 
-variable "project_name" {
-  type        = string
-  description = "Project name of the Google Cloud Platform"
-}
-
 variable "location" {
   type        = string
   description = "Zone where the stack will be deployed"
 }
 
 variable "cloudconnector_deploy" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
+  description = "Whether to deploy or not CloudConnector"
 }
 
-variable "cloudbench_deploy" {
-  type    = bool
-  default = true
-}
+# variable "cloudbench_deploy" {
+#  type        = bool
+#  default     = true
+#  description = "Whether to deploy or not CloudBench"
+#}
 
 variable "gcr_image_scanning_deploy" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
+  description = "Whether to deploy or not GCR image scanning"
 }
 
 variable "cloudrun_image_scanning_deploy" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
+  description = "Whether to deploy or not CloudRun image scanning"
 }
 
 variable "sysdig_secure_api_token" {
