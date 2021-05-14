@@ -7,7 +7,7 @@ deployment that will detect events in your infrastructure.
 
 ```hcl
 module "cloud_vision_gcp" {
-  source = "sysdiglabs/cloudvision/google/modules/cloudvision-singleaccount"
+  source = "sysdiglabs/cloudvision/google"
 
   location = "us-central1"
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
@@ -30,8 +30,8 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cloud_connector"></a> [cloud\_connector](#module\_cloud\_connector) | ../cloud-connector |  |
-| <a name="module_cloud_scanning"></a> [cloud\_scanning](#module\_cloud\_scanning) | ../cloud-scanning |  |
+| <a name="module_cloud_connector"></a> [cloud\_connector](#module\_cloud\_connector) | ./modules/cloud-connector |  |
+| <a name="module_cloud_scanning"></a> [cloud\_scanning](#module\_cloud\_scanning) | ./modules/cloud-scanning |  |
 
 ## Resources
 

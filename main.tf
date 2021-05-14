@@ -9,7 +9,7 @@ locals {
 module "cloud_connector" {
   count = local.deploy_cloudconnector ? 1 : 0
 
-  source = "../cloud-connector"
+  source = "./modules/cloud-connector"
 
   naming_prefix           = var.naming_prefix
   location                = var.location
@@ -22,7 +22,7 @@ module "cloud_connector" {
 module "cloud_scanning" {
   count = local.deploy_cloudscanning ? 1 : 0
 
-  source = "../cloud-scanning"
+  source = "./modules/cloud-scanning"
 
   naming_prefix           = var.naming_prefix
   location                = var.location
