@@ -11,6 +11,7 @@ variable "naming_prefix" {
 
 variable "location" {
   type        = string
+  default     = "us-central1"
   description = "Zone where the stack will be deployed"
 }
 
