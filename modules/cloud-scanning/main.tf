@@ -115,6 +115,16 @@ resource "google_service_account" "cloudbuild" {
   display_name = "Service account for executing the scanning Cloud Build"
 }
 
+resource "google_project_iam_member" "artifactregistry_reader" {
+  member = "serviceAccount:${google_service_account.cloudbuild.email}"
+  role   = "roles/artifactregistry.reader"
+}
+
+resource "google_project_iam_member" "containerregistry_reader" {
+  member = "serviceAccount:${google_service_account.cloudbuild.email}"
+  role   = "roles/storage.objectViewer"
+}
+
 resource "google_secret_manager_secret_iam_member" "member" {
   project   = google_secret_manager_secret.secure_token.project
   secret_id = google_secret_manager_secret.secure_token.secret_id
