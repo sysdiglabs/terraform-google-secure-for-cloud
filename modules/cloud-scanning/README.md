@@ -53,7 +53,7 @@ No modules.
 | <a name="input_deploy_cloudrun"></a> [deploy\_cloudrun](#input\_deploy\_cloudrun) | Enable CloudRun integration | `bool` | n/a | yes |
 | <a name="input_deploy_gcr"></a> [deploy\_gcr](#input\_deploy\_gcr) | Enable GCR integration | `bool` | n/a | yes |
 | <a name="input_extra_envs"></a> [extra\_envs](#input\_extra\_envs) | Extra environment variables for the Cloud Scanning deployment | `map(string)` | `{}` | no |
-| <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Image of the cloud scanning to deploy | `string` | `"us-central1-docker.pkg.dev/mateo-burillo-ns/cloud-connector/cloud-scanning:gcp"` | no |
+| <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Image of the cloud scanning to deploy | `string` | `"us-central1-docker.pkg.dev/mateo-burillo-ns/cloud-connector/cloud-scanning:latest"` | no |
 | <a name="input_location"></a> [location](#input\_location) | Zone where the cloud scanning will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Prefix for resource names. Use the default unless you need to install multiple instances, and modify the deployment at the main account accordingly | `string` | `"SysdigCloud"` | no |
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
