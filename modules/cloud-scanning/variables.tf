@@ -22,7 +22,7 @@ variable "deploy_cloudrun" {
 
 variable "image_name" {
   type        = string
-  default     = "us-central1-docker.pkg.dev/mateo-burillo-ns/cloud-connector/cloud-scanning:gcp"
+  default     = "us-central1-docker.pkg.dev/mateo-burillo-ns/cloud-connector/cloud-scanning:latest"
   description = "Image of the cloud scanning to deploy"
 }
 

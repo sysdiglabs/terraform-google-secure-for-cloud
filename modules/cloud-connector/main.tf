@@ -30,7 +30,7 @@ rules: []
 ingestors:
 - auditlog:
     project: ${data.google_project.project.name}
-    interval: 1m
+    interval: 30s
 notifiers: []
 EOF
   config_content = var.config_content == null && var.config_source == null ? local.default_config : var.config_content

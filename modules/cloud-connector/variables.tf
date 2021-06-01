@@ -34,7 +34,7 @@ variable "location" {
 
 variable "image_name" {
   type        = string
-  default     = "us-central1-docker.pkg.dev/mateo-burillo-ns/cloud-connector/cloud-connector:gcp"
+  default     = "us-central1-docker.pkg.dev/mateo-burillo-ns/cloud-connector/cloud-connector:latest"
   description = "Cloud Connector image to deploy"
 }
 
