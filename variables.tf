@@ -1,6 +1,5 @@
 variable "naming_prefix" {
   type        = string
-  default     = "SysdigCloud"
   description = "Prefix for resource names. Use the default unless you need to install multiple instances, and modify the deployment at the main account accordingly"
 
   validation {
@@ -29,13 +28,13 @@ variable "cloudconnector_deploy" {
 
 variable "gcr_image_scanning_deploy" {
   type        = bool
-  default     = true
+  default     = false
   description = "Whether to deploy or not GCR image scanning"
 }
 
 variable "cloudrun_image_scanning_deploy" {
   type        = bool
-  default     = true
+  default     = false
   description = "Whether to deploy or not CloudRun image scanning"
 }
 
