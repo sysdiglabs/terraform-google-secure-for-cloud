@@ -26,7 +26,9 @@ locals {
     ]
   )
   default_config = <<EOF
-rules: []
+rules:
+  - directory:
+      path: /rules/auditlog
 ingestors:
 - auditlog:
     project: ${data.google_project.project.name}
