@@ -31,7 +31,7 @@ rules:
       path: /rules/auditlog
 ingestors:
   - auditlog:
-      project: ${data.google_project.project.name}
+      project: ${data.google_project.project.project_id}
       interval: 30s
 notifiers: []
 EOF
@@ -42,7 +42,6 @@ data "google_project" "project" {
 }
 
 resource "google_service_account" "sa" {
-  project      = data.google_project.project.name
   account_id   = "${lower(var.naming_prefix)}-cloudconnector"
   display_name = "Service account for cloud-connector"
 }
@@ -66,7 +65,6 @@ resource "google_storage_bucket_iam_member" "list_objects" {
 }
 
 resource "google_storage_bucket" "bucket" {
-  project       = data.google_project.project.name
   name          = var.bucket_config_name
   force_destroy = true
   versioning {
