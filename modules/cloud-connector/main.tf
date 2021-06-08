@@ -30,9 +30,8 @@ rules:
   - directory:
       path: /rules/auditlog
 ingestors:
-  - auditlog:
-      project: ${data.google_project.project.name}
-      interval: 30s
+  - gcp-pubsub-auditlog-http:
+      url: /audit
 notifiers: []
 EOF
   config_content = var.config_content == null && var.config_source == null ? local.default_config : var.config_content
@@ -82,6 +81,66 @@ resource "google_storage_bucket_object" "config" {
   source  = var.config_source
 }
 
+resource "google_pubsub_topic" "topic" {
+  name = "${var.naming_prefix}-pubsub-topic"
+}
+
+resource "google_logging_project_sink" "project_sink" {
+  name                   = "${var.naming_prefix}-project-sink"
+  destination            = "pubsub.googleapis.com/${google_pubsub_topic.topic.id}"
+  unique_writer_identity = true
+  filter                 = <<EOT
+logName="projects/${data.google_project.project.name}/logs/cloudaudit.googleapis.com%2Factivity" AND -resource.type="k8s_cluster"
+EOT
+}
+
+resource "google_pubsub_topic_iam_member" "writer" {
+  project = google_pubsub_topic.topic.project
+  topic   = google_pubsub_topic.topic.name
+  role    = "roles/pubsub.publisher"
+  member  = google_logging_project_sink.project_sink.writer_identity
+}
+
+resource "google_project_iam_member" "event_receiver" {
+  role   = "roles/eventarc.eventReceiver"
+  member = "serviceAccount:${google_service_account.sa.email}"
+}
+
+resource "google_cloud_run_service_iam_member" "run_invoker" {
+  role     = "roles/run.invoker"
+  member   = "serviceAccount:${google_service_account.sa.email}"
+  service  = google_cloud_run_service.cloud_connector.name
+  project  = google_cloud_run_service.cloud_connector.project
+  location = google_cloud_run_service.cloud_connector.location
+}
+
+resource "google_project_iam_member" "token_creator" {
+  member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+  role   = "roles/iam.serviceAccountTokenCreator"
+}
+
+resource "google_eventarc_trigger" "trigger" {
+  name            = "${var.naming_prefix}-trigger"
+  location        = var.location
+  service_account = google_service_account.sa.email
+  matching_criteria {
+    attribute = "type"
+    value     = "google.cloud.pubsub.topic.v1.messagePublished"
+  }
+  destination {
+    cloud_run_service {
+      service = google_cloud_run_service.cloud_connector.name
+      region  = var.location
+      path    = "/audit"
+    }
+  }
+  transport {
+    pubsub {
+      topic = google_pubsub_topic.topic.id
+    }
+  }
+}
+
 resource "google_cloud_run_service" "cloud_connector" {
   depends_on = [google_project_iam_member.logging, google_storage_bucket_iam_member.read_access, google_storage_bucket_iam_member.list_objects]
   location   = var.location
@@ -106,7 +165,6 @@ resource "google_cloud_run_service" "cloud_connector" {
   template {
     metadata {
       annotations = {
-        "autoscaling.knative.dev/minScale" = "1"
         "autoscaling.knative.dev/maxScale" = "1"
       }
     }
