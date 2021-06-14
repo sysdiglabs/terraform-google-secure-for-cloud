@@ -41,8 +41,7 @@ data "google_project" "project" {
 }
 
 resource "google_service_account" "sa" {
-  project      = data.google_project.project.name
-  account_id   = "${lower(var.naming_prefix)}-cloudconnector"
+  account_id   = "cloud-connector"
   display_name = "Service account for cloud-connector"
 }
 
@@ -64,9 +63,14 @@ resource "google_storage_bucket_iam_member" "list_objects" {
   role   = "roles/storage.objectViewer"
 }
 
+resource "random_string" "random" {
+  length  = 5
+  special = false
+  upper   = false
+}
+
 resource "google_storage_bucket" "bucket" {
-  project       = data.google_project.project.name
-  name          = var.bucket_config_name
+  name          = "${var.bucket_config_name}-${random_string.random.result}"
   force_destroy = true
   versioning {
     # TODO Can we disable the versioning in this bucket, since the content is managed by Terraform?
@@ -82,15 +86,15 @@ resource "google_storage_bucket_object" "config" {
 }
 
 resource "google_pubsub_topic" "topic" {
-  name = "${var.naming_prefix}-pubsub-topic"
+  name = "cloud-connector-topic"
 }
 
 resource "google_logging_project_sink" "project_sink" {
-  name                   = "${var.naming_prefix}-project-sink"
+  name                   = "cloud-connector-project-sink"
   destination            = "pubsub.googleapis.com/${google_pubsub_topic.topic.id}"
   unique_writer_identity = true
   filter                 = <<EOT
-logName="projects/${data.google_project.project.name}/logs/cloudaudit.googleapis.com%2Factivity" AND -resource.type="k8s_cluster"
+  logName="projects/${data.google_project.project.project_id}/logs/cloudaudit.googleapis.com%2Factivity" AND -resource.type="k8s_cluster"
 EOT
 }
 
@@ -120,7 +124,7 @@ resource "google_project_iam_member" "token_creator" {
 }
 
 resource "google_eventarc_trigger" "trigger" {
-  name            = "${var.naming_prefix}-trigger"
+  name            = "cloud-connector-trigger"
   location        = var.location
   service_account = google_service_account.sa.email
   matching_criteria {
@@ -144,7 +148,7 @@ resource "google_eventarc_trigger" "trigger" {
 resource "google_cloud_run_service" "cloud_connector" {
   depends_on = [google_project_iam_member.logging, google_storage_bucket_iam_member.read_access, google_storage_bucket_iam_member.list_objects]
   location   = var.location
-  name       = "${substr(lower(var.naming_prefix), 0, 48)}-cloudconnector"
+  name       = "cloud-connector"
 
   lifecycle {
     # We ignore changes in some annotations Cloud Run adds to the resource so we can
