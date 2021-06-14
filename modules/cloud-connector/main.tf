@@ -64,9 +64,9 @@ resource "google_storage_bucket_iam_member" "list_objects" {
 }
 
 resource "random_string" "random" {
-  length = 5
+  length  = 5
   special = false
-  upper = false
+  upper   = false
 }
 
 resource "google_storage_bucket" "bucket" {

@@ -30,8 +30,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cloud_connector"></a> [cloud\_connector](#module\_cloud\_connector) | ./modules/cloud-connector |  |
-| <a name="module_cloud_scanning"></a> [cloud\_scanning](#module\_cloud\_scanning) | ./modules/cloud-scanning |  |
+| <a name="module_cloud_connector"></a> [cloud\_connector](#module\_cloud\_connector) | ./modules/cloud-connector | n/a |
 
 ## Resources
 
@@ -42,10 +41,7 @@ No resources.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_cloudconnector_deploy"></a> [cloudconnector\_deploy](#input\_cloudconnector\_deploy) | Whether to deploy or not CloudConnector | `bool` | `true` | no |
-| <a name="input_cloudrun_image_scanning_deploy"></a> [cloudrun\_image\_scanning\_deploy](#input\_cloudrun\_image\_scanning\_deploy) | Whether to deploy or not CloudRun image scanning | `bool` | `false` | no |
-| <a name="input_gcr_image_scanning_deploy"></a> [gcr\_image\_scanning\_deploy](#input\_gcr\_image\_scanning\_deploy) | Whether to deploy or not GCR image scanning | `bool` | `false` | no |
 | <a name="input_location"></a> [location](#input\_location) | Zone where the stack will be deployed | `string` | `"us-central1"` | no |
-| <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Prefix for resource names. Use the default unless you need to install multiple instances, and modify the deployment at the main account accordingly | `string` | n/a | yes |
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig Secure API endpoint | `string` | `"https://secure.sysdig.com"` | no |
 

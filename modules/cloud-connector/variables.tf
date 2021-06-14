@@ -36,7 +36,7 @@ variable "extra_envs" {
 variable "bucket_config_name" {
   type        = string
   description = "Google Cloud Storage Bucket where the configuration will be saved"
-  default = "cloud-connector-config"
+  default     = "cloud-connector-config"
 }
 
 variable "config_content" {
