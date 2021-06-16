@@ -26,9 +26,7 @@ locals {
     ]
   )
   default_config = <<EOF
-rules:
-  - directory:
-      path: /rules/auditlog
+rules: []
 ingestors:
   - gcp-pubsub-auditlog-http:
       url: /audit
