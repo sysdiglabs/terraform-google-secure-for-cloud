@@ -28,7 +28,7 @@ locals {
   default_config = <<EOF
 rules: []
 ingestors:
-  - gcp-pubsub-auditlog-http:
+  - gcp-auditlog-pubsub-http:
       url: /audit
 notifiers: []
 EOF
