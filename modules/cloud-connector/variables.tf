@@ -56,3 +56,9 @@ variable "naming_prefix" {
   description = "Naming prefix for all the resources created"
   default     = ""
 }
+
+variable "max_instances" {
+  type        = number
+  description = "Max number of instances for the Cloud Connector"
+  default     = 1
+}

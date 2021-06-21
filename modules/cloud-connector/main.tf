@@ -167,6 +167,12 @@ resource "google_cloud_run_service" "cloud_connector" {
   }
 
   template {
+    metadata {
+      annotations = {
+        "autoscaling.knative.dev/maxScale" = tostring(var.max_instances)
+      }
+    }
+
     spec {
       containers {
         image = var.image_name
