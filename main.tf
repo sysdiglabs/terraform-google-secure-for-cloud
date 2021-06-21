@@ -12,4 +12,5 @@ module "cloud_connector" {
   sysdig_secure_api_token = var.sysdig_secure_api_token
   sysdig_secure_endpoint  = var.sysdig_secure_endpoint
   verify_ssl              = local.verify_ssl
+  naming_prefix           = var.naming_prefix
 }

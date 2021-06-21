@@ -50,3 +50,9 @@ variable "config_source" {
   type        = string
   description = "Path to a file that contains the contents of the configuration file to be saved in the bucket"
 }
+
+variable "naming_prefix" {
+  type        = string
+  description = "Naming prefix for all the resources created"
+  default     = ""
+}

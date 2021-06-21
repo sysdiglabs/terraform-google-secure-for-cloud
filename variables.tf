@@ -20,3 +20,9 @@ variable "sysdig_secure_endpoint" {
   default     = "https://secure.sysdig.com"
   description = "Sysdig Secure API endpoint"
 }
+
+variable "naming_prefix" {
+  type        = string
+  description = "Naming prefix for all the resources created"
+  default     = ""
+}
