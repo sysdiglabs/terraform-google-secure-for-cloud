@@ -44,12 +44,6 @@ resource "google_service_account" "sa" {
   display_name = "Service account for cloud-connector"
 }
 
-#TODO: Specific role for reading from required logs only?
-resource "google_project_iam_member" "logging" {
-  member = "serviceAccount:${google_service_account.sa.email}"
-  role   = "roles/logging.viewer"
-}
-
 resource "google_storage_bucket_iam_member" "read_access" {
   bucket = google_storage_bucket.bucket.id
   member = "serviceAccount:${google_service_account.sa.email}"
@@ -146,7 +140,7 @@ resource "google_eventarc_trigger" "trigger" {
 }
 
 resource "google_cloud_run_service" "cloud_connector" {
-  depends_on = [google_project_iam_member.logging, google_storage_bucket_iam_member.read_access, google_storage_bucket_iam_member.list_objects]
+  depends_on = [google_storage_bucket_iam_member.read_access, google_storage_bucket_iam_member.list_objects]
   location   = var.location
   name       = "${local.naming_prefix}cloud-connector"
 
