@@ -18,7 +18,12 @@ locals {
     {
       name  = "VERIFY_SSL"
       value = tostring(var.verify_ssl)
-    }], [for env_key, env_value in var.extra_envs :
+    },
+    {
+      name  = "TELEMETRY_DEPLOYMENT_METHOD"
+      value = "terraform_gcp"
+    }
+    ], [for env_key, env_value in var.extra_envs :
     {
       name  = env_key,
       value = env_value
