@@ -22,6 +22,10 @@ locals {
     {
       name  = "TELEMETRY_DEPLOYMENT_METHOD"
       value = "terraform_gcp"
+    },
+    {
+      name  = "GCP_REGION"
+      value = var.location
     }
     ], [for env_key, env_value in var.extra_envs :
     {
@@ -35,6 +39,7 @@ rules: []
 ingestors:
   - gcp-auditlog-pubsub-http:
       url: /audit
+      project: ${data.google_project.project.project_id}
 notifiers: []
 EOF
   config_content = var.config_content == null && var.config_source == null ? local.default_config : var.config_content
