@@ -13,6 +13,10 @@ locals {
       value = data.google_project.project.project_id
     },
     {
+      name  = "GCP_SERVICE_ACCOUNT"
+      value = google_service_account.sa.email
+    },
+    {
       name  = "SECURE_API_TOKEN_SECRET"
       value = google_secret_manager_secret.secure_api_secret.secret_id
     }
@@ -58,6 +62,16 @@ resource "google_pubsub_topic_iam_member" "writer" {
 resource "google_project_iam_member" "event_receiver" {
   role   = "roles/eventarc.eventReceiver"
   member = "serviceAccount:${google_service_account.sa.email}"
+}
+
+# Required to execute cloud build runs with this same service account
+resource "google_project_iam_member" "serivce_account_user_itself" {
+  role   = "roles/iam.serviceAccountUser"
+  member = "serviceAccount:${google_service_account.sa.email}"
+  condition {
+    expression = "resource.name == \"${google_service_account.sa.email}\""
+    title      = "Impersonate only as itself"
+  }
 }
 
 resource "google_project_iam_member" "builder" {
