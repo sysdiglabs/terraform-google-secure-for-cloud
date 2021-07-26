@@ -89,10 +89,6 @@ resource "google_project_iam_member" "event_receiver" {
 resource "google_project_iam_member" "service_account_user_itself" {
   role   = "roles/iam.serviceAccountUser"
   member = "serviceAccount:${google_service_account.sa.email}"
-  condition {
-    expression = "resource.name == \"${google_service_account.sa.email}\""
-    title      = "Impersonate only as itself"
-  }
 }
 
 resource "google_project_iam_member" "builder" {
