@@ -105,6 +105,8 @@ resource "google_cloud_run_service_iam_member" "run_invoker" {
 }
 
 resource "google_project_iam_member" "token_creator" {
+  depends_on = [google_project_service.pubsub]
+
   member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
   role   = "roles/iam.serviceAccountTokenCreator"
 }
