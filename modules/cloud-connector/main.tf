@@ -49,15 +49,7 @@ EOF
 data "google_project" "project" {
 }
 
-resource "google_project_service" "iam" {
-  service = "iam.googleapis.com"
-
-  disable_on_destroy = false
-}
-
 resource "google_service_account" "sa" {
-  depends_on = [google_project_service.iam]
-
   account_id   = "${local.naming_prefix}cloud-connector"
   display_name = "Service account for cloud-connector"
 }
@@ -80,15 +72,7 @@ resource "random_string" "random" {
   upper   = false
 }
 
-resource "google_project_service" "cloud_storage" {
-  service = "storage-component.googleapis.com"
-
-  disable_on_destroy = false
-}
-
 resource "google_storage_bucket" "bucket" {
-  depends_on = [google_project_service.cloud_storage]
-
   name          = "${local.naming_prefix}${var.bucket_config_name}-${random_string.random.result}"
   force_destroy = true
   versioning {
@@ -104,15 +88,7 @@ resource "google_storage_bucket_object" "config" {
   source  = var.config_source
 }
 
-resource "google_project_service" "pubsub" {
-  service = "pubsub.googleapis.com"
-
-  disable_on_destroy = false
-}
-
 resource "google_pubsub_topic" "topic" {
-  depends_on = [google_project_service.pubsub]
-
   name = "${local.naming_prefix}cloud-connector-topic"
 }
 
@@ -151,15 +127,7 @@ resource "google_project_iam_member" "token_creator" {
   role   = "roles/iam.serviceAccountTokenCreator"
 }
 
-resource "google_project_service" "eventarc" {
-  service = "eventarc.googleapis.com"
-
-  disable_on_destroy = false
-}
-
 resource "google_eventarc_trigger" "trigger" {
-  depends_on = [google_project_service.eventarc]
-
   name            = "${local.naming_prefix}cloud-connector-trigger"
   location        = var.location
   service_account = google_service_account.sa.email
@@ -181,14 +149,8 @@ resource "google_eventarc_trigger" "trigger" {
   }
 }
 
-resource "google_project_service" "cloud_run" {
-  service = "run.googleapis.com"
-
-  disable_on_destroy = false
-}
-
 resource "google_cloud_run_service" "cloud_connector" {
-  depends_on = [google_project_service.cloud_run, google_storage_bucket_iam_member.read_access, google_storage_bucket_iam_member.list_objects]
+  depends_on = [google_storage_bucket_iam_member.read_access, google_storage_bucket_iam_member.list_objects]
   location   = var.location
   name       = "${local.naming_prefix}cloud-connector"
 
