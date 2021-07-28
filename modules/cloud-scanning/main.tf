@@ -33,38 +33,17 @@ locals {
 data "google_project" "project" {
 }
 
-resource "google_project_service" "iam" {
-  service = "iam.googleapis.com"
-
-  disable_on_destroy = false
-}
-
 resource "google_service_account" "sa" {
-  depends_on = [google_project_service.iam]
-
   account_id   = "${local.naming_prefix}cloud-scanning"
   display_name = "Service account for cloud-scanning"
 }
 
-resource "google_project_service" "pubsub" {
-  service = "pubsub.googleapis.com"
-
-  disable_on_destroy = false
-}
-
 resource "google_pubsub_topic" "topic" {
-  depends_on = [google_project_service.pubsub]
-  name       = "${local.naming_prefix}cloud-scanning-topic"
-}
-
-resource "google_project_service" "logging" {
-  service = "logging.googleapis.com"
-
-  disable_on_destroy = false
+  name = "${local.naming_prefix}cloud-scanning-topic"
 }
 
 resource "google_logging_project_sink" "project_sink" {
-  depends_on             = [google_project_service.logging, google_pubsub_topic.topic]
+  depends_on             = [google_pubsub_topic.topic]
   name                   = "${local.naming_prefix}cloud-scanning-project-sink"
   destination            = "pubsub.googleapis.com/${google_pubsub_topic.topic.id}"
   unique_writer_identity = true
@@ -115,15 +94,7 @@ resource "google_secret_manager_secret_iam_member" "secret_reader" {
   member    = "serviceAccount:${google_service_account.sa.email}"
 }
 
-resource "google_project_service" "secret_manager" {
-  service = "secretmanager.googleapis.com"
-
-  disable_on_destroy = false
-}
-
 resource "google_secret_manager_secret" "secure_api_secret" {
-  depends_on = [google_project_service.secret_manager]
-
   secret_id = "${local.naming_prefix}sysdig-secure-api-secret"
   replication {
     automatic = true
@@ -136,14 +107,7 @@ resource "google_secret_manager_secret_version" "secure_api_secret" {
   secret_data = var.sysdig_secure_api_token
 }
 
-resource "google_project_service" "eventarc" {
-  service = "eventarc.googleapis.com"
-
-  disable_on_destroy = false
-}
-
 resource "google_eventarc_trigger" "cloud_run" {
-  depends_on      = [google_project_service.eventarc]
   name            = "${local.naming_prefix}cloud-scanning-trigger-cloudrun"
   location        = var.location
   service_account = google_service_account.sa.email
@@ -166,9 +130,8 @@ resource "google_eventarc_trigger" "cloud_run" {
 }
 
 resource "google_pubsub_topic" "gcr" {
-  depends_on = [google_project_service.pubsub]
-  count      = var.create_gcr_topic ? 1 : 0
-  name       = "gcr"
+  count = var.create_gcr_topic ? 1 : 0
+  name  = "gcr"
 }
 
 data "google_pubsub_topic" "gcr" {
@@ -180,7 +143,6 @@ locals {
 }
 
 resource "google_eventarc_trigger" "gcr" {
-  depends_on      = [google_project_service.eventarc]
   count           = length(local.gcr_topic_id[*]) > 0 ? 1 : 0 # We won't try to deploy this trigger if the GCR topic doesn't exist
   name            = "${local.naming_prefix}cloud-scanning-trigger-gcr"
   location        = var.location
@@ -203,21 +165,7 @@ resource "google_eventarc_trigger" "gcr" {
   }
 }
 
-resource "google_project_service" "cloud_run" {
-  service = "run.googleapis.com"
-
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "cloud_build" {
-  service = "cloudbuild.googleapis.com"
-
-  disable_on_destroy = false
-}
-
 resource "google_cloud_run_service" "cloud_scanning" {
-  depends_on = [google_project_service.cloud_run, google_project_service.cloud_build]
-
   location = var.location
   name     = "${local.naming_prefix}cloud-scanning"
 
