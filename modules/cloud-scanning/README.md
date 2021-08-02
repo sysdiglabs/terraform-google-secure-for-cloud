@@ -27,7 +27,7 @@ module "cloud_scanning_gcp" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 3.77.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 3.67.0 |
 
 ## Modules
 
