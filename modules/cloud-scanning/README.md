@@ -27,7 +27,7 @@ module "cloud_scanning_gcp" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 3.67.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 3.77.0 |
 
 ## Modules
 
@@ -62,7 +62,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_create_gcr_topic"></a> [create\_gcr\_topic](#input\_create\_gcr\_topic) | Deploys a PubSub topic called `gcr` as part of this stack, which is needed for GCR scanning. Set to `true` only if it doesn't exist yet. If this is not deployed, and no existing `gcr` topic is found, the GCR scanning is ommited and won't be deployed. For more info see [GCR PubSub topic](https://cloud.google.com/container-registry/docs/configuring-notifications#create_a_topic). | `bool` | n/a | yes |
 | <a name="input_extra_envs"></a> [extra\_envs](#input\_extra\_envs) | Extra environment variables for the Cloud Scanning instance | `map(string)` | `{}` | no |
-| <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Cloud scanning image to deploy | `string` | `"gcr.io/mateo-burillo-ns/cloud-scanning:master"` | no |
+| <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Cloud scanning image to deploy | `string` | `"gcr.io/mateo-burillo-ns/cloud-scanning:latest"` | no |
 | <a name="input_location"></a> [location](#input\_location) | Zone where the cloud scanning will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the Cloud Scanning | `number` | `1` | no |
 | <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Naming prefix for all the resources created | `string` | `""` | no |
