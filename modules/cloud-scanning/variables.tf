@@ -24,7 +24,7 @@ variable "location" {
 
 variable "image_name" {
   type        = string
-  default     = "gcr.io/mateo-burillo-ns/cloud-scanning:master"
+  default     = "gcr.io/mateo-burillo-ns/cloud-scanning:latest"
   description = "Cloud scanning image to deploy"
 }
 

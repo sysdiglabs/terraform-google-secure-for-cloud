@@ -23,7 +23,7 @@ variable "location" {
 
 variable "image_name" {
   type        = string
-  default     = "gcr.io/mateo-burillo-ns/cloud-connector:master"
+  default     = "gcr.io/mateo-burillo-ns/cloud-connector:latest"
   description = "Cloud Connector image to deploy"
 }
 

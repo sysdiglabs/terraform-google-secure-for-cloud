@@ -64,7 +64,7 @@ No modules.
 | <a name="input_config_content"></a> [config\_content](#input\_config\_content) | Contents of the configuration file to be saved in the bucket | `string` | `null` | no |
 | <a name="input_config_source"></a> [config\_source](#input\_config\_source) | Path to a file that contains the contents of the configuration file to be saved in the bucket | `string` | `null` | no |
 | <a name="input_extra_envs"></a> [extra\_envs](#input\_extra\_envs) | Extra environment variables for the Cloud Connector instance | `map(string)` | `{}` | no |
-| <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Cloud Connector image to deploy | `string` | `"gcr.io/mateo-burillo-ns/cloud-connector:master"` | no |
+| <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Cloud Connector image to deploy | `string` | `"gcr.io/mateo-burillo-ns/cloud-connector:latest"` | no |
 | <a name="input_location"></a> [location](#input\_location) | Zone where the cloud connector will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the Cloud Connector | `number` | `1` | no |
 | <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Naming prefix for all the resources created | `string` | `""` | no |
