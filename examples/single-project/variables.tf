@@ -14,13 +14,19 @@ variable "location" {
 variable "cloud_connector_deploy" {
   type        = bool
   default     = true
-  description = "Whether to deploy or not CloudConnector"
+  description = "Whether or not to deploy CloudConnector"
 }
 
 variable "cloud_scanning_deploy" {
   type        = bool
   default     = true
-  description = "Whether to deploy or not CloudConnector"
+  description = "Whether or not to deploy CloudScanning"
+}
+
+variable "cloudbench_deploy" {
+  type        = bool
+  default     = true
+  description = "Whether or not to deploy CloudBench"
 }
 
 variable "sysdig_secure_endpoint" {
