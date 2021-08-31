@@ -5,23 +5,33 @@ components deployment that will detect events in your infrastructure.
 
 ## Usage
 
+## APIs
+
+* CLOUD RUN API
+* EVENTARC API
+* SECRET MANAGER API
+* CODE BUILD API
+* IDENTIFY AND ACCESS MANAGMENT API
+
 ```hcl
 module "cloud_vision_gcp" {
   source = "sysdiglabs/cloudvision/google"
 
   location                = "us-central1"
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
-  create_gcr_topic        = true # Set to "false" if the PubSub topic called "gcr" already exists.
+  create_gcr_topic        = true
+  # Set to "false" if the PubSub topic called "gcr" already exists.
 }
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.67.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > = 0.14.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | > = 3.67.0 |
 
 ## Providers
 
