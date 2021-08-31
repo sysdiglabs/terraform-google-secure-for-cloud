@@ -72,7 +72,7 @@ resource "google_service_account" "sa" {
   display_name = "Service account for cloud-bench"
 }
 
-resource "google_project_iam_member" "editor" {
+resource "google_project_iam_member" "viewer" {
   role   = "roles/viewer"
   member = "serviceAccount:${google_service_account.sa.email}"
 }
