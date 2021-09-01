@@ -80,7 +80,7 @@ module "cloud_scanning" {
   scanning_pubsub_topic_id = module.scanning_pubsub.pubsub_topic_id
   create_gcr_topic         = var.create_gcr_topic
 
-  secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_id
+  secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
   sysdig_secure_api_token    = var.sysdig_secure_api_token
   sysdig_secure_endpoint     = var.sysdig_secure_endpoint
 
