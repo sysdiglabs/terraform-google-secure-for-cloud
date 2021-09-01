@@ -1,14 +1,12 @@
 resource "google_pubsub_topic" "topic" {
-  name = "${var.naming_prefix}-cloud-scanning-topic"
+  name = "${var.naming_prefix}-cloud-${var.service}-topic"
 }
 
 resource "google_logging_project_sink" "project_sink" {
-  name                   = "${var.naming_prefix}-cloud-scanning-project-sink"
+  name                   = "${var.naming_prefix}-cloud-${var.service}-project-sink"
   destination            = "pubsub.googleapis.com/${google_pubsub_topic.topic.id}"
   unique_writer_identity = true
-  filter                 = <<EOT
-  protoPayload.methodName = "google.cloud.run.v1.Services.CreateService" OR protoPayload.methodName = "google.cloud.run.v1.Services.ReplaceService"
-EOT
+  filter                 = var.filter
 }
 
 resource "google_pubsub_topic_iam_member" "writer" {

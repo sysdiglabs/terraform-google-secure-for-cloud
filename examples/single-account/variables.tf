@@ -42,7 +42,7 @@ variable "create_gcr_topic" {
 }
 
 variable "project_name" {
-  default     = "swift-hangar-324607"
+  default     = "secure-for-cloud-324708"
   type        = string
   description = "Google cloud project name"
 }

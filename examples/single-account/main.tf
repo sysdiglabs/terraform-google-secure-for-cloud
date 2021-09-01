@@ -1,6 +1,16 @@
 locals {
-  verify_ssl = length(regexall("^https://.*?\\.sysdig.com/?", var.sysdig_secure_endpoint)) != 0
+  verify_ssl       = length(regexall("^https://.*?\\.sysdig.com/?", var.sysdig_secure_endpoint)) != 0
+  scanning_filter  = <<EOT
+  protoPayload.methodName = "google.cloud.run.v1.Services.CreateService" OR protoPayload.methodName = "google.cloud.run.v1.Services.ReplaceService"
+EOT
+  connector_filter = <<EOT
+  logName=~"^projects/${data.google_project.project.project_id}/logs/cloudaudit.googleapis.com" AND -resource.type="k8s_cluster"
+EOT
 }
+
+data "google_project" "project" {
+}
+
 
 #######################
 #      CONNECTOR      #
@@ -16,8 +26,10 @@ resource "google_service_account" "connector_sa" {
 }
 
 module "connector_pubsub" {
-  source        = "../../infrastructure/connector-single-sink"
+  source        = "../../infrastructure/project_sink"
   naming_prefix = var.naming_prefix
+  filter        = local.connector_filter
+  service       = "connector"
 }
 
 module "cloud_connector" {
@@ -27,7 +39,7 @@ module "cloud_connector" {
   cloud_connector_sa_email  = google_service_account.connector_sa.email
   sysdig_secure_api_token   = var.sysdig_secure_api_token
   sysdig_secure_endpoint    = var.sysdig_secure_endpoint
-  connector_pubsub_topic_id = module.connector_pubsub.connector_pubsub_topic_id
+  connector_pubsub_topic_id = module.connector_pubsub.pubsub_topic_id
 
   #defaults
   naming_prefix = var.naming_prefix
@@ -53,8 +65,10 @@ module "secure_secrets" {
 }
 
 module "scanning_pubsub" {
-  source        = "../../infrastructure/scanning-single-sink"
+  source        = "../../infrastructure/project_sink"
   naming_prefix = var.naming_prefix
+  filter        = local.scanning_filter
+  service       = "scanning"
 }
 
 # disable for testing purpose
@@ -63,7 +77,7 @@ module "cloud_scanning" {
   source = "../../services/cloud-scanning"
 
   cloud_connector_sa_email = google_service_account.scanning_sa.email
-  scanning_pubsub_topic_id = module.scanning_pubsub.scanning_pubsub_topic_id
+  scanning_pubsub_topic_id = module.scanning_pubsub.pubsub_topic_id
   create_gcr_topic         = var.create_gcr_topic
 
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_id

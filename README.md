@@ -10,7 +10,7 @@ components deployment that will detect events in your infrastructure.
 * CLOUD RUN API
 * EVENTARC API
 * SECRET MANAGER API
-* CODE BUILD API
+* CLOUd BUILD API
 * IDENTIFY AND ACCESS MANAGMENT API
 
 ```hcl
