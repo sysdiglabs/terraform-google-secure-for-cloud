@@ -1,6 +1,6 @@
 resource "google_project_iam_member" "event_receiver" {
   role   = "roles/eventarc.eventReceiver"
-  member = "serviceAccount:${var.cloud_connector_sa_email}"
+  member = "serviceAccount:${var.cloud_scanning_sa_email}"
 }
 
 

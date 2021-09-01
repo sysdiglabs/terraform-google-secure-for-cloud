@@ -1,5 +1,5 @@
 # mandatory vars
-variable "cloud_connector_sa_email" {
+variable "cloud_scanning_sa_email" {
   type        = string
   description = "Cloud Connector service account email"
 }

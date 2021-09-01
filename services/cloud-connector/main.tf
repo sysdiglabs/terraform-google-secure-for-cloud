@@ -1,10 +1,15 @@
-module "bucket" {
-  source = "./bucket"
+# This lines are here because of pre-commit hook
+locals {
+  default_config = <<EOF
+rules: []
+ingestors:
+  - gcp-auditlog-pubsub-http:
+      url: /audit
+      project: ${data.google_project.project.project_id}
+notifiers: []
+EOF
+  config_content = var.config_content == null && var.config_source == null ? local.default_config : var.config_content
+}
 
-  cloud_connector_sa_email = var.cloud_connector_sa_email
-
-  bucket_config_name = var.bucket_config_name
-  naming_prefix      = var.naming_prefix
-  config_content     = var.config_content
-  config_source      = var.config_source
+data "google_project" "project" {
 }

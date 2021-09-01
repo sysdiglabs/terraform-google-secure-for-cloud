@@ -37,7 +37,7 @@ resource "google_eventarc_trigger" "gcr" {
   }
   destination {
     cloud_run_service {
-      service = var.scanning_cloud_run_service_name
+      service = google_cloud_run_service.cloud_scanning.name
       region  = var.location
       path    = "/gcr_scanning"
     }
