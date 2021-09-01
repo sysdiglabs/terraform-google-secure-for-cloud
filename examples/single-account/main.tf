@@ -76,7 +76,7 @@ module "cloud_scanning" {
   count  = var.cloud_scanning_deploy ? 1 : 0
   source = "../../services/cloud-scanning"
 
-  cloud_connector_sa_email = google_service_account.scanning_sa.email
+  cloud_scanning_sa_email  = google_service_account.scanning_sa.email
   scanning_pubsub_topic_id = module.scanning_pubsub.pubsub_topic_id
   create_gcr_topic         = var.create_gcr_topic
 

@@ -25,7 +25,7 @@ variable "cloud_scanning_deploy" {
 
 variable "sysdig_secure_endpoint" {
   type        = string
-  default     = "https://secure-staging.sysdig.com"
+  default     = "https://secure.sysdig.com"
   description = "Sysdig Secure API endpoint"
 }
 

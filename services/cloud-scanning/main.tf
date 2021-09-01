@@ -1,10 +1,34 @@
-module "gcr" {
-  source = "./gcr"
+# This lines are here because of pre-commit hook
+locals {
+  task_env_vars = concat([
+    {
+      name  = "SECURE_URL"
+      value = var.sysdig_secure_endpoint
+    },
+    {
+      name  = "VERIFY_SSL"
+      value = tostring(var.verify_ssl)
+    },
+    {
+      name  = "GCP_PROJECT"
+      value = data.google_project.project.project_id
+    },
+    {
+      name  = "GCP_SERVICE_ACCOUNT"
+      value = var.cloud_scanning_sa_email
+    },
+    {
+      name  = "SECURE_API_TOKEN_SECRET"
+      value = var.secure_api_token_secret_id
+    }
+    ], [for env_key, env_value in var.extra_envs :
+    {
+      name  = env_key,
+      value = env_value
+    }
+    ]
+  )
+}
 
-  cloud_scanning_sa_email         = var.cloud_connector_sa_email
-  scanning_cloud_run_service_name = google_cloud_run_service.cloud_scanning.name
-  create_gcr_topic                = var.create_gcr_topic
-
-  depends_on = [
-  google_cloud_run_service.cloud_scanning]
+data "google_project" "project" {
 }

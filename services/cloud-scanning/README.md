@@ -9,7 +9,8 @@ deployment that trigger image scans based on changes in your infrastructure.
 module "cloud_scanning_gcp" {
   source = "sysdiglabs/cloudvision/google/services/cloud-scanning"
 
-  create_gcr_topic        = true # Set to "false" if there's an existing PubSub topic called "gcr"
+  create_gcr_topic        = true
+  # Set to "false" if there's an existing PubSub topic called "gcr"
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
   sysdig_secure_endpoint  = "https://secure.sysdig.com"
 }
@@ -31,9 +32,7 @@ module "cloud_scanning_gcp" {
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_gcr"></a> [gcr](#module\_gcr) | ./gcr |  |
+No modules.
 
 ## Resources
 
@@ -41,16 +40,21 @@ module "cloud_scanning_gcp" {
 |------|------|
 | [google_cloud_run_service.cloud_scanning](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_service) | resource |
 | [google_cloud_run_service_iam_member.run_invoker](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_service_iam_member) | resource |
+| [google_eventarc_trigger.gcr](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/eventarc_trigger) | resource |
 | [google_eventarc_trigger.trigger](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/eventarc_trigger) | resource |
+| [google_project_iam_member.builder](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_project_iam_member.event_receiver](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
+| [google_project_iam_member.service_account_user_itself](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_project_iam_member.token_creator](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
+| [google_pubsub_topic.gcr](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/pubsub_topic) | resource |
 | [google_project.project](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project) | data source |
+| [google_pubsub_topic.gcr](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/pubsub_topic) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cloud_connector_sa_email"></a> [cloud\_connector\_sa\_email](#input\_cloud\_connector\_sa\_email) | Cloud Connector service account email | `string` | n/a | yes |
+| <a name="input_cloud_scanning_sa_email"></a> [cloud\_scanning\_sa\_email](#input\_cloud\_scanning\_sa\_email) | Cloud Connector service account email | `string` | n/a | yes |
 | <a name="input_create_gcr_topic"></a> [create\_gcr\_topic](#input\_create\_gcr\_topic) | Deploys a PubSub topic called `gcr` as part of this stack, which is needed for GCR scanning. Set to `true` only if it doesn't exist yet. If this is not deployed, and no existing `gcr` topic is found, the GCR scanning is ommited and won't be deployed. For more info see [GCR PubSub topic](https://cloud.google.com/container-registry/docs/configuring-notifications#create_a_topic). | `bool` | n/a | yes |
 | <a name="input_extra_envs"></a> [extra\_envs](#input\_extra\_envs) | Extra environment variables for the Cloud Scanning instance | `map(string)` | `{}` | no |
 | <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Cloud scanning image to deploy | `string` | `"gcr.io/mateo-burillo-ns/cloud-scanning:latest"` | no |
@@ -70,7 +74,7 @@ No outputs.
 
 ## Authors
 
-Module is maintained by [Sysdig](https://github.com/sysdiglabs/terraform-google-cloudvision).
+Module is maintained and supported by [Sysdig](https://github.com/sysdiglabs/terraform-google-cloudvision).
 
 ## License
 

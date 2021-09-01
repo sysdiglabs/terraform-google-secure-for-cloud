@@ -5,13 +5,17 @@ components deployment that will detect events in your infrastructure.
 
 ## Usage
 
-## APIs
+### APIs
+
+#### The following GCP APIs must be enabled to deply resources correctly
 
 * CLOUD RUN API
 * EVENTARC API
 * SECRET MANAGER API
-* CLOUd BUILD API
+* CLOUD BUILD API
 * IDENTIFY AND ACCESS MANAGMENT API
+
+### Module Usage
 
 ```hcl
 module "cloud_vision_gcp" {
@@ -67,7 +71,7 @@ No outputs.
 
 ## Authors
 
-Module is maintained by [Sysdig](https://github.com/sysdiglabs/terraform-google-cloudvision).
+Module is maintained and supported by [Sysdig](https://github.com/sysdiglabs/terraform-google-cloudvision).
 
 ## License
 

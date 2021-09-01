@@ -1,19 +1,3 @@
-locals {
-  default_config = <<EOF
-rules: []
-ingestors:
-  - gcp-auditlog-pubsub-http:
-      url: /audit
-      project: ${data.google_project.project.project_id}
-notifiers: []
-EOF
-  config_content = var.config_content == null && var.config_source == null ? local.default_config : var.config_content
-}
-
-#FIXME: just use one data
-data "google_project" "project" {
-}
-
 resource "random_string" "random" {
   length  = 5
   special = false

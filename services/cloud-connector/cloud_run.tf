@@ -5,11 +5,11 @@ locals {
     # recreations even if the config hasn't changed.
     {
       name  = "CONFIG_MD5"
-      value = module.bucket.bucket_config_name
+      value = google_storage_bucket_object.config.md5hash
     },
     {
       name  = "CONFIG_PATH"
-      value = "${module.bucket.bucket_url}/${module.bucket.bucket_config_name}"
+      value = "${google_storage_bucket.bucket.url}/${google_storage_bucket_object.config.output_name}"
     },
     {
       name  = "SECURE_URL"
