@@ -17,7 +17,6 @@ data "google_project" "project" {
 #######################
 provider "google" {
   project = var.project_name
-  region  = var.location
 }
 
 resource "google_service_account" "connector_sa" {
@@ -33,7 +32,6 @@ module "connector_project_sinl" {
 }
 
 module "cloud_connector" {
-  count  = var.cloud_connector_deploy ? 1 : 0
   source = "../../services/cloud-connector"
 
   cloud_connector_sa_email  = google_service_account.connector_sa.email
@@ -73,7 +71,6 @@ module "scanning_project_sink" {
 
 # disable for testing purpose
 module "cloud_scanning" {
-  count  = var.cloud_scanning_deploy ? 1 : 0
   source = "../../services/cloud-scanning"
 
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email

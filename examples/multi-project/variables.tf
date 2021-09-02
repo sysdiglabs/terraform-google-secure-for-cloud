@@ -29,8 +29,14 @@ variable "create_gcr_topic" {
   default     = true
 }
 
-variable "project_name" {
-  default     = "secure-for-cloud-324708"
+variable "org_project_name" {
+  default     = "organization"
+  type        = string
+  description = "Google cloud project name"
+}
+
+variable "member_project_name" {
+  default     = "member"
   type        = string
   description = "Google cloud project name"
 }
