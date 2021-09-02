@@ -1,3 +1,9 @@
+# Mandatory vars
+variable "cloud_connector_sa_email" {
+  type        = string
+  description = "Cloud Connector service account email"
+}
+
 variable "sysdig_secure_api_token" {
   type        = string
   description = "Sysdig's Secure API Token"
@@ -8,6 +14,14 @@ variable "sysdig_secure_endpoint" {
   type        = string
   description = "Sysdig's Secure API URL"
 }
+
+variable "connector_pubsub_topic_id" {
+  type        = string
+  description = "Cloud Connector PubSub single account topic id"
+}
+
+
+# Vars with defaults
 
 variable "verify_ssl" {
   type        = bool
@@ -33,6 +47,18 @@ variable "extra_envs" {
   description = "Extra environment variables for the Cloud Connector instance"
 }
 
+variable "naming_prefix" {
+  type        = string
+  description = "Naming prefix for all the resources created"
+  default     = "sfc"
+}
+
+variable "max_instances" {
+  type        = number
+  description = "Max number of instances for the Cloud Connector"
+  default     = 1
+}
+
 variable "bucket_config_name" {
   type        = string
   description = "Google Cloud Storage Bucket where the configuration will be saved"
@@ -49,16 +75,4 @@ variable "config_source" {
   default     = null
   type        = string
   description = "Path to a file that contains the contents of the configuration file to be saved in the bucket"
-}
-
-variable "naming_prefix" {
-  type        = string
-  description = "Naming prefix for all the resources created"
-  default     = ""
-}
-
-variable "max_instances" {
-  type        = number
-  description = "Max number of instances for the Cloud Connector"
-  default     = 1
 }
