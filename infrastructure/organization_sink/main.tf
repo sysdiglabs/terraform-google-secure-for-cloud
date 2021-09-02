@@ -8,6 +8,7 @@ resource "google_logging_organization_sink" "organization_sink" {
   destination      = "pubsub.googleapis.com/${google_pubsub_topic.topic.id}"
   include_children = true
   filter           = var.filter
+
 }
 
 resource "google_pubsub_topic_iam_member" "writer" {

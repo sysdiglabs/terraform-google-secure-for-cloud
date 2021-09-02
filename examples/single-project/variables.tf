@@ -42,7 +42,7 @@ variable "create_gcr_topic" {
 }
 
 variable "project_name" {
-  default     = "secure-for-cloud-324708"
+  default     = "test-for-hayk"
   type        = string
   description = "Google cloud project name"
 }

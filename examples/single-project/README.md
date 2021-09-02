@@ -1,4 +1,4 @@
-# Single Account Example
+# Single Project Example
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -20,8 +20,8 @@
 |------|--------|---------|
 | <a name="module_cloud_connector"></a> [cloud\_connector](#module\_cloud\_connector) | ../../services/cloud-connector |  |
 | <a name="module_cloud_scanning"></a> [cloud\_scanning](#module\_cloud\_scanning) | ../../services/cloud-scanning |  |
-| <a name="module_connector_pubsub"></a> [connector\_pubsub](#module\_connector\_pubsub) | ../../infrastructure/project_sink |  |
-| <a name="module_scanning_pubsub"></a> [scanning\_pubsub](#module\_scanning\_pubsub) | ../../infrastructure/project_sink |  |
+| <a name="module_connector_project_sinl"></a> [connector\_project\_sinl](#module\_connector\_project\_sinl) | ../../infrastructure/project_sink |  |
+| <a name="module_scanning_project_sink"></a> [scanning\_project\_sink](#module\_scanning\_project\_sink) | ../../infrastructure/project_sink |  |
 | <a name="module_secure_secrets"></a> [secure\_secrets](#module\_secure\_secrets) | ../../infrastructure/secrets |  |
 
 ## Resources
@@ -41,7 +41,7 @@
 | <a name="input_create_gcr_topic"></a> [create\_gcr\_topic](#input\_create\_gcr\_topic) | Deploys a PubSub topic called `gcr` as part of this stack, which is needed for GCR scanning. Set to `true` if it doesn't exist yet. If this is not deployed, and no existing `gcr` topic is found, the GCR scanning is ommited and won't be deployed. For more info see [GCR PubSub topic](https://cloud.google.com/container-registry/docs/configuring-notifications#create_a_topic). | `bool` | `true` | no |
 | <a name="input_location"></a> [location](#input\_location) | Zone where the stack will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Naming prefix for all the resources created | `string` | `"sfc"` | no |
-| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Google cloud project name | `string` | `"secure-for-cloud-324708"` | no |
+| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Google cloud project name | `string` | `"test-for-hayk"` | no |
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig Secure API endpoint | `string` | `"https://secure.sysdig.com"` | no |
 

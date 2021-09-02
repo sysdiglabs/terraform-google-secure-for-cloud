@@ -25,7 +25,7 @@ resource "google_service_account" "connector_sa" {
   display_name = "Service account for cloud-connector"
 }
 
-module "connector_pubsub" {
+module "connector_project_sinl" {
   source        = "../../infrastructure/project_sink"
   naming_prefix = var.naming_prefix
   filter        = local.connector_filter
@@ -39,7 +39,7 @@ module "cloud_connector" {
   cloud_connector_sa_email  = google_service_account.connector_sa.email
   sysdig_secure_api_token   = var.sysdig_secure_api_token
   sysdig_secure_endpoint    = var.sysdig_secure_endpoint
-  connector_pubsub_topic_id = module.connector_pubsub.pubsub_topic_id
+  connector_pubsub_topic_id = module.connector_project_sinl.pubsub_topic_id
 
   #defaults
   naming_prefix = var.naming_prefix
@@ -64,7 +64,7 @@ module "secure_secrets" {
   naming_prefix           = var.naming_prefix
 }
 
-module "scanning_pubsub" {
+module "scanning_project_sink" {
   source        = "../../infrastructure/project_sink"
   naming_prefix = var.naming_prefix
   filter        = local.scanning_filter
@@ -77,7 +77,7 @@ module "cloud_scanning" {
   source = "../../services/cloud-scanning"
 
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
-  scanning_pubsub_topic_id = module.scanning_pubsub.pubsub_topic_id
+  scanning_pubsub_topic_id = module.scanning_project_sink.pubsub_topic_id
   create_gcr_topic         = var.create_gcr_topic
 
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
