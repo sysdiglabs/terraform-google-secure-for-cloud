@@ -11,7 +11,6 @@ data "google_project" "project" {
 
 locals {
   regions_scope_clause = length(var.regions) == 0 ? "" : " and gcp.region in (\"${join("\", \"", var.regions)}\")"
-
 }
 
 ###################################################
