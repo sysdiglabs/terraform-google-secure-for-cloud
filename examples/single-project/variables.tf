@@ -23,7 +23,7 @@ variable "cloud_scanning_deploy" {
   description = "Whether or not to deploy CloudScanning"
 }
 
-variable "cloudbench_deploy" {
+variable "cloud_bench_deploy" {
   type        = bool
   default     = true
   description = "Whether or not to deploy CloudBench"

@@ -7,6 +7,8 @@
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.67.0 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | >= 3.67.0 |
+| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 0.5.20 |
 
 ## Providers
 
@@ -18,11 +20,12 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cloud_connector"></a> [cloud\_connector](#module\_cloud\_connector) | ../../services/cloud-connector |  |
-| <a name="module_cloud_scanning"></a> [cloud\_scanning](#module\_cloud\_scanning) | ../../services/cloud-scanning |  |
-| <a name="module_connector_project_sinl"></a> [connector\_project\_sinl](#module\_connector\_project\_sinl) | ../../infrastructure/project_sink |  |
-| <a name="module_scanning_project_sink"></a> [scanning\_project\_sink](#module\_scanning\_project\_sink) | ../../infrastructure/project_sink |  |
-| <a name="module_secure_secrets"></a> [secure\_secrets](#module\_secure\_secrets) | ../../infrastructure/secrets |  |
+| <a name="module_cloud_bench"></a> [cloud\_bench](#module\_cloud\_bench) | ../../services/cloud-bench | n/a |
+| <a name="module_cloud_connector"></a> [cloud\_connector](#module\_cloud\_connector) | ../../services/cloud-connector | n/a |
+| <a name="module_cloud_scanning"></a> [cloud\_scanning](#module\_cloud\_scanning) | ../../services/cloud-scanning | n/a |
+| <a name="module_connector_project_sinl"></a> [connector\_project\_sinl](#module\_connector\_project\_sinl) | ../../infrastructure/project_sink | n/a |
+| <a name="module_scanning_project_sink"></a> [scanning\_project\_sink](#module\_scanning\_project\_sink) | ../../infrastructure/project_sink | n/a |
+| <a name="module_secure_secrets"></a> [secure\_secrets](#module\_secure\_secrets) | ../../infrastructure/secrets | n/a |
 
 ## Resources
 
@@ -36,8 +39,9 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cloud_connector_deploy"></a> [cloud\_connector\_deploy](#input\_cloud\_connector\_deploy) | Whether to deploy or not CloudConnector | `bool` | `true` | no |
-| <a name="input_cloud_scanning_deploy"></a> [cloud\_scanning\_deploy](#input\_cloud\_scanning\_deploy) | Whether to deploy or not CloudConnector | `bool` | `true` | no |
+| <a name="input_cloud_bench_deploy"></a> [cloud\_bench\_deploy](#input\_cloud\_bench\_deploy) | Whether or not to deploy CloudBench | `bool` | `true` | no |
+| <a name="input_cloud_connector_deploy"></a> [cloud\_connector\_deploy](#input\_cloud\_connector\_deploy) | Whether or not to deploy CloudConnector | `bool` | `true` | no |
+| <a name="input_cloud_scanning_deploy"></a> [cloud\_scanning\_deploy](#input\_cloud\_scanning\_deploy) | Whether or not to deploy CloudScanning | `bool` | `true` | no |
 | <a name="input_create_gcr_topic"></a> [create\_gcr\_topic](#input\_create\_gcr\_topic) | Deploys a PubSub topic called `gcr` as part of this stack, which is needed for GCR scanning. Set to `true` if it doesn't exist yet. If this is not deployed, and no existing `gcr` topic is found, the GCR scanning is ommited and won't be deployed. For more info see [GCR PubSub topic](https://cloud.google.com/container-registry/docs/configuring-notifications#create_a_topic). | `bool` | `true` | no |
 | <a name="input_location"></a> [location](#input\_location) | Zone where the stack will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Naming prefix for all the resources created | `string` | `"sfc"` | no |

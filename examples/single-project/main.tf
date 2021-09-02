@@ -88,3 +88,24 @@ module "cloud_scanning" {
   naming_prefix = var.naming_prefix
   verify_ssl    = local.verify_ssl
 }
+
+
+#######################
+#      BENCHMARKS     #
+#######################
+
+provider "google-beta" {
+  project = var.project_name
+  region  = var.location
+}
+
+provider "sysdig" {
+  sysdig_secure_url          = var.sysdig_secure_endpoint
+  sysdig_secure_api_token    = var.sysdig_secure_api_token
+  sysdig_secure_insecure_tls = length(regexall("https://.*?\\.sysdig(cloud)?.com/?", var.sysdig_secure_endpoint)) == 1 ? false : true
+}
+
+module "cloud_bench" {
+  count  = var.cloud_bench_deploy ? 1 : 0
+  source = "../../services/cloud-bench"
+}
