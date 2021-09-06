@@ -4,7 +4,7 @@ locals {
   protoPayload.methodName = "google.cloud.run.v1.Services.CreateService" OR protoPayload.methodName = "google.cloud.run.v1.Services.ReplaceService"
 EOT
   connector_filter = <<EOT
-  logName=~"^projects/${data.google_project.project.project_id}/logs/cloudaudit.googleapis.com" AND -resource.type="k8s_cluster"
+  logName=~"^organizations/${data.google_project.project.org_id}/logs/cloudaudit.googleapis.com" AND -resource.type="k8s_cluster"
 EOT
 }
 
