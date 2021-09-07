@@ -1,10 +1,7 @@
 locals {
   verify_ssl       = length(regexall("^https://.*?\\.sysdig.com/?", var.sysdig_secure_endpoint)) != 0
-  scanning_filter  = <<EOT
-  protoPayload.methodName = "google.cloud.run.v1.Services.CreateService" OR protoPayload.methodName = "google.cloud.run.v1.Services.ReplaceService"
-EOT
   connector_filter = <<EOT
-  logName=~"^organizations/${data.google_project.project.org_id}/logs/cloudaudit.googleapis.com" AND -resource.type="k8s_cluster"
+  logName=~"/logs/cloudaudit.googleapis.com%2Factivity$" AND -resource.type="k8s_cluster"
 EOT
 }
 
@@ -41,6 +38,7 @@ module "cloud_connector" {
   sysdig_secure_api_token   = var.sysdig_secure_api_token
   sysdig_secure_endpoint    = var.sysdig_secure_endpoint
   connector_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
+  max_instances             = var.max_instances
 
   #defaults
   naming_prefix = var.naming_prefix
