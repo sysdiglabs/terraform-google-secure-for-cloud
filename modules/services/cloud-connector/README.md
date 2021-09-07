@@ -7,7 +7,7 @@ deployment that will detect events in your infrastructure.
 
 ```hcl
 module "cloud_connector_gcp" {
-  source = "sysdiglabs/cloudvision/google/services/cloud-connector"
+  source = "sysdiglabs/secure-for-cloud/google/services/cloud-connector"
 
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
   sysdig_secure_endpoint  = "https://secure.sysdig.com"
@@ -17,20 +17,21 @@ module "cloud_connector_gcp" {
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.67.0 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > = 0.14.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | > = 3.67.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | > = 3.1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 3.67.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | > = 3.67.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | > = 3.1.0 |
 
 ## Modules
 

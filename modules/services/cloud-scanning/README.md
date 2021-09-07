@@ -7,7 +7,7 @@ deployment that trigger image scans based on changes in your infrastructure.
 
 ```hcl
 module "cloud_scanning_gcp" {
-  source = "sysdiglabs/cloudvision/google/services/cloud-scanning"
+  source = "sysdiglabs/secure-for-cloud/google/services/cloud-scanning"
 
   create_gcr_topic        = true
   # Set to "false" if there's an existing PubSub topic called "gcr"
@@ -17,18 +17,19 @@ module "cloud_scanning_gcp" {
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.67.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > = 0.14.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | > = 3.67.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 3.67.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | > = 3.67.0 |
 
 ## Modules
 
