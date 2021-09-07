@@ -5,12 +5,6 @@ variable "sysdig_secure_api_token" {
 }
 
 # Vars with defaults
-variable "location" {
-  type        = string
-  default     = "us-central1"
-  description = "Zone where the stack will be deployed"
-}
-
 variable "sysdig_secure_endpoint" {
   type        = string
   default     = "https://secure.sysdig.com"
@@ -30,7 +24,6 @@ variable "create_gcr_topic" {
 }
 
 variable "project_name" {
-  default     = "secure-for-cloud-324708"
   type        = string
   description = "Google cloud project name"
 }
