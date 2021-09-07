@@ -24,7 +24,7 @@ The following GCP APIs must be enabled to deply resources correctly
 
 ```hcl
 module "secure_for_cloud_gcp" {
-  source = "sysdiglabs/cloudvision/google"
+  source = "sysdiglabs/secure_for_cloud/google"
 
   location                = "us-central1"
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
