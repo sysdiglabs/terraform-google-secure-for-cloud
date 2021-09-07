@@ -7,6 +7,7 @@ components deployment that will detect events in your infrastructure.
 
 ### APIs
 
+
 The following GCP APIs must be enabled to deply resources correctly
 
 > ##### APIs Required by Cloud Connector
