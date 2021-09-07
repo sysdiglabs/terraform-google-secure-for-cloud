@@ -18,13 +18,6 @@ data "google_project" "project" {
 provider "google" {
   project = var.org_project_name
   region  = var.location
-  alias   = "organization"
-}
-
-provider "google" {
-  project = var.member_project_name
-  region  = var.location
-  alias   = "member"
 }
 
 resource "google_service_account" "connector_sa" {
@@ -33,9 +26,6 @@ resource "google_service_account" "connector_sa" {
 }
 
 module "connector_organization_sink" {
-  providers = {
-    google = google.organization
-  }
   source = "../../infrastructure/organization_sink"
 
   organization_id = data.google_project.project.org_id
@@ -45,9 +35,6 @@ module "connector_organization_sink" {
 }
 
 module "cloud_connector" {
-  providers = {
-    google = google.organization
-  }
   source = "../../services/cloud-connector"
 
   cloud_connector_sa_email  = google_service_account.connector_sa.email
