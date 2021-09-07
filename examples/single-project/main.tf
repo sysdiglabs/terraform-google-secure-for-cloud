@@ -24,7 +24,7 @@ resource "google_service_account" "connector_sa" {
   display_name = "Service account for cloud-connector"
 }
 
-module "connector_project_sinl" {
+module "connector_project_sink" {
   source        = "../../infrastructure/project_sink"
   naming_prefix = var.naming_prefix
   filter        = local.connector_filter
@@ -37,7 +37,7 @@ module "cloud_connector" {
   cloud_connector_sa_email  = google_service_account.connector_sa.email
   sysdig_secure_api_token   = var.sysdig_secure_api_token
   sysdig_secure_endpoint    = var.sysdig_secure_endpoint
-  connector_pubsub_topic_id = module.connector_project_sinl.pubsub_topic_id
+  connector_pubsub_topic_id = module.connector_project_sink.pubsub_topic_id
 
   #defaults
   naming_prefix = var.naming_prefix
