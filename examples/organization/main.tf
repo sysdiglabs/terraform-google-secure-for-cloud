@@ -23,7 +23,7 @@ resource "google_service_account" "connector_sa" {
 }
 
 module "connector_organization_sink" {
-  source = "../../infrastructure/organization_sink"
+  source = "../../modules/infrastructure/organization_sink"
 
   organization_id = data.google_project.project.org_id
   naming_prefix   = var.naming_prefix
@@ -32,7 +32,7 @@ module "connector_organization_sink" {
 }
 
 module "cloud_connector" {
-  source = "../../services/cloud-connector"
+  source = "../../modules/services/cloud-connector"
 
   cloud_connector_sa_email  = google_service_account.connector_sa.email
   sysdig_secure_api_token   = var.sysdig_secure_api_token

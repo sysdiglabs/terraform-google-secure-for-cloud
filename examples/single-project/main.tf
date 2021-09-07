@@ -25,14 +25,14 @@ resource "google_service_account" "connector_sa" {
 }
 
 module "connector_project_sink" {
-  source        = "../../infrastructure/project_sink"
+  source        = "../../modules/infrastructure/project_sink"
   naming_prefix = var.naming_prefix
   filter        = local.connector_filter
   service       = "connector"
 }
 
 module "cloud_connector" {
-  source = "../../services/cloud-connector"
+  source = "../../modules/services/cloud-connector"
 
   cloud_connector_sa_email  = google_service_account.connector_sa.email
   sysdig_secure_api_token   = var.sysdig_secure_api_token
@@ -55,7 +55,7 @@ resource "google_service_account" "scanning_sa" {
 }
 
 module "secure_secrets" {
-  source = "../../infrastructure/secrets"
+  source = "../../modules/infrastructure/secrets"
 
   cloud_scanning_sa_email = google_service_account.scanning_sa.email
   sysdig_secure_api_token = var.sysdig_secure_api_token
@@ -63,7 +63,7 @@ module "secure_secrets" {
 }
 
 module "scanning_project_sink" {
-  source        = "../../infrastructure/project_sink"
+  source        = "../../modules/infrastructure/project_sink"
   naming_prefix = var.naming_prefix
   filter        = local.scanning_filter
   service       = "scanning"
@@ -71,7 +71,7 @@ module "scanning_project_sink" {
 
 # disable for testing purpose
 module "cloud_scanning" {
-  source = "../../services/cloud-scanning"
+  source = "../../modules/services/cloud-scanning"
 
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
   scanning_pubsub_topic_id = module.scanning_project_sink.pubsub_topic_id
