@@ -106,6 +106,5 @@ provider "sysdig" {
 }
 
 module "cloud_bench" {
-  count  = var.cloud_bench_deploy ? 1 : 0
   source = "../../services/cloud-bench"
 }
