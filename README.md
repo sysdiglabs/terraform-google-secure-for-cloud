@@ -7,7 +7,6 @@ components deployment that will detect events in your infrastructure.
 
 ### APIs
 
-
 The following GCP APIs must be enabled to deply resources correctly
 
 > ##### APIs Required by Cloud Connector
@@ -19,7 +18,7 @@ The following GCP APIs must be enabled to deply resources correctly
 >* Eventarc API
 >* Secret Maanger API
 >* Cloud Build API
->* Identify and access management API
+>* Identity and access management API
 
 ### Module Usage
 
