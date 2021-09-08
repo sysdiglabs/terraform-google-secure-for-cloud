@@ -7,6 +7,7 @@ data "sysdig_secure_trusted_cloud_identity" "trusted_identity" {
 }
 
 data "google_project" "project" {
+  project_id = var.project_id
 }
 
 locals {
