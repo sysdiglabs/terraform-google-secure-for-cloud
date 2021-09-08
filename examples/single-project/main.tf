@@ -17,12 +17,14 @@ data "google_project" "project" {
 #######################
 provider "google" {
   project = var.project_name
+  region  = var.location
 }
 
 resource "google_service_account" "connector_sa" {
   account_id   = "${var.naming_prefix}-cloud-connector"
   display_name = "Service account for cloud-connector"
 }
+
 
 module "connector_project_sink" {
   source        = "../../modules/infrastructure/project_sink"
@@ -33,6 +35,7 @@ module "connector_project_sink" {
 
 module "cloud_connector" {
   source = "../../modules/services/cloud-connector"
+
 
   cloud_connector_sa_email  = google_service_account.connector_sa.email
   sysdig_secure_api_token   = var.sysdig_secure_api_token
