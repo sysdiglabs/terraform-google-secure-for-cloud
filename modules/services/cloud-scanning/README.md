@@ -7,7 +7,7 @@ deployment that trigger image scans based on changes in your infrastructure.
 
 ```hcl
 module "cloud_scanning_gcp" {
-  source = "sysdiglabs/cloudvision/google/services/cloud-scanning"
+  source = "sysdiglabs/secure-for-cloud/google/services/cloud-scanning"
 
   create_gcr_topic        = true
   # Set to "false" if there's an existing PubSub topic called "gcr"

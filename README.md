@@ -1,25 +1,30 @@
 # Cloud Vision deploy in GCP Module
 
-This repository contains a Module for how to deploy the Cloud Vision in the Google Cloud Platform with different
+This repository contains a Module for how to deploy Secure For Cloud in the Google Cloud Platform with different
 components deployment that will detect events in your infrastructure.
 
 ## Usage
 
 ### APIs
 
-#### The following GCP APIs must be enabled to deply resources correctly
+The following GCP APIs must be enabled to deply resources correctly
 
-* CLOUD RUN API
-* EVENTARC API
-* SECRET MANAGER API
-* CLOUD BUILD API
-* IDENTIFY AND ACCESS MANAGMENT API
+> ##### APIs Required by Cloud Connector
+>* Cloud Run API
+>* Eventarc API
+
+> ##### APIs Required by Cloud Scanning
+>* Cloud Run API
+>* Eventarc API
+>* Secret Maanger API
+>* Cloud Build API
+>* Identity and access management API
 
 ### Module Usage
 
 ```hcl
-module "cloud_vision_gcp" {
-  source = "sysdiglabs/cloudvision/google"
+module "secure_for_cloud_gcp" {
+  source = "sysdiglabs/secure-for-cloud/google"
 
   location                = "us-central1"
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"

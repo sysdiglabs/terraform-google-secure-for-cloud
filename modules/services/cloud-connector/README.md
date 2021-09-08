@@ -7,7 +7,7 @@ deployment that will detect events in your infrastructure.
 
 ```hcl
 module "cloud_connector_gcp" {
-  source = "sysdiglabs/cloudvision/google/services/cloud-connector"
+  source = "sysdiglabs/secure-for-cloud/google/services/cloud-connector"
 
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
   sysdig_secure_endpoint  = "https://secure.sysdig.com"
