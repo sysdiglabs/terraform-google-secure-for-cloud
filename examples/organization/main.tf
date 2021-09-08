@@ -6,7 +6,11 @@ EOT
 }
 
 data "google_project" "project" {
-  project_id = var.org_project_name
+
+}
+
+data "google_projects" "all_projects" {
+  filter = "parent.id:${var.org_id}"
 }
 
 #######################
@@ -44,3 +48,30 @@ module "cloud_connector" {
   naming_prefix = var.naming_prefix
   verify_ssl    = local.verify_ssl
 }
+
+#######################
+#      BENCHMARKS     #
+#######################
+
+locals {
+  benchmark_projects_ids = length(var.benchmark_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.benchmark_project_ids
+}
+
+provider "google-beta" {
+  project = var.org_project_name
+  region  = var.location
+}
+
+provider "sysdig" {
+  sysdig_secure_url          = var.sysdig_secure_endpoint
+  sysdig_secure_api_token    = var.sysdig_secure_api_token
+  sysdig_secure_insecure_tls = !local.verify_ssl
+}
+
+module "cloud_bench" {
+  for_each = toset(local.benchmark_projects_ids)
+  source   = "../../modules/services/cloud-bench"
+
+  project_id = each.key
+}
+

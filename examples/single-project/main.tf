@@ -106,5 +106,5 @@ provider "sysdig" {
 }
 
 module "cloud_bench" {
-  source = "../../services/cloud-bench"
+  source = "../../modules/services/cloud-bench"
 }

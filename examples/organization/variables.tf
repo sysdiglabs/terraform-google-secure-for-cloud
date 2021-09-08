@@ -4,6 +4,11 @@ variable "sysdig_secure_api_token" {
   description = "Sysdig's Secure API Token"
 }
 
+variable "org_id" {
+  type        = string
+  description = "Google cloud organization ID"
+}
+
 variable "org_project_name" {
   type        = string
   description = "Google cloud project name"
@@ -32,4 +37,10 @@ variable "max_instances" {
   type        = number
   description = "Max number of instances for the workloads"
   default     = 1
+}
+
+variable "benchmark_project_ids" {
+  default     = []
+  type        = list(string)
+  description = "Google cloud project IDs to run Benchmarks on"
 }
