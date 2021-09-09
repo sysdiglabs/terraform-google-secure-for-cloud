@@ -9,17 +9,6 @@ variable "organization_id" {
   description = "Numeric ID of the organization to be exported to the sink"
 }
 
-variable "service" {
-  type        = string
-  description = "This string must contains 'scanning' or 'connector' depending on the service you want to deploy"
-
-  validation {
-    condition = contains([
-      "connector",
-    "scanning"], var.service)
-    error_message = "Valid values for var: service are (connector, scanning)."
-  }
-}
 # Vars with defaults
 variable "naming_prefix" {
   type        = string

@@ -28,9 +28,8 @@ resource "google_service_account" "connector_sa" {
 
 module "connector_project_sink" {
   source        = "../../modules/infrastructure/project_sink"
-  naming_prefix = var.naming_prefix
+  naming_prefix = "${var.naming_prefix}-cloud-connector"
   filter        = local.connector_filter
-  service       = "connector"
 }
 
 module "cloud_connector" {
@@ -67,9 +66,8 @@ module "secure_secrets" {
 
 module "scanning_project_sink" {
   source        = "../../modules/infrastructure/project_sink"
-  naming_prefix = var.naming_prefix
+  naming_prefix = "${var.naming_prefix}-cloud-scanning"
   filter        = local.scanning_filter
-  service       = "scanning"
 }
 
 # disable for testing purpose
