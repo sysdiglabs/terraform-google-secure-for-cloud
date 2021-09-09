@@ -31,7 +31,6 @@ module "connector_organization_sink" {
   organization_id = data.google_project.project.org_id
   naming_prefix   = "${var.naming_prefix}-cloud-connector"
   filter          = local.connector_filter
-  service         = "connector"
 }
 
 module "cloud_connector" {
@@ -79,7 +78,6 @@ module "scanning_organization_sink" {
   organization_id = data.google_project.project.org_id
   naming_prefix   = "${var.naming_prefix}-cloud-scanning"
   filter          = local.scanning_filter
-  service         = "connector"
 }
 
 module "secure_secrets" {
