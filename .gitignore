@@ -26,3 +26,6 @@ override.tf.json
 
 .terraform.lock.hcl
 .envrc
+
+#inspec
+inspec-gcp/vendor

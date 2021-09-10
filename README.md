@@ -12,6 +12,7 @@ The following GCP APIs must be enabled to deply resources correctly
 > ##### APIs Required by Cloud Connector
 >* Cloud Run API
 >* Eventarc API
+>* Cloud Resource Manager API
 
 > ##### APIs Required by Cloud Scanning
 >* Cloud Run API
@@ -19,6 +20,7 @@ The following GCP APIs must be enabled to deply resources correctly
 >* Secret Maanger API
 >* Cloud Build API
 >* Identity and access management API
+>* Cloud Resource Manager API
 
 ### Module Usage
 
