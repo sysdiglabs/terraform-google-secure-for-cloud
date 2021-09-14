@@ -43,21 +43,25 @@ resource "sysdig_secure_benchmark_task" "benchmark_task" {
 resource "google_project_service" "enable_iam_api" {
   project = data.google_project.project.id
   service = "iam.googleapis.com"
+  disable_on_destroy = false
 }
 
 resource "google_project_service" "enable_service_account_credentials_api" {
   project = data.google_project.project.id
   service = "iamcredentials.googleapis.com"
+  disable_on_destroy = false
 }
 
 resource "google_project_service" "enable_resource_manager_api" {
   project = data.google_project.project.id
   service = "cloudresourcemanager.googleapis.com"
+  disable_on_destroy = false
 }
 
 resource "google_project_service" "enable_sts_api" {
   project = data.google_project.project.id
   service = "sts.googleapis.com"
+  disable_on_destroy = false
 }
 
 
