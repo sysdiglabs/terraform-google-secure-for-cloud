@@ -4,9 +4,9 @@ variable "sysdig_secure_api_token" {
   description = "Sysdig's Secure API Token"
 }
 
-variable "project_name" {
+variable "project_id" {
   type        = string
-  description = "Google cloud project name"
+  description = "Project ID"
 }
 
 # Vars with defaults
