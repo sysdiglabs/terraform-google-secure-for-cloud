@@ -9,12 +9,12 @@ EOT
 }
 
 provider "google" {
-  project = var.org_project_name
+  project = var.project_id
   region  = var.location
 }
 
 data "google_project" "project" {
-  project_id = var.org_project_name
+  project_id = var.project_id
 }
 
 #######################
@@ -51,15 +51,15 @@ module "cloud_connector" {
 #       SCANNING      #
 #######################
 resource "google_service_account" "scanning_sa" {
-  account_id   = "${var.naming_prefix}-cloud-connector"
-  display_name = "Service account for cloud-connector"
+  account_id   = "${var.naming_prefix}-cloud-scanning"
+  display_name = "Service account for cloud-scanning"
 }
 
 
 resource "google_organization_iam_custom_role" "org_gcr_image_puller" {
   org_id = data.google_project.project.org_id
 
-  role_id     = "sysdig_gcr_image_puller"
+  role_id     = "${var.naming_prefix}_gcr_image_puller"
   title       = "Sysdig GCR Image Puller"
   description = "Allows pulling GCR images from all accounts in the organization"
   permissions = ["storage.objects.get", "storage.objects.list"]
