@@ -1,6 +1,7 @@
 # This lines are here because of pre-commit hook
 locals {
   default_config = <<EOF
+logging: ${var.logging_level}
 rules: []
 ingestors:
   - gcp-auditlog-pubsub-http:

@@ -76,3 +76,13 @@ variable "config_source" {
   type        = string
   description = "Path to a file that contains the contents of the configuration file to be saved in the bucket"
 }
+
+variable "logging_level" {
+  type        = string
+  default     = "info"
+  description = "Logging level (debug, info, error)."
+  validation {
+    condition     = contains(["info", "debug", "error"], var.logging_level)
+    error_message = "Logging level can only be one of (debug, info, error)."
+  }
+}
