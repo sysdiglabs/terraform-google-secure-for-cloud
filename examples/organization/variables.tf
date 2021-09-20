@@ -4,14 +4,9 @@ variable "sysdig_secure_api_token" {
   description = "Sysdig's Secure API Token"
 }
 
-variable "org_id" {
+variable "project_id" {
   type        = string
-  description = "Google cloud organization ID"
-}
-
-variable "org_project_name" {
-  type        = string
-  description = "Google cloud project name"
+  description = "Project ID"
 }
 
 # Vars with defaults
@@ -30,7 +25,7 @@ variable "sysdig_secure_endpoint" {
 variable "naming_prefix" {
   type        = string
   description = "Naming prefix for all the resources created"
-  default     = "sfc"
+  default     = "secure-for-cloud"
 }
 
 variable "max_instances" {

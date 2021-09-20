@@ -9,16 +9,27 @@ EOT
 }
 
 provider "google" {
-  project = var.org_project_name
+  project = var.project_id
   region  = var.location
 }
 
-data "google_project" "project" {
+provider "google-beta" {
+  project = var.project_id
+  region  = var.location
+}
 
+provider "sysdig" {
+  sysdig_secure_url          = var.sysdig_secure_endpoint
+  sysdig_secure_api_token    = var.sysdig_secure_api_token
+  sysdig_secure_insecure_tls = !local.verify_ssl
+}
+
+data "google_project" "project" {
+  project_id = var.project_id
 }
 
 data "google_projects" "all_projects" {
-  filter = "parent.id:${var.org_id}"
+  filter = "parent.id:${var.project_id}"
 }
 
 #######################
@@ -54,20 +65,8 @@ module "cloud_connector" {
 #######################
 #      BENCHMARKS     #
 #######################
-
 locals {
   benchmark_projects_ids = length(var.benchmark_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.benchmark_project_ids
-}
-
-provider "google-beta" {
-  project = var.org_project_name
-  region  = var.location
-}
-
-provider "sysdig" {
-  sysdig_secure_url          = var.sysdig_secure_endpoint
-  sysdig_secure_api_token    = var.sysdig_secure_api_token
-  sysdig_secure_insecure_tls = !local.verify_ssl
 }
 
 module "cloud_bench" {
@@ -81,15 +80,15 @@ module "cloud_bench" {
 #       SCANNING      #
 #######################
 resource "google_service_account" "scanning_sa" {
-  account_id   = "${var.naming_prefix}-cloud-connector"
-  display_name = "Service account for cloud-connector"
+  account_id   = "${var.naming_prefix}-cloud-scanning"
+  display_name = "Service account for cloud-scanning"
 }
 
 
 resource "google_organization_iam_custom_role" "org_gcr_image_puller" {
   org_id = data.google_project.project.org_id
 
-  role_id     = "sysdig_gcr_image_puller"
+  role_id     = "${var.naming_prefix}_gcr_image_puller"
   title       = "Sysdig GCR Image Puller"
   description = "Allows pulling GCR images from all accounts in the organization"
   permissions = ["storage.objects.get", "storage.objects.list"]
