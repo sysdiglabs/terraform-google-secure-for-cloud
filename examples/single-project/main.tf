@@ -47,6 +47,7 @@ module "cloud_connector" {
   sysdig_secure_api_token   = var.sysdig_secure_api_token
   sysdig_secure_endpoint    = var.sysdig_secure_endpoint
   connector_pubsub_topic_id = module.connector_project_sink.pubsub_topic_id
+  project_id                = var.project_id
 
   #defaults
   naming_prefix = var.naming_prefix
@@ -83,6 +84,7 @@ module "cloud_scanning" {
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
   scanning_pubsub_topic_id = module.scanning_project_sink.pubsub_topic_id
   create_gcr_topic         = var.create_gcr_topic
+  project_id               = var.project_id
 
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
   sysdig_secure_api_token    = var.sysdig_secure_api_token

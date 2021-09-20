@@ -16,9 +16,15 @@ The following GCP APIs must be enabled to deply resources correctly
 > ##### APIs Required by Cloud Scanning
 >* Cloud Run API
 >* Eventarc API
->* Secret Maanger API
+>* Secret Manger API
 >* Cloud Build API
 >* Identity and access management API
+
+> ##### APIs Required by Cloud Benchmarks
+>* Identity and access management API
+>* IAM Service Account Credentials API
+>* Cloud Resource Manager API
+>* Security Token Service API
 
 ### Module Usage
 

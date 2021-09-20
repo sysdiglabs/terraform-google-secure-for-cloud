@@ -4,9 +4,14 @@ variable "sysdig_secure_api_token" {
   description = "Sysdig's Secure API Token"
 }
 
+variable "organization_domain" {
+  type        = string
+  description = "Organization domain. e.g. sysdig.com"
+}
+
 variable "project_id" {
   type        = string
-  description = "Organization Project ID"
+  description = "organizational member project ID where the secure-for-cloud workload is going to be deployed"
 }
 
 # Vars with defaults

@@ -30,6 +30,11 @@ variable "scanning_pubsub_topic_id" {
   description = "Cloud Scanning PubSub single account topic id"
 }
 
+variable "project_id" {
+  type        = string
+  description = "organizational member project ID where the secure-for-cloud workload is going to be deployed"
+}
+
 # vars with defaults
 
 variable "verify_ssl" {

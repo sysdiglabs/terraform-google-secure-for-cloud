@@ -23,6 +23,7 @@ resource "sysdig_secure_cloud_account" "cloud_account" {
   alias          = data.google_project.project.name
   cloud_provider = "gcp"
   role_enabled   = "true"
+  role_name      = var.role_name
 }
 
 resource "sysdig_secure_benchmark_task" "benchmark_task" {
@@ -35,51 +36,43 @@ resource "sysdig_secure_benchmark_task" "benchmark_task" {
   depends_on = [sysdig_secure_cloud_account.cloud_account]
 }
 
-
-###################################################
-# Enable required APIs
-###################################################
-
-resource "google_project_service" "enable_iam_api" {
-  project = data.google_project.project.id
-  service = "iam.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "enable_service_account_credentials_api" {
-  project = data.google_project.project.id
-  service = "iamcredentials.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "enable_resource_manager_api" {
-  project = data.google_project.project.id
-  service = "cloudresourcemanager.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "enable_sts_api" {
-  project = data.google_project.project.id
-  service = "sts.googleapis.com"
-  disable_on_destroy = false
-}
-
-
 ###################################################
 # Create Service Account and setup permissions
 ###################################################
 
 resource "google_service_account" "sa" {
-  account_id   = "sysdigcloudbench"
+  project = var.project_id
+
+  account_id   = var.role_name
   display_name = "Service account for cloud-bench"
 }
 
 resource "google_project_iam_member" "viewer" {
+  project = var.project_id
+
   role   = "roles/viewer"
   member = "serviceAccount:${google_service_account.sa.email}"
 }
 
-resource "google_service_account_iam_binding" "sa_iam_binding" {
+resource "google_project_iam_custom_role" "custom" {
+  project = var.project_id
+
+  role_id     = "sysdigCloudBench"
+  title       = "Sysdig Cloud Benchmark Role"
+  description = "A Role providing the required permissions for Sysdig Cloud Benchmarks that are not included in roles/viewer"
+  permissions = ["storage.buckets.getIamPolicy"]
+}
+
+resource "google_service_account_iam_binding" "sa_custom_binding" {
+  service_account_id = google_service_account.sa.name
+  role               = google_project_iam_custom_role.custom.id
+
+  members = [
+    "principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.pool.workload_identity_pool_id}/attribute.aws_role/arn:aws:sts::${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id}:assumed-role/${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_role_name}",
+  ]
+}
+
+resource "google_service_account_iam_binding" "sa_viewer_binding" {
   service_account_id = google_service_account.sa.name
   role               = "roles/iam.workloadIdentityUser"
 
@@ -95,11 +88,15 @@ resource "google_service_account_iam_binding" "sa_iam_binding" {
 ###################################################
 
 resource "google_iam_workload_identity_pool" "pool" {
+  project = var.project_id
+
   provider                  = google-beta
   workload_identity_pool_id = "sysdigcloud"
 }
 
 resource "google_iam_workload_identity_pool_provider" "pool_provider" {
+  project = var.project_id
+
   provider                           = google-beta
   workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
   workload_identity_pool_provider_id = "sysdigcloud"

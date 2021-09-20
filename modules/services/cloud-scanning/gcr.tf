@@ -3,6 +3,8 @@ locals {
 }
 
 data "google_pubsub_topic" "gcr" {
+  project = var.project_id
+
   name = "gcr"
   # MUST exist in the infra of the customer, that's the only topic GCR will publish events to.
 }
