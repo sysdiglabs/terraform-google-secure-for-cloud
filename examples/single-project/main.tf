@@ -8,15 +8,25 @@ EOT
 EOT
 }
 
-
-#######################
-#      CONNECTOR      #
-#######################
 provider "google" {
   project = var.project_id
   region  = var.location
 }
 
+provider "google-beta" {
+  project = var.project_id
+  region  = var.location
+}
+
+provider "sysdig" {
+  sysdig_secure_url          = var.sysdig_secure_endpoint
+  sysdig_secure_api_token    = var.sysdig_secure_api_token
+  sysdig_secure_insecure_tls = !local.verify_ssl
+}
+
+#######################
+#      CONNECTOR      #
+#######################
 resource "google_service_account" "connector_sa" {
   account_id   = "${var.naming_prefix}-cloud-connector"
   display_name = "Service account for cloud-connector"
@@ -47,7 +57,6 @@ module "cloud_connector" {
 #######################
 #       SCANNING      #
 #######################
-
 resource "google_service_account" "scanning_sa" {
   account_id   = "${var.naming_prefix}-cloud-scanning"
   display_name = "Service account for cloud-scanning"
@@ -88,18 +97,6 @@ module "cloud_scanning" {
 #######################
 #      BENCHMARKS     #
 #######################
-
-provider "google-beta" {
-  project = var.project_name
-  region  = var.location
-}
-
-provider "sysdig" {
-  sysdig_secure_url          = var.sysdig_secure_endpoint
-  sysdig_secure_api_token    = var.sysdig_secure_api_token
-  sysdig_secure_insecure_tls = !local.verify_ssl
-}
-
 module "cloud_bench" {
   source = "../../modules/services/cloud-bench"
 }
