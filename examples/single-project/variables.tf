@@ -15,6 +15,7 @@ variable "location" {
   default     = "us-central1"
   description = "Zone where the stack will be deployed"
 }
+
 variable "sysdig_secure_endpoint" {
   type        = string
   default     = "https://secure.sysdig.com"

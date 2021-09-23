@@ -11,6 +11,8 @@ This example deploys Cloud Connector and Cloud Scanning into a GCP account.
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.67.0 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | >= 3.67.0 |
+| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 0.5.21 |
 
 ## Providers
 
@@ -22,11 +24,12 @@ This example deploys Cloud Connector and Cloud Scanning into a GCP account.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cloud_connector"></a> [cloud\_connector](#module\_cloud\_connector) | ../../modules/services/cloud-connector |  |
-| <a name="module_cloud_scanning"></a> [cloud\_scanning](#module\_cloud\_scanning) | ../../modules/services/cloud-scanning |  |
-| <a name="module_connector_project_sink"></a> [connector\_project\_sink](#module\_connector\_project\_sink) | ../../modules/infrastructure/project_sink |  |
-| <a name="module_scanning_project_sink"></a> [scanning\_project\_sink](#module\_scanning\_project\_sink) | ../../modules/infrastructure/project_sink |  |
-| <a name="module_secure_secrets"></a> [secure\_secrets](#module\_secure\_secrets) | ../../modules/infrastructure/secrets |  |
+| <a name="module_cloud_bench"></a> [cloud\_bench](#module\_cloud\_bench) | ../../modules/services/cloud-bench | n/a |
+| <a name="module_cloud_connector"></a> [cloud\_connector](#module\_cloud\_connector) | ../../modules/services/cloud-connector | n/a |
+| <a name="module_cloud_scanning"></a> [cloud\_scanning](#module\_cloud\_scanning) | ../../modules/services/cloud-scanning | n/a |
+| <a name="module_connector_project_sink"></a> [connector\_project\_sink](#module\_connector\_project\_sink) | ../../modules/infrastructure/project_sink | n/a |
+| <a name="module_scanning_project_sink"></a> [scanning\_project\_sink](#module\_scanning\_project\_sink) | ../../modules/infrastructure/project_sink | n/a |
+| <a name="module_secure_secrets"></a> [secure\_secrets](#module\_secure\_secrets) | ../../modules/infrastructure/secrets | n/a |
 
 ## Resources
 

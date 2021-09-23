@@ -8,15 +8,25 @@ EOT
 EOT
 }
 
-
-#######################
-#      CONNECTOR      #
-#######################
 provider "google" {
   project = var.project_id
   region  = var.location
 }
 
+provider "google-beta" {
+  project = var.project_id
+  region  = var.location
+}
+
+provider "sysdig" {
+  sysdig_secure_url          = var.sysdig_secure_endpoint
+  sysdig_secure_api_token    = var.sysdig_secure_api_token
+  sysdig_secure_insecure_tls = !local.verify_ssl
+}
+
+#######################
+#      CONNECTOR      #
+#######################
 resource "google_service_account" "connector_sa" {
   account_id   = "${var.naming_prefix}-cloud-connector"
   display_name = "Service account for cloud-connector"
@@ -37,6 +47,7 @@ module "cloud_connector" {
   sysdig_secure_api_token   = var.sysdig_secure_api_token
   sysdig_secure_endpoint    = var.sysdig_secure_endpoint
   connector_pubsub_topic_id = module.connector_project_sink.pubsub_topic_id
+  project_id                = var.project_id
 
   #defaults
   naming_prefix = var.naming_prefix
@@ -47,7 +58,6 @@ module "cloud_connector" {
 #######################
 #       SCANNING      #
 #######################
-
 resource "google_service_account" "scanning_sa" {
   account_id   = "${var.naming_prefix}-cloud-scanning"
   display_name = "Service account for cloud-scanning"
@@ -74,6 +84,7 @@ module "cloud_scanning" {
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
   scanning_pubsub_topic_id = module.scanning_project_sink.pubsub_topic_id
   create_gcr_topic         = var.create_gcr_topic
+  project_id               = var.project_id
 
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
   sysdig_secure_api_token    = var.sysdig_secure_api_token
@@ -82,4 +93,12 @@ module "cloud_scanning" {
   #defaults
   naming_prefix = var.naming_prefix
   verify_ssl    = local.verify_ssl
+}
+
+
+#######################
+#      BENCHMARKS     #
+#######################
+module "cloud_bench" {
+  source = "../../modules/services/cloud-bench"
 }

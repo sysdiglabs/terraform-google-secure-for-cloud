@@ -4,9 +4,14 @@ variable "sysdig_secure_api_token" {
   description = "Sysdig's Secure API Token"
 }
 
+variable "organization_domain" {
+  type        = string
+  description = "Organization domain. e.g. sysdig.com"
+}
+
 variable "project_id" {
   type        = string
-  description = "Project ID"
+  description = "organizational member project ID where the secure-for-cloud workload is going to be deployed"
 }
 
 # Vars with defaults
@@ -32,6 +37,12 @@ variable "max_instances" {
   type        = number
   description = "Max number of instances for the workloads"
   default     = 1
+}
+
+variable "benchmark_project_ids" {
+  default     = []
+  type        = list(string)
+  description = "Google cloud project IDs to run Benchmarks on"
 }
 
 variable "create_gcr_topic" {
