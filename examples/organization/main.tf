@@ -134,9 +134,9 @@ module "config" {
 }
 
 module "task" {
-  source = "../../modules/services/cloud-bench/task"
-  project_ids = local.benchmark_projects_ids
-  is_organizational = true
+  source              = "../../modules/services/cloud-bench/task"
+  project_ids         = local.benchmark_projects_ids
+  is_organizational   = true
   organization_domain = var.organization_domain
 
   depends_on = [module.config]

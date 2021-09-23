@@ -94,10 +94,10 @@ resource "google_iam_workload_identity_pool_provider" "pool_provider" {
   description                        = "Sysdig Secure for Cloud"
   disabled                           = false
 
-//  attribute_mapping = {
-//    "google.subject" = "assertion.arn",
-//
-//  }
+  //  attribute_mapping = {
+  //    "google.subject" = "assertion.arn",
+  //
+  //  }
 
   aws {
     account_id = data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id

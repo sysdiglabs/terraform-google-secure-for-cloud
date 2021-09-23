@@ -17,9 +17,9 @@ data "google_organization" "organization" {
 }
 
 locals {
-  benchmark_task_name = var.is_organizational ? "Organization: ${data.google_organization.organization[0].org_id}" : data.google_project.project.name
+  benchmark_task_name   = var.is_organizational ? "Organization: ${data.google_organization.organization[0].org_id}" : data.google_project.project.name
   accounts_scope_clause = var.is_organizational ? "gcp.projectId in (\"${join("\", \"", var.project_ids)}\")" : "gcp.projectId = ${var.project_id}"
-  regions_scope_clause = length(var.regions) == 0 ? "" : " and gcp.region in (\"${join("\", \"", var.regions)}\")"
+  regions_scope_clause  = length(var.regions) == 0 ? "" : " and gcp.region in (\"${join("\", \"", var.regions)}\")"
 }
 
 ###################################################

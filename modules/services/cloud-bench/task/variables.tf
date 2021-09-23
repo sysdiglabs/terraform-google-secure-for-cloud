@@ -19,13 +19,13 @@ variable "project_ids" {
 }
 
 variable "is_organizational" {
-  type = bool
+  type        = bool
   description = "Whether this task is being created at the org or project level"
-  default = false
+  default     = false
 }
 
 variable "organization_domain" {
   type        = string
   description = "Organization domain. e.g. sysdig.com"
-  default = ""
+  default     = ""
 }
