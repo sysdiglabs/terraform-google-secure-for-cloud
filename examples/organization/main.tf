@@ -126,9 +126,18 @@ locals {
   benchmark_projects_ids = length(var.benchmark_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.benchmark_project_ids
 }
 
-module "cloud_bench" {
+module "config" {
   for_each = toset(local.benchmark_projects_ids)
-  source   = "../../modules/services/cloud-bench"
+  source   = "../../modules/services/cloud-bench/config"
 
   project_id = each.key
+}
+
+module "task" {
+  source = "../../modules/services/cloud-bench/task"
+  project_ids = local.benchmark_projects_ids
+  is_organizational = true
+  organization_domain = var.organization_domain
+
+  depends_on = [module.config]
 }

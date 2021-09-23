@@ -26,16 +26,6 @@ resource "sysdig_secure_cloud_account" "cloud_account" {
   role_name      = var.role_name
 }
 
-resource "sysdig_secure_benchmark_task" "benchmark_task" {
-  name     = "Sysdig Secure for Cloud (GCP) - ${data.google_project.project.name}"
-  schedule = "0 6 * * *"
-  schema   = "gcp_foundations_bench-1.2.0"
-  scope    = "gcp.projectId = \"${data.google_project.project.number}\"${local.regions_scope_clause}"
-
-  # Creation of a task requires that the Cloud Account already exists in the backend, and has `role_enabled = true`
-  depends_on = [sysdig_secure_cloud_account.cloud_account]
-}
-
 ###################################################
 # Create Service Account and setup permissions
 ###################################################
@@ -103,6 +93,11 @@ resource "google_iam_workload_identity_pool_provider" "pool_provider" {
   display_name                       = "Sysdigcloud"
   description                        = "Sysdig Secure for Cloud"
   disabled                           = false
+
+//  attribute_mapping = {
+//    "google.subject" = "assertion.arn",
+//
+//  }
 
   aws {
     account_id = data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id

@@ -99,6 +99,11 @@ module "cloud_scanning" {
 #######################
 #      BENCHMARKS     #
 #######################
-module "cloud_bench" {
-  source = "../../modules/services/cloud-bench"
+module "config" {
+  source   = "../../modules/services/cloud-bench/config"
+}
+
+module "task" {
+  source = "../../modules/services/cloud-bench/task"
+  depends_on = [module.config]
 }
