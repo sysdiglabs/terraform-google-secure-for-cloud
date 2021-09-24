@@ -1,5 +1,5 @@
 locals {
-  project_ids = var.project_id == "" ? var.project_ids : [var.project_id]
+  project_ids = var.is_organizational ? var.project_ids : [var.project_id]
 }
 
 module "trust_relationship" {
@@ -11,7 +11,7 @@ module "trust_relationship" {
 
 module "task" {
   source              = "./task"
-  project_ids         = var.project_ids
+  project_ids         = local.project_ids
   is_organizational   = true
   organization_domain = var.organization_domain
 

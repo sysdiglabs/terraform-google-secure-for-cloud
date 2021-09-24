@@ -2,10 +2,6 @@
 # Fetch & compute required data
 ###################################################
 
-data "sysdig_secure_trusted_cloud_identity" "trusted_identity" {
-  cloud_provider = "gcp"
-}
-
 data "google_project" "project" {
   project_id = var.is_organizational ? var.project_ids[0] : var.project_id
 }
