@@ -11,7 +11,7 @@ module "cloud_connector_gcp" {
 
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
   sysdig_secure_endpoint  = "https://secure.sysdig.com"
-  bucket_config_name      = "cloud-connector-config-bucket"
+  bucket_config_name      = "cloud-connector-trust_relationship-bucket"
   location                = "us-central1"
 }
 ```

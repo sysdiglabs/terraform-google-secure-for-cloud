@@ -2,7 +2,7 @@ locals {
   task_env_vars = concat([
     # This allows the revision to be created again if the configuration changes.
     # Annotations can't be used or they can't be ignored in the lifecycle, thus triggering
-    # recreations even if the config hasn't changed.
+    # recreations even if the trust_relationship hasn't changed.
     {
       name  = "CONFIG_MD5"
       value = google_storage_bucket_object.config.md5hash
