@@ -50,3 +50,9 @@ variable "create_gcr_topic" {
   description = "Deploys a PubSub topic called `gcr` as part of this stack, which is needed for GCR scanning. Set to `true` only if it doesn't exist yet. If this is not deployed, and no existing `gcr` topic is found, the GCR scanning is ommited and won't be deployed. For more info see [GCR PubSub topic](https://cloud.google.com/container-registry/docs/configuring-notifications#create_a_topic)."
   default     = true
 }
+
+variable "regions" {
+  type        = list(string)
+  description = "List of regions in which to run the benchmark. If empty, the task will contain all regions by default."
+  default     = []
+}
