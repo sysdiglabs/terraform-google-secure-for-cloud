@@ -3,7 +3,7 @@
 from diagrams import Cluster, Diagram, Edge
 from diagrams.gcp.analytics import PubSub
 from diagrams.gcp.compute import Run
-from diagrams.gcp.devtools import Code, Build
+from diagrams.gcp.devtools import Code, Build, GCR
 from diagrams.gcp.storage import GCS
 from diagrams.gcp.security import KMS
 from diagrams.custom import Custom
@@ -28,7 +28,7 @@ color_sysdig = "lightblue"
 
 with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_attr, filename="diagram-single", show=True,
              direction="LR"):
-    with Cluster("AWS account (sysdig)"):
+    with Cluster("GCP account (sysdig)"):
         sds = Custom("Sysdig Secure", "../../resources/diag-sysdig-icon.png")
 
     with Cluster("GCP project"):
@@ -39,7 +39,7 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
             ccCloudRun = Run("Cloud Connector")
             bucket = GCS("Bucket\nCC Config")
 
-            bucket << Edge(style="dashed", comment="hola") << ccCloudRun
+            bucket << Edge(style="dashed") << ccCloudRun
             ccEventarc >> ccCloudRun
             ccEventarc << ccPubSub
             ccProjectSink >> ccPubSub
@@ -54,6 +54,7 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
             gcrEventarc = Code("GCR Eventarc\nTrigger")
             csCloudrun = Run("Cloud Scanning")
             csCloudBuild = Build("Triggered\n Cloud Builds")
+            gcr = GCR("Google \n Cloud Registry")
 
             gcrEventarc << gcrPubSub
             csEventarc >> csCloudrun
@@ -63,4 +64,5 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
             gcrEventarc >> csCloudrun
             csProjectSink >> csPubSub
             csCloudrun >> csCloudBuild
+            gcr >> gcrPubSub
         csCloudBuild >> sds

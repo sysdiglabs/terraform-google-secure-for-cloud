@@ -3,11 +3,11 @@
 from diagrams import Cluster, Diagram, Edge
 from diagrams.gcp.analytics import PubSub
 from diagrams.gcp.compute import Run
-from diagrams.gcp.devtools import Code, Build
+from diagrams.gcp.devtools import Code, Build, GCR
 from diagrams.gcp.storage import GCS
 from diagrams.gcp.security import KMS
-from diagrams.custom import Custom
 from diagrams.gcp.network import TrafficDirector
+from diagrams.custom import Custom
 
 diagram_attr = {
     "pad": "0.25",
@@ -40,13 +40,14 @@ with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr,
 
     ccCloudRun >> sds
     with Cluster("Cloud Scanning (children project)"):
-        keys = KMS("Sysdig Keys")
+        keys = KMS("Sysdig \n Secure Keys")
         csPubSub = PubSub("CS PubSub Topic")
         gcrPubSub = PubSub("GCR PubSub Topic")
         csEventarc = Code("CS Eventarc\nTrigger")
         gcrEventarc = Code("GCR Eventarc\nTrigger")
         csCloudrun = Run("Cloud Scanning")
         csCloudBuild = Build("Triggered\n Cloud Builds")
+        gcr = GCR("Google \n Cloud Registry")
 
         gcrEventarc << gcrPubSub
         csEventarc >> csCloudrun
@@ -56,4 +57,5 @@ with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr,
         gcrEventarc >> csCloudrun
         csProjectSink >> csPubSub
         csCloudrun >> csCloudBuild
+        gcr >> gcrPubSub
     csCloudBuild >> sds
