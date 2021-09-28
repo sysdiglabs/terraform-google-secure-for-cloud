@@ -2,22 +2,24 @@
 
 This example deploys Cloud Connector into a GCP organizational GCP account.
 
+![single project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/organization/diagram-org.png?raw=true)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.67.0 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | >= 3.67.0 |
-| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 0.5.21 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > = 0.14.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | > = 3.67.0 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | > = 3.67.0 |
+| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | > = 0.5.21 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 3.67.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | > = 3.67.0 |
 
 ## Modules
 

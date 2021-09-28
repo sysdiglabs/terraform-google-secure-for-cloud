@@ -1,24 +1,37 @@
 # Single Project Example
 
-
 This example deploys Cloud Connector and Cloud Scanning into a GCP account.
+
+All the resources will be run in a single project.
+
+![single project diagram](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/examples/single-project/diagram-single.png)
+
+## Prerequisits
+
+> ##### APIs Required by Cloud Scanning
+>* Cloud Run API
+>* Eventarc API
+>* Secret Manger API
+>* Cloud Build API
+>* Identity and access management API
 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.67.0 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | >= 3.67.0 |
-| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 0.5.21 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > = 0.14.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | > = 3.67.0 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | > = 3.67.0 |
+| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | > = 0.5.21 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 3.67.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | > = 3.67.0 |
 
 ## Modules
 
