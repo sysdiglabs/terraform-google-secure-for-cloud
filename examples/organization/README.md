@@ -2,6 +2,7 @@
 
 This example deploys Cloud Connector into a GCP organizational GCP account.
 
+![single project diagram]()
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
