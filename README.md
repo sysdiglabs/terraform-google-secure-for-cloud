@@ -41,9 +41,9 @@ The following GCP APIs **must** be enabled to deply resources correctly
 ### Single-Project
 
 Sysdig workload will be deployed in the same account where user's resources will be watched.<br/>
-More info in [`./examples/single-project`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-account)
+More info in [`./examples/single-project`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project)
 
-![single-project diagram](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/examples/organization/diagram-single.png)
+![single-project diagram](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/examples/single-project/diagram-single.png)
 
 ### Organization
 
