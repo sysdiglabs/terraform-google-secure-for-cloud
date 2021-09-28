@@ -1,13 +1,13 @@
 # diagrams as code vía https://diagrams.mingrammer.com
 
-from diagrams import Cluster, Diagram
-from diagrams.gcp.security import Iam
+from diagrams import Cluster, Diagram, Edge
 from diagrams.gcp.analytics import PubSub
 from diagrams.gcp.compute import Run
-from diagrams.gcp.devtools import Code
+from diagrams.gcp.devtools import Code, Build
 from diagrams.gcp.storage import GCS
 from diagrams.gcp.security import KMS
 from diagrams.custom import Custom
+from diagrams.gcp.network import TrafficDirector
 
 diagram_attr = {
     "pad": "0.25"
@@ -33,31 +33,34 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
 
     with Cluster("GCP project"):
         with Cluster("Cloud Connector"):
+            ccProjectSink = TrafficDirector("CC Project Sink")
             ccPubSub = PubSub("CC PubSub Topic")
-            ccCloudrun = Run("Cloud Connector")
-            cceventarc = Code("CC Eventarc\nTrigger")
+            ccEventarc = Code("CC Eventarc\nTrigger")
+            ccCloudRun = Run("Cloud Connector")
+            bucket = GCS("Bucket\nCC Config")
 
-            bucket = GCS("Bucket")
+            bucket << Edge(style="dashed", comment="hola") << ccCloudRun
+            ccEventarc >> ccCloudRun
+            ccEventarc << ccPubSub
+            ccProjectSink >> ccPubSub
 
-            bucket << ccCloudrun
-            cceventarc >> ccCloudrun
-            cceventarc >> ccPubSub
-
-        ccCloudrun >> sds
+        ccCloudRun >> sds
         with Cluster("Cloud Scanning"):
             keys = KMS("Sysdig Keys")
+            csProjectSink = TrafficDirector("CS Project Sink")
             csPubSub = PubSub("CS PubSub Topic")
             gcrPubSub = PubSub("GCR PubSub Topic")
-            gcrEventarc = Code("GCR Eventarc\nTrigger")
-
-            gcrEventarc >> gcrPubSub
-
-            csCloudrun = Run("Cloud Scanning")
             csEventarc = Code("CS Eventarc\nTrigger")
+            gcrEventarc = Code("GCR Eventarc\nTrigger")
+            csCloudrun = Run("Cloud Scanning")
+            csCloudBuild = Build("Triggered\n Cloud Builds")
 
+            gcrEventarc << gcrPubSub
             csEventarc >> csCloudrun
-            csEventarc >> csPubSub
+            csEventarc << csPubSub
             csCloudrun << keys
-
+            csCloudBuild << keys
             gcrEventarc >> csCloudrun
-        csCloudrun >> sds
+            csProjectSink >> csPubSub
+            csCloudrun >> csCloudBuild
+        csCloudBuild >> sds
