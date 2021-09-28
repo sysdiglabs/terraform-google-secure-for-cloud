@@ -4,7 +4,7 @@ This example deploys Cloud Connector and Cloud Scanning into a GCP account.
 
 All the resources will be run in a single project.
 
-![single project diagram]()
+![single project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project/diagram-single.png?raw=true)
 
 ## Prerequisits
 

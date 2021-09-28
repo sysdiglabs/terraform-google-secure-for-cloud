@@ -1,5 +1,4 @@
 # diagrams as code vía https://diagrams.mingrammer.com
-
 from diagrams import Cluster, Diagram, Edge
 from diagrams.gcp.analytics import PubSub
 from diagrams.gcp.compute import Run
