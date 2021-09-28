@@ -1,24 +1,19 @@
+# Mandatory vars
+variable "sysdig_secure_api_token" {
+  type        = string
+  description = "Sysdig's Secure API Token"
+}
+
+variable "project_id" {
+  type        = string
+  description = "Project ID"
+}
+
+# Vars with defaults
 variable "location" {
   type        = string
   default     = "us-central1"
   description = "Zone where the stack will be deployed"
-}
-
-variable "cloudconnector_deploy" {
-  type        = bool
-  default     = true
-  description = "Whether to deploy or not CloudConnector"
-}
-
-variable "cloudscanning_deploy" {
-  type        = bool
-  default     = true
-  description = "Whether to deploy or not CloudConnector"
-}
-
-variable "sysdig_secure_api_token" {
-  type        = string
-  description = "Sysdig's Secure API Token"
 }
 
 variable "sysdig_secure_endpoint" {
@@ -30,7 +25,7 @@ variable "sysdig_secure_endpoint" {
 variable "naming_prefix" {
   type        = string
   description = "Naming prefix for all the resources created"
-  default     = ""
+  default     = "sfc"
 }
 
 variable "create_gcr_topic" {

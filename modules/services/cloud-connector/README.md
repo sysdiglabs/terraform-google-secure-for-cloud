@@ -7,7 +7,7 @@ deployment that will detect events in your infrastructure.
 
 ```hcl
 module "cloud_connector_gcp" {
-  source = "sysdiglabs/cloudvision/google/modules/cloud-connector"
+  source = "sysdiglabs/secure-for-cloud/google/services/cloud-connector"
 
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
   sysdig_secure_endpoint  = "https://secure.sysdig.com"
@@ -43,12 +43,8 @@ No modules.
 | [google_cloud_run_service.cloud_connector](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_service) | resource |
 | [google_cloud_run_service_iam_member.run_invoker](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_service_iam_member) | resource |
 | [google_eventarc_trigger.trigger](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/eventarc_trigger) | resource |
-| [google_logging_project_sink.project_sink](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/logging_project_sink) | resource |
 | [google_project_iam_member.event_receiver](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_project_iam_member.token_creator](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
-| [google_pubsub_topic.topic](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/pubsub_topic) | resource |
-| [google_pubsub_topic_iam_member.writer](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/pubsub_topic_iam_member) | resource |
-| [google_service_account.sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [google_storage_bucket.bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket) | resource |
 | [google_storage_bucket_iam_member.list_objects](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_member) | resource |
 | [google_storage_bucket_iam_member.read_access](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_member) | resource |
@@ -61,13 +57,16 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_bucket_config_name"></a> [bucket\_config\_name](#input\_bucket\_config\_name) | Google Cloud Storage Bucket where the configuration will be saved | `string` | `"cloud-connector-config"` | no |
+| <a name="input_cloud_connector_sa_email"></a> [cloud\_connector\_sa\_email](#input\_cloud\_connector\_sa\_email) | Cloud Connector service account email | `string` | n/a | yes |
 | <a name="input_config_content"></a> [config\_content](#input\_config\_content) | Contents of the configuration file to be saved in the bucket | `string` | `null` | no |
 | <a name="input_config_source"></a> [config\_source](#input\_config\_source) | Path to a file that contains the contents of the configuration file to be saved in the bucket | `string` | `null` | no |
+| <a name="input_connector_pubsub_topic_id"></a> [connector\_pubsub\_topic\_id](#input\_connector\_pubsub\_topic\_id) | Cloud Connector PubSub single account topic id | `string` | n/a | yes |
 | <a name="input_extra_envs"></a> [extra\_envs](#input\_extra\_envs) | Extra environment variables for the Cloud Connector instance | `map(string)` | `{}` | no |
 | <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Cloud Connector image to deploy | `string` | `"gcr.io/mateo-burillo-ns/cloud-connector:latest"` | no |
 | <a name="input_location"></a> [location](#input\_location) | Zone where the cloud connector will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the Cloud Connector | `number` | `1` | no |
-| <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Naming prefix for all the resources created | `string` | `""` | no |
+| <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Naming prefix for all the resources created | `string` | `"sfc"` | no |
+| <a name="input_project_id"></a> [project\_id](#input\_project\_id) | organizational member project ID where the secure-for-cloud workload is going to be deployed | `string` | n/a | yes |
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig's Secure API URL | `string` | n/a | yes |
 | <a name="input_verify_ssl"></a> [verify\_ssl](#input\_verify\_ssl) | Verify the SSL certificate of the Secure endpoint | `bool` | `true` | no |
@@ -79,7 +78,7 @@ No outputs.
 
 ## Authors
 
-Module is maintained by [Sysdig](https://github.com/sysdiglabs/terraform-google-cloudvision).
+Module is maintained and supported by [Sysdig](https://github.com/sysdiglabs/terraform-google-cloudvision).
 
 ## License
 
