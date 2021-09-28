@@ -7,11 +7,14 @@ module "trust_relationship" {
   source   = "./trust_relationship"
 
   project_id = each.key
+  role_name  = var.role_name
+  regions    = var.regions
 }
 
 module "task" {
   source              = "./task"
   project_ids         = local.project_ids
+  regions             = var.regions
   is_organizational   = true
   organization_domain = var.organization_domain
 
