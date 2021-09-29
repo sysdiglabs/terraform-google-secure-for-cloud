@@ -89,3 +89,29 @@ $ terraform apply
 
 Notice that:
 * This example will create resources that cost money.<br/>Run `terraform destroy` when you don't need them anymore
+
+
+<br/><br/>
+## Troubleshooting
+
+- Q: Getting "Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists"<br/>
+  A: This is default behaviour we cannot control
+    https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers#delete-pool
+    > You can undelete a pool for up to 30 days after deletion. After 30 days, deletion is permanent. Until a pool is permanently deleted, you cannot reuse its name when creating a new workload identity pool.<br/>
+
+  Workaround: Need to restore the identity pool/provider, and then import them into terraform with
+ ```bash
+$ terraform import module.secure-for-cloud_example_single-project.module.cloud_bench.google_iam_workload_identity_pool.pool sysdigcloud
+$ terraform import module.secure-for-cloud_example_single-project.module.cloud_bench.google_iam_workload_identity_pool_provider.pool_provider sysdigcloud/sysdigcloud
+ ```
+  
+  
+
+<br/><br/>
+## Authors
+
+Module is maintained and supported by [Sysdig](https://sysdig.com).
+
+## License
+
+Apache 2 Licensed. See LICENSE for full details.
