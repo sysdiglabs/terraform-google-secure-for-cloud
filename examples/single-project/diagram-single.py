@@ -32,7 +32,7 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
 
     with Cluster("GCP project"):
         with Cluster("Cloud Connector"):
-            ccProjectSink = TrafficDirector("CC Project Sink")
+            ccProjectSink = Custom("\nCC Project\n Sink", "../../resources/sink.png")
             ccPubSub = PubSub("CC PubSub Topic")
             ccEventarc = Code("CC Eventarc\nTrigger")
             ccCloudRun = Run("Cloud Connector")
@@ -46,7 +46,7 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
         ccCloudRun >> sds
         with Cluster("Cloud Scanning"):
             keys = KMS("Sysdig Keys")
-            csProjectSink = TrafficDirector("CS Project Sink")
+            csProjectSink = Custom("\nCS Project\n Sink", "../../resources/sink.png")
             csPubSub = PubSub("CS PubSub Topic")
             gcrPubSub = PubSub("GCR PubSub Topic")
             csEventarc = Code("CS Eventarc\nTrigger")

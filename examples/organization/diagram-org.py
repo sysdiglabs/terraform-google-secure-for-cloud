@@ -24,8 +24,8 @@ with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr,
     with Cluster("GCP account (sysdig)", graph_attr={"bgcolor": "lightblue"}):
         sds = Custom("Sysdig Secure", "../../resources/diag-sysdig-icon.png")
     with Cluster("GCP organization project", graph_attr={"bgcolor": "pink"}):
-        ccProjectSink = TrafficDirector("CC Organization Sink")
-        csProjectSink = TrafficDirector("CS Organization Sink")
+        ccProjectSink = Custom("\nCC Project\n Sink", "../../resources/sink.png")
+        csProjectSink = Custom("\nCS Project\n Sink", "../../resources/sink.png")
 
     with Cluster("Cloud Connector (children project)"):
         ccPubSub = PubSub("CC PubSub Topic")

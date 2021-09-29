@@ -19,24 +19,24 @@ For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-a
 
 ### APIs
 
-The following GCP APIs **must** be enabled to deply resources correctly
+The following GCP APIs **must** be enabled to deploy resources correctly for:
 
-> ##### APIs Required by Cloud Connector
->* Cloud Run API
->* Eventarc API
+ ##### Cloud Connector
+* Cloud Run API
+* Eventarc API
 
-> ##### APIs Required by Cloud Scanning
->* Cloud Run API
->* Eventarc API
->* Secret Manger API
->* Cloud Build API
->* Identity and access management API
+##### Cloud Scanning
+* Cloud Run API
+* Eventarc API
+* Secret Manger API
+* Cloud Build API
+* Identity and access management API
 
-> ##### APIs Required by Cloud Benchmarks
->* Identity and access management API
->* IAM Service Account Credentials API
->* Cloud Resource Manager API
->* Security Token Service API
+ ##### Cloud Benchmarks
+* Identity and access management API
+* IAM Service Account Credentials API
+* Cloud Resource Manager API
+* Security Token Service API
 
 ### Single-Project
 

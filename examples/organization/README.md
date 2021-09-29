@@ -1,8 +1,42 @@
 # Organization Example
 
-This example deploys Cloud Connector into a GCP organizational GCP account.
+This example deploys Secure for Cloud into a GCP organizational account.
 
 ![single project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/organization/diagram-org.png?raw=true)
+
+
+## Prerequisites
+The following GCP APIs **must** be enabled to deploy resources correctly for:
+
+ ##### Cloud Connector
+* Cloud Run API
+* Eventarc API
+
+##### Cloud Scanning
+* Cloud Run API
+* Eventarc API
+* Secret Manger API
+* Cloud Build API
+* Identity and access management API
+
+ ##### Cloud Benchmarks
+* Identity and access management API
+* IAM Service Account Credentials API
+* Cloud Resource Manager API
+* Security Token Service API
+
+##Usage
+For quick testing, use this snippet on your terraform files
+
+```
+module "secure-for-cloud_example_organization" {
+  source  = "sysdiglabs/secure-for-cloud/google//examples/organization"
+
+  sysdig_secure_api_token   = "00000000-1111-2222-3333-444444444444"
+  project_id                = "your-project-id"
+  organization_domain       = "domain.com"
+}
+```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
