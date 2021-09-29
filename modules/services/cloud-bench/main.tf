@@ -8,7 +8,6 @@ module "trust_relationship" {
 
   project_id = each.key
   role_name  = var.role_name
-  regions    = var.regions
 }
 
 module "task" {
