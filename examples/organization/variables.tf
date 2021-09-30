@@ -30,7 +30,7 @@ variable "sysdig_secure_endpoint" {
 variable "naming_prefix" {
   type        = string
   description = "Naming prefix for all the resources created"
-  default     = "secure-for-cloud"
+  default     = "sfc"
 }
 
 variable "max_instances" {
