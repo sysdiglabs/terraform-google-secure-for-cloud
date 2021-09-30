@@ -5,7 +5,7 @@ from diagrams.gcp.analytics import PubSub
 from diagrams.gcp.compute import Run
 from diagrams.gcp.devtools import Code, Build, GCR
 from diagrams.gcp.storage import GCS
-from diagrams.gcp.security import KMS
+from diagrams.gcp.security import KMS, Iam
 from diagrams.gcp.network import TrafficDirector
 from diagrams.custom import Custom
 
@@ -20,26 +20,32 @@ color_non_important = "gray"
 color_sysdig = "lightblue"
 
 with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr, filename="diagram-org", show=True,
-             direction="LR"):
+             direction="TB"):
     with Cluster("GCP account (sysdig)", graph_attr={"bgcolor": "lightblue"}):
         sds = Custom("Sysdig Secure", "../../resources/diag-sysdig-icon.png")
+        bench = Code("Cloud Bench")
+
+        sds >> Edge(label="schedule on 0 6 * * *") >> bench
     with Cluster("GCP organization project", graph_attr={"bgcolor": "pink"}):
         ccProjectSink = Custom("\nCC Project\n Sink", "../../resources/sink.png")
         csProjectSink = Custom("\nCS Project\n Sink", "../../resources/sink.png")
+        orgBenchRole = Iam("Cloud Bench Role")
 
     with Cluster("Cloud Connector (children project)"):
+        ccBenchRole = Iam("Cloud Bench Role")
         ccPubSub = PubSub("CC PubSub Topic")
         ccEventarc = Code("CC Eventarc\nTrigger")
         ccCloudRun = Run("Cloud Connector")
         bucket = GCS("Bucket\nCC Config")
 
-        bucket << Edge(style="dashed") << ccCloudRun
+        bucket <<  Edge(style="dashed", label="Get CC config file") << ccCloudRun
         ccEventarc >> ccCloudRun
         ccEventarc << ccPubSub
         ccProjectSink >> ccPubSub
 
     ccCloudRun >> sds
     with Cluster("Cloud Scanning (children project)"):
+        csBenchRole = Iam("Cloud Bench Role")
         keys = KMS("Sysdig \n Secure Keys")
         csPubSub = PubSub("CS PubSub Topic")
         gcrPubSub = PubSub("GCR PubSub Topic")
@@ -59,3 +65,8 @@ with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr,
         csCloudrun >> csCloudBuild
         gcr >> gcrPubSub
     csCloudBuild >> sds
+
+
+    csBenchRole << bench
+    ccBenchRole << bench
+    orgBenchRole << bench

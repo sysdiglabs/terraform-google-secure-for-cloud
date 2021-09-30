@@ -4,7 +4,7 @@ from diagrams.gcp.analytics import PubSub
 from diagrams.gcp.compute import Run
 from diagrams.gcp.devtools import Code, Build, GCR
 from diagrams.gcp.storage import GCS
-from diagrams.gcp.security import KMS
+from diagrams.gcp.security import KMS, Iam
 from diagrams.custom import Custom
 from diagrams.gcp.network import TrafficDirector
 
@@ -26,25 +26,30 @@ color_non_important = "gray"
 color_sysdig = "lightblue"
 
 with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_attr, filename="diagram-single", show=True,
-             direction="LR"):
+             direction="TB"):
     with Cluster("GCP account (sysdig)"):
         sds = Custom("Sysdig Secure", "../../resources/diag-sysdig-icon.png")
+        bench = Code("Cloud Bench")
+
+        sds >> Edge(label="schedule on 0 6 * * *") >> bench
 
     with Cluster("GCP project"):
         with Cluster("Cloud Connector"):
+            ccBenchRole = Iam("Cloud Bench Role")
             ccProjectSink = Custom("\nCC Project\n Sink", "../../resources/sink.png")
             ccPubSub = PubSub("CC PubSub Topic")
             ccEventarc = Code("CC Eventarc\nTrigger")
             ccCloudRun = Run("Cloud Connector")
             bucket = GCS("Bucket\nCC Config")
 
-            bucket << Edge(style="dashed") << ccCloudRun
+            bucket << Edge(style="dashed", label="Get CC config file") << ccCloudRun
             ccEventarc >> ccCloudRun
             ccEventarc << ccPubSub
             ccProjectSink >> ccPubSub
 
         ccCloudRun >> sds
         with Cluster("Cloud Scanning"):
+            csBenchRole = Iam("Cloud Bench Role")
             keys = KMS("Sysdig Keys")
             csProjectSink = Custom("\nCS Project\n Sink", "../../resources/sink.png")
             csPubSub = PubSub("CS PubSub Topic")
@@ -65,3 +70,5 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
             csCloudrun >> csCloudBuild
             gcr >> gcrPubSub
         csCloudBuild >> sds
+    csBenchRole << bench
+    ccBenchRole << bench
