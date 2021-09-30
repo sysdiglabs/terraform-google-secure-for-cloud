@@ -1,6 +1,6 @@
 # Single Project Example
 
-This example deploys Cloud Connector and Cloud Scanning into a GCP account.
+This example deploys Secure For Cloud into a GCP account.
 
 All the resources will be run in a single project.
 
