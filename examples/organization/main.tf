@@ -9,11 +9,13 @@ EOT
 }
 
 provider "google" {
-  region = var.location
+  project = var.project_id
+  region  = var.location
 }
 
 provider "google-beta" {
-  region = var.location
+  project = var.project_id
+  region  = var.location
 }
 
 provider "sysdig" {

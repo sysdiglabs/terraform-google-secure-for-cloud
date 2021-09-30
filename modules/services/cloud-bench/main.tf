@@ -33,7 +33,14 @@ resource "sysdig_secure_benchmark_task" "benchmark_task" {
   scope    = "gcp.projectId = \"${data.google_project.project.number}\"${local.regions_scope_clause}"
 
   # Creation of a task requires that the Cloud Account already exists in the backend, and has `role_enabled = true`
-  depends_on = [sysdig_secure_cloud_account.cloud_account]
+  # We also don't want to create the benchmark task until the provider pool, service account and policies are ready,
+  # otherwise the task may run and generate errors.
+  depends_on = [
+    sysdig_secure_cloud_account.cloud_account,
+    google_service_account_iam_binding.sa_viewer_binding, # Depends on the service_account implicitly
+    google_service_account_iam_binding.sa_custom_binding,
+    google_iam_workload_identity_pool_provider.pool_provider, # Depends on the workload identity pool implicitly
+  ]
 }
 
 ###################################################
