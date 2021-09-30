@@ -29,7 +29,7 @@ data "google_organization" "org" {
 }
 
 data "google_projects" "all_projects" {
-  filter = "parent.id:${data.google_organization.org.org_id} parent.type:organization"
+  filter = "parent.id:${data.google_organization.org.org_id} parent.type:organization lifecycleState:ACTIVE"
 }
 
 #######################
