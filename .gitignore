@@ -26,6 +26,15 @@ override.tf.json
 
 .terraform.lock.hcl
 .envrc
+**/.envrc
 
-#inspec
-inspec-gcp/vendor
+## Ruby
+## Environment normalization:
+/.bundle/
+/vendor/bundle
+/lib/bundler/man/
+
+
+#Kitchen test
+.kitchen/*
+test/fixtures/tf_module/.kitchen/
