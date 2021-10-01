@@ -29,7 +29,7 @@ data "google_organization" "org" {
 }
 
 data "google_projects" "all_projects" {
-  filter = "parent.id:${data.google_organization.org.org_id} parent.type:organization"
+  filter = "parent.id:${data.google_organization.org.org_id} parent.type:organization lifecycleState:ACTIVE"
 }
 
 #######################
@@ -132,5 +132,6 @@ module "cloud_bench" {
   for_each = toset(local.benchmark_projects_ids)
   source   = "../../modules/services/cloud-bench"
 
-  project_id = each.key
+  naming_prefix = var.naming_prefix
+  project_id    = each.key
 }
