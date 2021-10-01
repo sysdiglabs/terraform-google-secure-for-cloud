@@ -642,6 +642,7 @@ GEM
 
 PLATFORMS
   universal-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   kitchen-terraform (~> 6.0.0)
