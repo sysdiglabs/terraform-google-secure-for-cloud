@@ -1,7 +1,6 @@
 # Single Project Example
 
-This example deploys Secure For Cloud into a GCP account.
-
+This example deploys Secure For Cloud into a single GCP project.
 All the resources will be run in a single project.
 
 ![single project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project/diagram-single.png?raw=true)
@@ -9,22 +8,23 @@ All the resources will be run in a single project.
 ## Prerequisites
 The following GCP APIs **must** be enabled to deploy resources correctly for:
 
- ##### Cloud Connector
-* Cloud Run API
-* Eventarc API
+##### Cloud Connector
+* [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
+* [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
 
 ##### Cloud Scanning
-* Cloud Run API
-* Eventarc API
-* Secret Manger API
-* Cloud Build API
-* Identity and access management API
+* [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
+* [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
+* [Secret Manger API](https://console.cloud.google.com/marketplace/product/google/secretmanager.googleapis.com)
+* [Cloud Build API](https://console.cloud.google.com/marketplace/product/google/cloudbuild.googleapis.com)
+* [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 
  ##### Cloud Benchmarks
-* Identity and access management API
-* IAM Service Account Credentials API
-* Cloud Resource Manager API
-* Security Token Service API
+* [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
+* [IAM Service Account Credentials API](https://console.cloud.google.com/marketplace/product/google/iamcredentials.googleapis.com)
+* [Cloud Resource Manager API](https://console.cloud.google.com/marketplace/product/google/cloudresourcemanager.googleapis.com)
+* [Security Token Service API](https://console.cloud.google.com/marketplace/product/google/sts.googleapis.com)
+
 
 ##Usage
 For quick testing, use this snippet on your terraform files
