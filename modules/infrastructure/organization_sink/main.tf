@@ -1,9 +1,9 @@
 resource "google_pubsub_topic" "topic" {
-  name = "${var.naming_prefix}-cloud-${var.service}-topic"
+  name = "${var.naming_prefix}-topic"
 }
 
 resource "google_logging_organization_sink" "organization_sink" {
-  name             = "${var.naming_prefix}-cloud-${var.service}-organization-sink"
+  name             = "${var.naming_prefix}-organization-sink"
   org_id           = var.organization_id
   destination      = "pubsub.googleapis.com/${google_pubsub_topic.topic.id}"
   include_children = true

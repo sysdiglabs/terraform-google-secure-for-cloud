@@ -9,12 +9,15 @@ variable "project_id" {
   description = "Google cloud project id"
 }
 
-# Vars with defaults
+# --------------------------
+# optionals, with defaults
+# --------------------------
 variable "location" {
   type        = string
   default     = "us-central1"
   description = "Zone where the stack will be deployed"
 }
+
 variable "sysdig_secure_endpoint" {
   type        = string
   default     = "https://secure.sysdig.com"
@@ -25,6 +28,11 @@ variable "naming_prefix" {
   type        = string
   description = "Naming prefix for all the resources created"
   default     = "sfc"
+
+  validation {
+    condition     = can(regex("^[a-z0-9_]+$", var.naming_prefix))
+    error_message = "ERROR: Invalid naming_prefix. must contain only lowercase letters (a-z) and numbers (0-9)."
+  }
 }
 
 variable "create_gcr_topic" {

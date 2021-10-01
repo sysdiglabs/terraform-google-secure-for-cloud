@@ -30,7 +30,15 @@ variable "scanning_pubsub_topic_id" {
   description = "Cloud Scanning PubSub single account topic id"
 }
 
-# vars with defaults
+variable "project_id" {
+  type        = string
+  description = "organizational member project ID where the secure-for-cloud workload is going to be deployed"
+}
+
+
+# --------------------------
+# optionals, with defaults
+# --------------------------
 
 variable "verify_ssl" {
   type        = bool
@@ -60,6 +68,11 @@ variable "naming_prefix" {
   type        = string
   description = "Naming prefix for all the resources created"
   default     = "sfc"
+
+  validation {
+    condition     = can(regex("^[a-z0-9_]+$", var.naming_prefix))
+    error_message = "ERROR: Invalid naming_prefix. must contain only lowercase letters (a-z) and numbers (0-9)."
+  }
 }
 
 variable "max_instances" {
