@@ -13,7 +13,7 @@ jobs:
     name: Test Cleanup
     runs-on: ubuntu-latest
     env:
-      TF_VAR_project_id: ${{secrets.project_id}}
+      TF_VAR_project_id: ${{secrets.GCP_PROJECT_ID}}
       TF_VAR_sysdig_secure_api_token: ${{secrets.KUBELAB_SECURE_API_TOKEN}}
     steps:
       - name: Checkout
