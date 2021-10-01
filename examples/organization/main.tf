@@ -127,8 +127,9 @@ locals {
 }
 
 module "cloud_bench" {
-  source              = "../../modules/services/cloud-bench"
-  project_ids         = local.benchmark_projects_ids
-  is_organizational   = true
-  organization_domain = var.organization_domain
+  source            = "../../modules/services/cloud-bench"
+  is_organizational = true
+  role_name         = var.role_name
+  project_id        = var.project_id
+  regions           = var.regions
 }

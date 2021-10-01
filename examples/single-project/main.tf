@@ -100,5 +100,9 @@ module "cloud_scanning" {
 #      BENCHMARKS     #
 #######################
 module "cloud_bench" {
-  source = "../../modules/services/cloud-bench"
+  source            = "../../modules/services/cloud-bench"
+  is_organizational = false
+  role_name         = var.role_name
+  project_id        = var.project_id
+  regions           = var.regions
 }

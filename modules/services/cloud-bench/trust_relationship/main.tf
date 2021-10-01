@@ -10,6 +10,10 @@ data "google_project" "project" {
   project_id = var.project_id
 }
 
+locals {
+  external_id = sysdig_secure_cloud_account.cloud_account.external_id
+}
+
 ###################################################
 # Configure Sysdig Backend
 ###################################################
@@ -54,7 +58,7 @@ resource "google_service_account_iam_binding" "sa_custom_binding" {
   role               = google_project_iam_custom_role.custom.id
 
   members = [
-    "principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.pool.workload_identity_pool_id}/attribute.aws_role/arn:aws:sts::${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id}:assumed-role/${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_role_name}",
+    "principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.pool.workload_identity_pool_id}/attribute.aws_role/arn:aws:sts::${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id}:assumed-role/${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_role_name}/${local.external_id}",
   ]
 }
 
@@ -63,7 +67,7 @@ resource "google_service_account_iam_binding" "sa_viewer_binding" {
   role               = "roles/iam.workloadIdentityUser"
 
   members = [
-    "principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.pool.workload_identity_pool_id}/attribute.aws_role/arn:aws:sts::${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id}:assumed-role/${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_role_name}",
+    "principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.pool.workload_identity_pool_id}/attribute.aws_role/arn:aws:sts::${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id}:assumed-role/${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_role_name}/${local.external_id}",
   ]
 }
 
@@ -93,4 +97,10 @@ resource "google_iam_workload_identity_pool_provider" "pool_provider" {
   aws {
     account_id = data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id
   }
+
+  attribute_mapping = {
+    "google.subject" : "assertion.arn",
+    "attribute.aws_role" : "assertion.arn"
+  }
+
 }
