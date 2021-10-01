@@ -2,6 +2,8 @@
 
 This example deploys Secure for Cloud into a GCP organizational account.
 
+Sysdig workload will be deployed in the `project_id` defined in the required input parameter.
+
 ![single project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/organization/diagram-org.png?raw=true)
 
 

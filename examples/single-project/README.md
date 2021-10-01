@@ -1,7 +1,6 @@
 # Single Project Example
 
-This example deploys Secure For Cloud into a GCP account.
-
+This example deploys Secure For Cloud into a single GCP project.
 All the resources will be run in a single project.
 
 ![single project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project/diagram-single.png?raw=true)
@@ -9,7 +8,7 @@ All the resources will be run in a single project.
 ## Prerequisites
 The following GCP APIs **must** be enabled to deploy resources correctly for:
 
- ##### Cloud Connector
+##### Cloud Connector
 * [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
 * [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
 

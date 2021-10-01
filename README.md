@@ -5,23 +5,20 @@ Terraform module that deploys the **Sysdig Secure for Cloud** stack in **Google 
 
 There are three major components:
 
-* **Cloud Threat Detection**: Tracks abnormal and suspicious activities in your cloud environment based on Falco language. Managed through [cloud-connector module](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/tree/master/modules/services/cloud-connector).<br/>
-
-* **CSPM/Compliance**: It evaluates periodically your cloud configuration, using Cloud Custodian, against some benchmarks and returns the results and remediation you need to fix. Managed through [cloud-bench module](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/tree/master/modules/services/cloud-bench).<br/>
-
-* **Cloud Scanning**: Automatically scans all container images pushed to the registry or as soon a new task which involves a container is spawned in your account.Managed through [cloud-scanning module](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/tree/master/modules/services/cloud-scanning).<br/>
-
+* **Cloud Threat Detection**: Tracks abnormal and suspicious activities in your cloud environment based on Falco language. Managed through [cloud-connector module](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/tree/master/modules/services/cloud-connector).
+<br/><br/>
+* **CSPM/Compliance**: It evaluates periodically your cloud configuration, using Cloud Custodian, against some benchmarks and returns the results and remediation you need to fix. Managed through [cloud-bench module](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/tree/master/modules/services/cloud-bench).
+  <br/><br/>
+* **Cloud Scanning**: Automatically scans all container images pushed to the registry or as soon a new task which involves a container is spawned in your account.Managed through [cloud-scanning module](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/tree/master/modules/services/cloud-scanning).
+  <br/><br/>
 For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud), [Azure](https://github.com/sysdiglabs/terraform-azurerm-secure-for-cloud)
 
 <br/>
 
-## Usage
-
-### APIs
-
+## Prerequisites
 The following GCP APIs **must** be enabled to deploy resources correctly for:
 
- ##### Cloud Connector
+##### Cloud Connector
 * [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
 * [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
 
@@ -32,11 +29,14 @@ The following GCP APIs **must** be enabled to deploy resources correctly for:
 * [Cloud Build API](https://console.cloud.google.com/marketplace/product/google/cloudbuild.googleapis.com)
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 
- ##### Cloud Benchmarks
+##### Cloud Benchmarks
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 * [IAM Service Account Credentials API](https://console.cloud.google.com/marketplace/product/google/iamcredentials.googleapis.com)
 * [Cloud Resource Manager API](https://console.cloud.google.com/marketplace/product/google/cloudresourcemanager.googleapis.com)
 * [Security Token Service API](https://console.cloud.google.com/marketplace/product/google/sts.googleapis.com)
+
+
+## Usage
 
 ### Single-Project
 
