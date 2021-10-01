@@ -12,7 +12,6 @@ locals {
 
 module "trust_relationship" {
   source = "./trust_relationship"
-
   project_id = var.project_id
   role_name  = var.role_name
 }

@@ -31,8 +31,8 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_filter"></a> [filter](#input\_filter) | Filter for project sink | `string` | n/a | yes |
-| <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Naming prefix for all the resources created | `string` | `"sfc"` | no |
 | <a name="input_organization_id"></a> [organization\_id](#input\_organization\_id) | Numeric ID of the organization to be exported to the sink | `string` | n/a | yes |
+| <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Naming prefix for all the resources created | `string` | `"sfc"` | no |
 
 ## Outputs
 
