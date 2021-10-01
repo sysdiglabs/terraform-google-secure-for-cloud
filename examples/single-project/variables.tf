@@ -9,7 +9,9 @@ variable "project_id" {
   description = "Project ID"
 }
 
-# Vars with defaults
+# --------------------------
+# optionals, with defaults
+# --------------------------
 variable "location" {
   type        = string
   default     = "us-central1"
@@ -26,6 +28,11 @@ variable "naming_prefix" {
   type        = string
   description = "Naming prefix for all the resources created"
   default     = "sfc"
+
+  validation {
+    condition     = can(regex("^[a-z0-9_]+$", var.naming_prefix))
+    error_message = "ERROR: Invalid naming_prefix. must contain only lowercase letters (a-z) and numbers (0-9)."
+  }
 }
 
 variable "create_gcr_topic" {
