@@ -98,7 +98,8 @@ resource "google_iam_workload_identity_pool" "pool" {
   project = var.project_id
 
   provider                  = google-beta
-  workload_identity_pool_id = "sysdigcloud"
+  workload_identity_pool_id = "${var.naming_prefix}-sysdigcloud"
+  display_name              = "sysdigcloud"
 }
 
 resource "google_iam_workload_identity_pool_provider" "pool_provider" {
@@ -106,7 +107,7 @@ resource "google_iam_workload_identity_pool_provider" "pool_provider" {
 
   provider                           = google-beta
   workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
-  workload_identity_pool_provider_id = "sysdigcloud"
+  workload_identity_pool_provider_id = "${var.naming_prefix}-sysdigcloud"
   display_name                       = "Sysdigcloud"
   description                        = "Sysdig Secure for Cloud"
   disabled                           = false

@@ -101,15 +101,15 @@ Notice that:
 
   Workaround: Need to restore the identity pool/provider and then import them into terraform with
  ```bash
-# re-activate 
+# re-activate
 $ gcloud iam workload-identity-pools undelete sysdigcloud  --location=global
 
 # import to terraform state
 $ terraform import module.secure-for-cloud_example_single-project.module.cloud_bench.google_iam_workload_identity_pool.pool sysdigcloud
 $ terraform import module.secure-for-cloud_example_single-project.module.cloud_bench.google_iam_workload_identity_pool_provider.pool_provider sysdigcloud/sysdigcloud
  ```
-  
-  
+
+
 
 <br/><br/>
 ## Authors
