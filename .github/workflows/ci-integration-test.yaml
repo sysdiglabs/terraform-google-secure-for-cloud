@@ -19,7 +19,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       #TF_VAR_project_id: ${{secrets.GCP_DRAIOS_PROJECT_ID}}
-      TF_VAR_organization_domain= ${{secrets.GCP_NESTOR_ORG_DOMAIN}}
+      TF_VAR_organization_domain: ${{secrets.GCP_NESTOR_ORG_DOMAIN}}
       TF_VAR_project_id: ${{secrets.GCP_NESTOR_PROJECT_ID}}
       TF_VAR_sysdig_secure_api_token: ${{secrets.KUBELAB_SECURE_API_TOKEN}}
 
