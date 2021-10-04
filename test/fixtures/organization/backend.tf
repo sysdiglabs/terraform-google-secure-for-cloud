@@ -2,8 +2,8 @@
 terraform {
   backend "s3" {
     bucket         = "kitchentest-terraform"
-    key            = "terraform.tfstate"
-    dynamodb_table = "kitchen-test"
+    key            = "gcp-org/terraform.tfstate"
+    dynamodb_table = "gcp_org_kitchen_test"
     region         = "eu-west-3"
   }
 }
