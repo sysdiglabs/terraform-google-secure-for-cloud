@@ -101,4 +101,6 @@ module "cloud_scanning" {
 #######################
 module "cloud_bench" {
   source = "../../modules/services/cloud-bench"
+
+  naming_prefix = var.naming_prefix
 }
