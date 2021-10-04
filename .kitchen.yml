@@ -1,0 +1,16 @@
+---
+driver:
+  name: terraform
+  root_module_directory: test/fixtures
+  parallelism: 4
+
+provisioner:
+  name: terraform
+
+platforms:
+  - name: gcp
+
+suites:
+  - name: single-project
+    driver:
+      root_module_directory: test/fixtures/single-project

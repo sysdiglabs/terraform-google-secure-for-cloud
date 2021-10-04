@@ -6,7 +6,7 @@ variable "sysdig_secure_api_token" {
 
 variable "project_id" {
   type        = string
-  description = "Project ID"
+  description = "Google cloud project id"
 }
 
 # --------------------------
