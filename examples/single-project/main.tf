@@ -105,4 +105,5 @@ module "cloud_bench" {
   role_name         = var.role_name
   project_id        = var.project_id
   regions           = var.regions
+  naming_prefix     = var.naming_prefix
 }
