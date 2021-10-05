@@ -11,10 +11,12 @@ Sysdig workload will be deployed in the `project_id` defined in the required inp
 The following GCP APIs **must** be enabled to deploy resources correctly for:
 
   ##### Cloud Connector
+* [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
 * [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
 * [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
 
 ##### Cloud Scanning
+* [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
 * [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
 * [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
 * [Secret Manger API](https://console.cloud.google.com/marketplace/product/google/secretmanager.googleapis.com)
