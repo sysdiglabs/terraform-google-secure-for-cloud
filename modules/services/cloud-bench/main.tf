@@ -99,6 +99,7 @@ resource "google_iam_workload_identity_pool" "pool" {
 
   provider                  = google-beta
   workload_identity_pool_id = "${var.naming_prefix}-pool"
+  display_name              = "${var.naming_prefix}-pool"
 }
 
 resource "google_iam_workload_identity_pool_provider" "pool_provider" {
