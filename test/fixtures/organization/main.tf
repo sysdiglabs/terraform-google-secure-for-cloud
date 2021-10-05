@@ -4,7 +4,7 @@ resource "random_string" "random" {
   upper   = false
 }
 
-module "sfc_example_single_project" {
+module "sfc_example_organization" {
   source = "../../../examples/organization"
 
   organization_domain     = var.organization_domain

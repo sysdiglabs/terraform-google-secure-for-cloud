@@ -35,8 +35,9 @@ jobs:
       - name: Set up gcloud Cloud SDK environment
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
-          project_id: ${{ secrets.GCP_DRAIOS_PROJECT_ID }}
-          #service_account_key: ${{ secrets.GCP_DRAIOS_SA_KEY }}
+#         project_id: ${{ secrets.GCP_DRAIOS_PROJECT_ID }}
+          project_id: ${{ secrets.GCP_NESTOR_PROJECT_ID }}
+#         service_account_key: ${{ secrets.GCP_DRAIOS_SA_KEY }}
           service_account_key: ${{ secrets.GCP_NESTOR_SA_KEY }}
           export_default_credentials: true
 
