@@ -132,6 +132,7 @@ module "cloud_bench" {
   for_each = toset(local.benchmark_projects_ids)
   source   = "../../modules/services/cloud-bench"
 
-  naming_prefix = var.naming_prefix
   project_id    = each.key
+  naming_prefix = var.naming_prefix
+  regions       = var.benchmark_regions
 }

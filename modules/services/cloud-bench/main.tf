@@ -23,7 +23,7 @@ resource "sysdig_secure_cloud_account" "cloud_account" {
   alias          = data.google_project.project.name
   cloud_provider = "gcp"
   role_enabled   = "true"
-  role_name      = var.role_name
+  role_name      = "${var.naming_prefix}_cloudbench"
 }
 
 resource "sysdig_secure_benchmark_task" "benchmark_task" {
@@ -50,7 +50,7 @@ resource "sysdig_secure_benchmark_task" "benchmark_task" {
 resource "google_service_account" "sa" {
   project = var.project_id
 
-  account_id   = var.role_name
+  account_id   = "${var.naming_prefix}_cloudbench"
   display_name = "Service account for cloud-bench"
 }
 
@@ -64,7 +64,7 @@ resource "google_project_iam_member" "viewer" {
 resource "google_project_iam_custom_role" "custom" {
   project = var.project_id
 
-  role_id     = "sysdigCloudBench"
+  role_id     = "${var.naming_prefix}_cloudbench"
   title       = "Sysdig Cloud Benchmark Role"
   description = "A Role providing the required permissions for Sysdig Cloud Benchmarks that are not included in roles/viewer"
   permissions = ["storage.buckets.getIamPolicy"]
@@ -98,8 +98,7 @@ resource "google_iam_workload_identity_pool" "pool" {
   project = var.project_id
 
   provider                  = google-beta
-  workload_identity_pool_id = "${var.naming_prefix}-sysdigcloud"
-  display_name              = "sysdigcloud"
+  workload_identity_pool_id = "${var.naming_prefix}-pool"
 }
 
 resource "google_iam_workload_identity_pool_provider" "pool_provider" {
@@ -107,8 +106,8 @@ resource "google_iam_workload_identity_pool_provider" "pool_provider" {
 
   provider                           = google-beta
   workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
-  workload_identity_pool_provider_id = "${var.naming_prefix}-sysdigcloud"
-  display_name                       = "Sysdigcloud"
+  workload_identity_pool_provider_id = "${var.naming_prefix}-pool-provider"
+  display_name                       = "${var.naming_prefix}-pool-provider"
   description                        = "Sysdig Secure for Cloud"
   disabled                           = false
 
