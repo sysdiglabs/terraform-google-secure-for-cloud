@@ -4,18 +4,19 @@ locals {
   protoPayload.methodName = "google.cloud.run.v1.Services.CreateService" OR protoPayload.methodName = "google.cloud.run.v1.Services.ReplaceService"
 EOT
   connector_filter = <<EOT
-  logName=~"^projects/${var.project_id}/logs/cloudaudit.googleapis.com" AND -resource.type="k8s_cluster"
+  logName=~"^projects/${data.google_project.project.id}/logs/cloudaudit.googleapis.com" AND -resource.type="k8s_cluster"
 EOT
 }
 
 provider "google" {
-  project = var.project_id
-  region  = var.location
+  region = var.location
 }
 
 provider "google-beta" {
-  project = var.project_id
-  region  = var.location
+  region = var.location
+}
+
+data "google_project" "project" {
 }
 
 provider "sysdig" {
@@ -47,7 +48,7 @@ module "cloud_connector" {
   sysdig_secure_api_token   = var.sysdig_secure_api_token
   sysdig_secure_endpoint    = var.sysdig_secure_endpoint
   connector_pubsub_topic_id = module.connector_project_sink.pubsub_topic_id
-  project_id                = var.project_id
+  project_id                = data.google_project.project.id
 
   #defaults
   naming_prefix = var.naming_prefix
@@ -84,7 +85,7 @@ module "cloud_scanning" {
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
   scanning_pubsub_topic_id = module.scanning_project_sink.pubsub_topic_id
   create_gcr_topic         = var.create_gcr_topic
-  project_id               = var.project_id
+  project_id               = data.google_project.project.id
 
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
   sysdig_secure_api_token    = var.sysdig_secure_api_token
