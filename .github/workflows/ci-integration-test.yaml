@@ -2,13 +2,13 @@ name: CI - Integration Tests
 
 on:
   pull_request:
-#     paths:
-#       - '**.tf'
+     paths:
+       - '**.tf'
   push:
     branches:
       - master
-#     paths:
-#       - '**.tf'
+     paths:
+       - '**.tf'
 concurrency: terraform
 jobs:
   integration_test:
