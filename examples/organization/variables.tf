@@ -9,11 +9,6 @@ variable "organization_domain" {
   description = "Organization domain. e.g. sysdig.com"
 }
 
-variable "project_id" {
-  type        = string
-  description = "organizational member project ID where the secure-for-cloud workload is going to be deployed"
-}
-
 # --------------------------
 # optionals, with defaults
 # --------------------------
