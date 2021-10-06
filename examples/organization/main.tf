@@ -9,13 +9,11 @@ EOT
 }
 
 provider "google" {
-  project = var.project_id
-  region  = var.location
+  region = var.location
 }
 
 provider "google-beta" {
-  project = var.project_id
-  region  = var.location
+  region = var.location
 }
 
 provider "sysdig" {
@@ -26,6 +24,9 @@ provider "sysdig" {
 
 data "google_organization" "org" {
   domain = var.organization_domain
+}
+
+data "google_project" "project" {
 }
 
 data "google_projects" "all_projects" {
@@ -56,7 +57,7 @@ module "cloud_connector" {
   sysdig_secure_endpoint    = var.sysdig_secure_endpoint
   connector_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
   max_instances             = var.max_instances
-  project_id                = var.project_id
+  project_id                = data.google_project.project.id
 
   #defaults
   naming_prefix = var.naming_prefix
@@ -116,7 +117,7 @@ module "cloud_scanning" {
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
   create_gcr_topic         = var.create_gcr_topic
   scanning_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
-  project_id               = var.project_id
+  project_id               = data.google_project.project.id
 
   max_instances = var.max_instances
 }

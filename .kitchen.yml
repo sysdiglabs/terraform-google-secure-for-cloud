@@ -14,3 +14,6 @@ suites:
   - name: single-project
     driver:
       root_module_directory: test/fixtures/single-project
+  - name: organization
+    driver:
+      root_module_directory: test/fixtures/organization

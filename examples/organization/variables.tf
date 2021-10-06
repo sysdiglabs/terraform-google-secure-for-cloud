@@ -9,11 +9,6 @@ variable "organization_domain" {
   description = "Organization domain. e.g. sysdig.com"
 }
 
-variable "project_id" {
-  type        = string
-  description = "organizational member project ID where the secure-for-cloud workload is going to be deployed"
-}
-
 # --------------------------
 # optionals, with defaults
 # --------------------------
@@ -35,7 +30,7 @@ variable "naming_prefix" {
   default     = "sfc"
 
   validation {
-    condition     = can(regex("^[a-z0-9_]+$", var.naming_prefix))
+    condition     = can(regex("^[a-z0-9]+$", var.naming_prefix))
     error_message = "ERROR: Invalid naming_prefix. must contain only lowercase letters (a-z) and numbers (0-9)."
   }
 }
@@ -50,6 +45,12 @@ variable "benchmark_project_ids" {
   default     = []
   type        = list(string)
   description = "Google cloud project IDs to run Benchmarks on"
+}
+
+variable "benchmark_regions" {
+  type        = list(string)
+  description = "List of regions in which to run benchmarks. If empty, the task will contain all regions by default."
+  default     = []
 }
 
 variable "create_gcr_topic" {

@@ -4,11 +4,13 @@ resource "random_string" "random" {
   upper   = false
 }
 
-module "sfc_example_single_project" {
-  source = "../../../examples/single-project"
 
+module "sfc_example_organization" {
+  source = "../../../examples/organization"
+
+  organization_domain     = var.organization_domain
   sysdig_secure_api_token = var.sysdig_secure_api_token
+  create_gcr_topic        = false
   naming_prefix           = "sfc${random_string.random.result}"
-  #create_gcr_topic        = false
-  create_gcr_topic = false
+  #  create_gcr_topic        = false
 }

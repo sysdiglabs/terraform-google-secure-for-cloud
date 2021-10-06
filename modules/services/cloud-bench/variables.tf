@@ -14,7 +14,6 @@ variable "role_name" {
 variable "project_id" {
   type        = string
   description = "ID of project to run the benchmark on"
-  default     = ""
 }
 
 // For organizational
@@ -36,7 +35,6 @@ variable "organization_domain" {
   default     = ""
 }
 
-
 # --------------------------
 # optionals, with defaults
 # --------------------------
@@ -46,7 +44,7 @@ variable "naming_prefix" {
   default     = "sfc"
 
   validation {
-    condition     = can(regex("^[a-z0-9_]+$", var.naming_prefix))
+    condition     = can(regex("^[a-z0-9]+$", var.naming_prefix))
     error_message = "ERROR: Invalid naming_prefix. must contain only lowercase letters (a-z) and numbers (0-9)."
   }
 }
