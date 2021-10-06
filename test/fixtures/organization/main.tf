@@ -4,6 +4,7 @@ resource "random_string" "random" {
   upper   = false
 }
 
+
 module "sfc_example_organization" {
   source = "../../../examples/organization"
 

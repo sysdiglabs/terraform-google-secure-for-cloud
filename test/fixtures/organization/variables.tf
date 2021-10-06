@@ -4,7 +4,6 @@ variable "sysdig_secure_api_token" {
   sensitive   = true
 }
 
-
 variable "organization_domain" {
   type        = string
   description = "GCP organization domiain (e.g. domain.com)"
