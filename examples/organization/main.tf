@@ -28,9 +28,6 @@ data "google_organization" "org" {
   domain = var.organization_domain
 }
 
-data "google_projects" "all_projects" {
-  filter = "parent.id:${data.google_organization.org.org_id} parent.type:organization lifecycleState:ACTIVE"
-}
 
 #######################
 #      CONNECTOR      #
@@ -126,15 +123,14 @@ module "cloud_scanning" {
 #######################
 #      BENCHMARKS     #
 #######################
-locals {
-  benchmark_projects_ids = var.deploy_bench && length(var.benchmark_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.benchmark_project_ids
-}
 
 module "cloud_bench" {
-  for_each = toset(local.benchmark_projects_ids)
-  source   = "../../modules/services/cloud-bench"
+  count  = var.deploy_bench ? 0 : 1
+  source = "../../modules/services/cloud-bench"
 
-  project_id    = each.key
-  naming_prefix = var.naming_prefix
-  regions       = var.benchmark_regions
+  is_organizational   = true
+  organization_domain = var.organization_domain
+  role_name           = var.role_name
+  project_id          = var.project_id
+  regions             = var.regions
 }

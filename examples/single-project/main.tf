@@ -104,7 +104,8 @@ module "cloud_bench" {
   count  = var.deploy_bench ? 1 : 0
   source = "../../modules/services/cloud-bench"
 
-  project_id    = var.project_id
-  naming_prefix = var.naming_prefix
-  regions       = var.benchmark_regions
+  is_organizational = false
+  role_name         = var.role_name
+  project_id        = var.project_id
+  regions           = var.regions
 }

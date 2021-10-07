@@ -13,7 +13,6 @@
   - Useful Terraform development guides | https://www.terraform-best-practices.com
 
 
----
 # Pull Request
 
 ## 1. Check::Pre-Commit
@@ -76,7 +75,6 @@ In order to be able to use this terraform backend aws credentials are configured
 We are running this tests in a personal account until we get access to **draios** GCP projects.
 
 
----
 # Release
 
 - Use **semver** for releases https://semver.org
