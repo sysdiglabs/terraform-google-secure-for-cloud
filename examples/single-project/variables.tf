@@ -4,6 +4,11 @@ variable "sysdig_secure_api_token" {
   description = "Sysdig's Secure API Token"
 }
 
+variable "project_id" {
+  type        = string
+  description = "Project ID where the secure-for-cloud workload is going to be deployed"
+}
+
 # --------------------------
 # optionals, with defaults
 # --------------------------
@@ -40,4 +45,10 @@ variable "benchmark_regions" {
   type        = list(string)
   description = "List of regions in which to run benchmarks. If empty, the task will contain all regions by default."
   default     = []
+}
+
+variable "deploy_bench" {
+  type        = bool
+  description = "whether benchmark module is to be deployed"
+  default     = true
 }

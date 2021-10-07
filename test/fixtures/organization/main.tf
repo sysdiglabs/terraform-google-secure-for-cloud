@@ -12,5 +12,6 @@ module "sfc_example_organization" {
   sysdig_secure_api_token = var.sysdig_secure_api_token
   create_gcr_topic        = false
   naming_prefix           = "sfc${random_string.random.result}"
-  #  create_gcr_topic        = false
+  project_id              = var.project_id
+  deploy_bench            = false
 }

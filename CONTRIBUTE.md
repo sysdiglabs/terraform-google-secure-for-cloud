@@ -65,7 +65,7 @@ $ bundle exec kitchen tests
 ### Terraform Backend
 
 Because CI/CD sometimes fail, we setup the Terraform state to be handled in backend within the AWS `draios-demo` env
-- S3 bucket `kitchen-terraform` 
+- S3 bucket `kitchen-terraform`
 - Dynamo-DB table `kitchen_test` (eu-west-3)
 
 In order to be able to use this terraform backend aws credentials are configured as Github project secret
