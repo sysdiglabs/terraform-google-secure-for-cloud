@@ -123,9 +123,10 @@ module "cloud_scanning" {
 #######################
 
 module "cloud_bench" {
-  source            = "../../modules/services/cloud-bench"
-  is_organizational = true
-  role_name         = var.role_name
-  project_id        = data.google_project.project.id
-  regions           = var.regions
+  source              = "../../modules/services/cloud-bench"
+  is_organizational   = true
+  organization_domain = var.organization_domain
+  role_name           = var.role_name
+  project_id          = data.google_project.project.id
+  regions             = var.regions
 }
