@@ -13,4 +13,5 @@ module "sfc_example_organization" {
   create_gcr_topic        = false
   naming_prefix           = "sfc${random_string.random.result}"
   project_id              = var.project_id
+  deploy_bench            = false
 }

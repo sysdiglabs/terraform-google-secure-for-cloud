@@ -101,6 +101,7 @@ module "cloud_scanning" {
 #      BENCHMARKS     #
 #######################
 module "cloud_bench" {
+  count  = var.deploy_bench ? 1 : 0
   source = "../../modules/services/cloud-bench"
 
   project_id    = var.project_id

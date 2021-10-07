@@ -11,4 +11,5 @@ module "sfc_example_single_project" {
   naming_prefix           = "sfc${random_string.random.result}"
   create_gcr_topic        = false
   project_id              = var.project_id
+  deploy_bench            = false
 }

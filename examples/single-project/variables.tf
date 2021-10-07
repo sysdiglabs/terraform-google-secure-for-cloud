@@ -46,3 +46,9 @@ variable "benchmark_regions" {
   description = "List of regions in which to run benchmarks. If empty, the task will contain all regions by default."
   default     = []
 }
+
+variable "deploy_bench" {
+  type        = bool
+  description = "whether benchmark module is to be deployed"
+  default     = true
+}
