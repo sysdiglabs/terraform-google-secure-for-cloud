@@ -13,7 +13,6 @@
   - Useful Terraform development guides | https://www.terraform-best-practices.com
 
 
----
 # Pull Request
 
 ## 1. Check::Pre-Commit
@@ -65,7 +64,7 @@ $ bundle exec kitchen tests
 ### Terraform Backend
 
 Because CI/CD sometimes fail, we setup the Terraform state to be handled in backend within the AWS `draios-demo` env
-- S3 bucket `kitchen-terraform` 
+- S3 bucket `kitchen-terraform`
 - Dynamo-DB table `kitchen_test` (eu-west-3)
 
 In order to be able to use this terraform backend aws credentials are configured as Github project secret
@@ -76,7 +75,6 @@ In order to be able to use this terraform backend aws credentials are configured
 We are running this tests in a personal account until we get access to **draios** GCP projects.
 
 
----
 # Release
 
 - Use **semver** for releases https://semver.org

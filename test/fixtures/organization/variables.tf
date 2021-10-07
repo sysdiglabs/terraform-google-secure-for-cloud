@@ -8,3 +8,8 @@ variable "organization_domain" {
   type        = string
   description = "GCP organization domiain (e.g. domain.com)"
 }
+
+variable "project_id" {
+  type        = string
+  description = "Organization member project ID where the secure-for-cloud workload is going to be deployed"
+}

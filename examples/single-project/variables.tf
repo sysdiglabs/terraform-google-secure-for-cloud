@@ -4,6 +4,11 @@ variable "sysdig_secure_api_token" {
   description = "Sysdig's Secure API Token"
 }
 
+variable "project_id" {
+  type        = string
+  description = "Project ID where the secure-for-cloud workload is going to be deployed"
+}
+
 # --------------------------
 # optionals, with defaults
 # --------------------------
@@ -46,4 +51,10 @@ variable "role_name" {
   type        = string
   description = "The name of the Service Account that will be created."
   default     = "sysdigcloudbench"
+}
+
+variable "deploy_bench" {
+  type        = bool
+  description = "whether benchmark module is to be deployed"
+  default     = true
 }
