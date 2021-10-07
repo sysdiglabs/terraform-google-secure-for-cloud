@@ -4,14 +4,14 @@ variable "regions" {
   default     = []
 }
 
-// For single project
+# For single project
 variable "project_id" {
   type        = string
   description = "ID of project to run the benchmark on"
   default     = ""
 }
 
-// For organizational
+# For organizational
 variable "project_ids" {
   type        = list(string)
   description = "IDs of projects to run the benchmark on"

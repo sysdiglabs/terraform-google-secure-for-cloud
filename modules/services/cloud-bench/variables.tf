@@ -10,13 +10,13 @@ variable "role_name" {
   default     = "sysdigcloudbench"
 }
 
-// For single project
+#For single project
 variable "project_id" {
   type        = string
   description = "ID of project to run the benchmark on"
 }
 
-// For organizational
+# For organizational
 variable "project_ids" {
   type        = list(string)
   description = "IDs of projects to run the benchmark on"
@@ -33,18 +33,4 @@ variable "organization_domain" {
   type        = string
   description = "Organization domain. e.g. sysdig.com"
   default     = ""
-}
-
-# --------------------------
-# optionals, with defaults
-# --------------------------
-variable "naming_prefix" {
-  type        = string
-  description = "Naming prefix for all the resources created"
-  default     = "sfc"
-
-  validation {
-    condition     = can(regex("^[a-z0-9]+$", var.naming_prefix))
-    error_message = "ERROR: Invalid naming_prefix. must contain only lowercase letters (a-z) and numbers (0-9)."
-  }
 }

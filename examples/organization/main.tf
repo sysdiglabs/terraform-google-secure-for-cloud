@@ -29,10 +29,6 @@ data "google_organization" "org" {
 data "google_project" "project" {
 }
 
-data "google_projects" "all_projects" {
-  filter = "parent.id:${data.google_organization.org.org_id} parent.type:organization lifecycleState:ACTIVE"
-}
-
 #######################
 #      CONNECTOR      #
 #######################
@@ -125,14 +121,11 @@ module "cloud_scanning" {
 #######################
 #      BENCHMARKS     #
 #######################
-locals {
-  benchmark_projects_ids = length(var.benchmark_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.benchmark_project_ids
-}
 
 module "cloud_bench" {
   source            = "../../modules/services/cloud-bench"
   is_organizational = true
   role_name         = var.role_name
-  project_id        = var.project_id
+  project_id        = data.google_project.project.id
   regions           = var.regions
 }

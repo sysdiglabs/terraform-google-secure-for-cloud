@@ -105,7 +105,6 @@ module "cloud_bench" {
   source            = "../../modules/services/cloud-bench"
   is_organizational = false
   role_name         = var.role_name
-  project_id        = var.project_id
+  project_id        = data.google_project.project.id
   regions           = var.regions
-  naming_prefix     = var.naming_prefix
 }
