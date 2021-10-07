@@ -50,7 +50,7 @@ resource "sysdig_secure_benchmark_task" "benchmark_task" {
 resource "google_service_account" "sa" {
   project = var.project_id
 
-  account_id   = "${var.naming_prefix}_cloudbench"
+  account_id   = "${var.naming_prefix}-cloudbench"
   display_name = "Service account for cloud-bench"
 }
 

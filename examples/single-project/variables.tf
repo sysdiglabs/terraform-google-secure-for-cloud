@@ -4,6 +4,11 @@ variable "sysdig_secure_api_token" {
   description = "Sysdig's Secure API Token"
 }
 
+variable "project_id" {
+  type        = string
+  description = "Project ID where the secure-for-cloud workload is going to be deployed"
+}
+
 # --------------------------
 # optionals, with defaults
 # --------------------------
