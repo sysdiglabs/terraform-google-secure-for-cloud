@@ -1,6 +1,6 @@
 resource "google_cloud_run_service" "cloud_scanning" {
   location = var.location
-  name     = "${var.naming_prefix}-cloud-scanning"
+  name     = "${var.name}-cloud-scanning"
 
   lifecycle {
     # We ignore changes in some annotations Cloud Run adds to the resource so we can
@@ -54,7 +54,7 @@ resource "google_cloud_run_service" "cloud_scanning" {
 }
 
 resource "google_eventarc_trigger" "trigger" {
-  name            = "${var.naming_prefix}-cloud-scanning-trigger"
+  name            = "${var.name}-cloud-scanning-trigger"
   location        = var.location
   service_account = var.cloud_scanning_sa_email
   matching_criteria {

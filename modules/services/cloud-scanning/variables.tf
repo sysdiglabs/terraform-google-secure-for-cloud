@@ -64,14 +64,14 @@ variable "extra_envs" {
   description = "Extra environment variables for the Cloud Scanning instance"
 }
 
-variable "naming_prefix" {
+variable "name" {
   type        = string
   description = "Naming prefix for all the resources created"
   default     = "sfc"
 
   validation {
-    condition     = can(regex("^[a-z0-9_]+$", var.naming_prefix))
-    error_message = "ERROR: Invalid naming_prefix. must contain only lowercase letters (a-z) and numbers (0-9)."
+    condition     = can(regex("^[a-z0-9_]+$", var.name))
+    error_message = "ERROR: Invalid name. must contain only lowercase letters (a-z) and numbers (0-9)."
   }
 }
 

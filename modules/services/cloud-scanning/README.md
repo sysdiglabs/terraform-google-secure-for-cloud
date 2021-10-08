@@ -65,7 +65,7 @@ No modules.
 | <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Cloud scanning image to deploy | `string` | `"gcr.io/mateo-burillo-ns/cloud-scanning:latest"` | no |
 | <a name="input_location"></a> [location](#input\_location) | Zone where the cloud scanning will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the Cloud Scanning | `number` | `1` | no |
-| <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Naming prefix for all the resources created | `string` | `"sfc"` | no |
+| <a name="input_name"></a> [name](#input\_name) | Naming prefix for all the resources created | `string` | `"sfc"` | no |
 | <a name="input_verify_ssl"></a> [verify\_ssl](#input\_verify\_ssl) | Verify the SSL certificate of the Secure endpoint | `bool` | `true` | no |
 
 ## Outputs

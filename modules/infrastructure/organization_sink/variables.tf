@@ -12,7 +12,7 @@ variable "organization_id" {
 # --------------------------
 # optionals, with defaults
 # --------------------------
-variable "naming_prefix" {
+variable "name" {
   type        = string
   description = "Naming prefix for all the resources created"
   default     = "sfc"
