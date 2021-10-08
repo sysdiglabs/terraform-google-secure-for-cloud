@@ -134,7 +134,7 @@ locals {
 }
 
 module "cloud_bench" {
-  count  = var.deploy_bench ? 0 : 1
+  count  = var.deploy_bench ? 1 : 0
   source = "../../modules/services/cloud-bench"
 
   is_organizational   = true
