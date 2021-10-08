@@ -7,8 +7,8 @@
     - scan
     - docs
 - Maintain example **diagrams** for a better understanding of the architecture and Sysdig secure resources
-  - example diagram-as-code | https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/blob/master/examples/single-account/diagram-single.py
-  - resulting diagram | https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/blob/master/examples/single-account/diagram-single.png
+  - example diagram-as-code | https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project/diagram-single.py
+  - resulting diagram | https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project/diagram-single.png
 - Utilities
   - Useful Terraform development guides | https://www.terraform-best-practices.com
 
@@ -67,7 +67,7 @@ Because CI/CD sometimes fail, we setup the Terraform state to be handled in back
 - S3 bucket `kitchen-terraform`
 - Dynamo-DB table `kitchen_test` (eu-west-3)
 
-In order to be able to use this terraform backend aws credentials are configured as Github project secret
+In order to be able to use this Terraform backend AWS credentials are configured as Github project secret
 
 
 ### Deployed infrastructure resources (consolidation WIP)
