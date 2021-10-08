@@ -20,7 +20,7 @@ locals {
 
 resource "sysdig_secure_cloud_account" "cloud_account" {
   account_id     = data.google_project.project.number
-  alias          = data.google_project.project.name
+  alias          = data.google_project.project.id
   cloud_provider = "gcp"
   role_enabled   = "true"
   role_name      = var.role_name
