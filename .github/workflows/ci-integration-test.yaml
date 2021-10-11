@@ -9,6 +9,7 @@ on:
       - master
     paths:
       - '**.tf'
+  workflow_dispatch:
 concurrency: terraform
 jobs:
   integration_test:
