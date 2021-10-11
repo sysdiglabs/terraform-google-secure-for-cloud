@@ -92,7 +92,7 @@ module "cloud_scanning" {
   sysdig_secure_endpoint     = var.sysdig_secure_endpoint
 
   #defaults
-  name       = var.name
+  name       = "${var.name}-cloudscanning"
   verify_ssl = local.verify_ssl
 }
 

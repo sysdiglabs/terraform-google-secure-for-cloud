@@ -7,6 +7,6 @@ variable "filter" {
 # Vars with defaults
 variable "name" {
   type        = string
-  description = "Naming prefix for all the resources created"
+  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
   default     = "sfc"
 }

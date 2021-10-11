@@ -32,7 +32,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_cloud_scanning_sa_email"></a> [cloud\_scanning\_sa\_email](#input\_cloud\_scanning\_sa\_email) | Cloud-scanning SA email | `string` | n/a | yes |
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
-| <a name="input_name"></a> [name](#input\_name) | Naming prefix for all the resources created | `string` | `"sfc"` | no |
+| <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc"` | no |
 
 ## Outputs
 
