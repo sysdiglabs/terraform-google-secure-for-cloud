@@ -8,14 +8,25 @@ EOT
 EOT
 }
 
+# This provider is project specific, and can only be used to provision resources in the
+# specified project. Primarily used for Cloud Connector and Cloud Scanning
 provider "google" {
   project = var.project_id
   region  = var.location
 }
 
+# This provider is project agnostic, and can be used to provision resources in any project,
+# provided the project is specified on the resource. Primarily used for Benchmarks
+provider "google" {
+  alias  = "multiproject"
+  region = var.location
+}
+
+# This provider is project agnostic, and can be used to provision resources in any project,
+# provided the project is specified on the resource. Primarily used for Benchmarks
 provider "google-beta" {
-  project = var.project_id
-  region  = var.location
+  alias  = "multiproject"
+  region = var.location
 }
 
 provider "sysdig" {
@@ -134,6 +145,11 @@ locals {
 }
 
 module "cloud_bench" {
+  providers = {
+    google      = google.multiproject
+    google-beta = google-beta.multiproject
+  }
+
   count  = var.deploy_bench ? 1 : 0
   source = "../../modules/services/cloud-bench"
 
