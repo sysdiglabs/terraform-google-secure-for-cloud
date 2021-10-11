@@ -6,7 +6,9 @@ All the resources will be run in a single project.
 ![single project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project/diagram-single.png?raw=true)
 
 ## Prerequisites
-The following GCP APIs **must** be enabled to deploy resources correctly for:
+
+**You must have _owner_ role in your GCP project to deploy the resources properly.**
+Besides, the following GCP APIs **must** be enabled to deploy resources correctly for:
 
 ##### Cloud Connector
 * [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)

@@ -8,7 +8,8 @@ Sysdig workload will be deployed in the `project_id` defined in the required inp
 
 
 ## Prerequisites
-The following GCP APIs **must** be enabled to deploy resources correctly for:
+**You must have _owner and organization admin_ role in your GCP organization and your project.**
+Besides, the following GCP APIs **must** be enabled to deploy resources correctly for:
 
   ##### Cloud Connector
 * [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
