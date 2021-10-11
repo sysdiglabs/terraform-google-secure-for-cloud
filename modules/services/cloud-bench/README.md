@@ -27,8 +27,8 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_task"></a> [task](#module\_task) | ./task | n/a |
-| <a name="module_trust_relationship"></a> [trust\_relationship](#module\_trust\_relationship) | ./trust_relationship | n/a |
+| <a name="module_task"></a> [task](#module\_task) | ./task |  |
+| <a name="module_trust_relationship"></a> [trust\_relationship](#module\_trust\_relationship) | ./trust_relationship |  |
 
 ## Resources
 
