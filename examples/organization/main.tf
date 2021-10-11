@@ -28,6 +28,10 @@ data "google_organization" "org" {
   domain = var.organization_domain
 }
 
+data "google_projects" "all_projects" {
+  filter = "parent.id:${data.google_organization.org.org_id} parent.type:organization lifecycleState:ACTIVE"
+}
+
 
 #######################
 #      CONNECTOR      #
@@ -77,7 +81,8 @@ resource "google_organization_iam_custom_role" "org_gcr_image_puller" {
   description = "Allows pulling GCR images from all accounts in the organization"
   permissions = [
     "storage.objects.get",
-  "storage.objects.list"]
+    "storage.objects.list"
+  ]
 }
 
 resource "google_organization_iam_member" "organization_image_puller" {
@@ -124,13 +129,17 @@ module "cloud_scanning" {
 #      BENCHMARKS     #
 #######################
 
+locals {
+  benchmark_projects_ids = length(var.benchmark_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.benchmark_project_ids
+}
+
 module "cloud_bench" {
-  count  = var.deploy_bench ? 0 : 1
+  count  = var.deploy_bench ? 1 : 0
   source = "../../modules/services/cloud-bench"
 
   is_organizational   = true
   organization_domain = var.organization_domain
   role_name           = var.role_name
-  project_id          = var.project_id
-  regions             = var.regions
+  regions             = var.benchmark_regions
+  project_ids         = local.benchmark_projects_ids
 }

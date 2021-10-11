@@ -14,6 +14,7 @@ variable "role_name" {
 variable "project_id" {
   type        = string
   description = "ID of project to run the benchmark on"
+  default     = ""
 }
 
 # For organizational
