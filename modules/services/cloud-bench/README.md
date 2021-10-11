@@ -18,6 +18,8 @@ module "cloud_benchmark_gcp" {
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.67.0 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | >= 3.67.0 |
+| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 0.5.21 |
 
 ## Providers
 
@@ -27,8 +29,8 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_task"></a> [task](#module\_task) | ./task |  |
-| <a name="module_trust_relationship"></a> [trust\_relationship](#module\_trust\_relationship) | ./trust_relationship |  |
+| <a name="module_task"></a> [task](#module\_task) | ./task | n/a |
+| <a name="module_trust_relationship"></a> [trust\_relationship](#module\_trust\_relationship) | ./trust_relationship | n/a |
 
 ## Resources
 
