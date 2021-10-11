@@ -66,13 +66,13 @@ variable "extra_envs" {
 
 variable "name" {
   type        = string
-  description = "Naming prefix for all the resources created"
+  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
   default     = "sfc"
 
-  validation {
-    condition     = can(regex("^[a-z0-9_]+$", var.name))
-    error_message = "ERROR: Invalid name. must contain only lowercase letters (a-z) and numbers (0-9)."
-  }
+  #  validation {
+  #    condition     = can(regex("^[a-z0-9_]+$", var.name))
+  #    error_message = "ERROR: Invalid name. must contain only lowercase letters (a-z) and numbers (0-9)."
+  #  }
 }
 
 variable "max_instances" {
