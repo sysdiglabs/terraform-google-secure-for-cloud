@@ -102,14 +102,16 @@ Notice that:
   https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers#delete-pool
     > You can undelete a pool for up to 30 days after deletion. After 30 days, deletion is permanent. Until a pool is permanently deleted, you cannot reuse its   name when creating a new workload identity pool.<br/>
 
-  S1: Use the `naming_prefix` input variable to create a differet workload identity federation.
+  S1: For the moment, federation workload identity pool+provider have fixed name. In case you want to reuse it, you can reactivate and import it, into your terraform state manually.
   ```bash
-  # re-activate
+  # re-activate pool and provider
   $ gcloud iam workload-identity-pools undelete sysdigcloud  --location=global
+  $ gcloud beta iam workload-identity-pools providers undelete sysdigcloud --workload-identity-pool="sysdigcloud" --location=global
 
   # import to terraform state
-  $ terraform import module.secure-for-cloud_example_single-project.module.cloud_bench.google_iam_workload_identity_pool.pool sysdigcloud
-  $ terraform import module.secure-for-cloud_example_single-project.module.cloud_bench.google_iam_workload_identity_pool_provider.pool_provider sysdigcloud/sysdigcloud
+  # input your project-id, and for organization example, change the import resource accordingly
+  $ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool.pool' sysdigcloud
+  $ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
    ```
 
 
