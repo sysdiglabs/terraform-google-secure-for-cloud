@@ -1,9 +1,9 @@
 resource "google_pubsub_topic" "topic" {
-  name = "${var.naming_prefix}-topic"
+  name = "${var.name}-topic"
 }
 
 resource "google_logging_project_sink" "project_sink" {
-  name                   = "${var.naming_prefix}-project-sink"
+  name                   = "${var.name}-project-sink"
   destination            = "pubsub.googleapis.com/${google_pubsub_topic.topic.id}"
   unique_writer_identity = true
   filter                 = var.filter

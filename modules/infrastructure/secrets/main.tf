@@ -1,5 +1,5 @@
 resource "google_secret_manager_secret" "secure_api_secret" {
-  secret_id = "${var.naming_prefix}-sysdig-secure-api-secret"
+  secret_id = "${var.name}-sysdig-secure-api-secret"
   replication {
     automatic = true
   }

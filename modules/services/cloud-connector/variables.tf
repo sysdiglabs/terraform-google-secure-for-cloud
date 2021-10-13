@@ -53,15 +53,10 @@ variable "extra_envs" {
   description = "Extra environment variables for the Cloud Connector instance"
 }
 
-variable "naming_prefix" {
+variable "name" {
   type        = string
-  description = "Naming prefix for all the resources created"
-  default     = "sfc"
-
-  validation {
-    condition     = can(regex("^[a-z0-9_]+$", var.naming_prefix))
-    error_message = "ERROR: Invalid naming_prefix. must contain only lowercase letters (a-z) and numbers (0-9)."
-  }
+  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
+  default     = "sfc-cloudconnector"
 }
 
 variable "max_instances" {

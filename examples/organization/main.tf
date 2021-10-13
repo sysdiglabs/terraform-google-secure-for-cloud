@@ -48,7 +48,7 @@ data "google_projects" "all_projects" {
 #      CONNECTOR      #
 #######################
 resource "google_service_account" "connector_sa" {
-  account_id   = "${var.naming_prefix}-connector"
+  account_id   = "${var.name}-cloudconnector"
   display_name = "Service account for cloud-connector"
 }
 
@@ -56,7 +56,7 @@ module "connector_organization_sink" {
   source = "../../modules/infrastructure/organization_sink"
 
   organization_id = data.google_organization.org.org_id
-  naming_prefix   = "${var.naming_prefix}-connector"
+  name            = "${var.name}-cloudconnector"
   filter          = local.connector_filter
 }
 
@@ -71,15 +71,15 @@ module "cloud_connector" {
   project_id                = var.project_id
 
   #defaults
-  naming_prefix = var.naming_prefix
-  verify_ssl    = local.verify_ssl
+  name       = "${var.name}-cloudconnector"
+  verify_ssl = local.verify_ssl
 }
 
 #######################
 #       SCANNING      #
 #######################
 resource "google_service_account" "scanning_sa" {
-  account_id   = "${var.naming_prefix}-scanning"
+  account_id   = "${var.name}-cloudscanning"
   display_name = "Service account for cloud-scanning"
 }
 
@@ -87,7 +87,7 @@ resource "google_service_account" "scanning_sa" {
 resource "google_organization_iam_custom_role" "org_gcr_image_puller" {
   org_id = data.google_organization.org.org_id
 
-  role_id     = "${var.naming_prefix}_gcr_image_puller"
+  role_id     = "${var.name}_gcr_image_puller"
   title       = "Sysdig GCR Image Puller"
   description = "Allows pulling GCR images from all accounts in the organization"
   permissions = [
@@ -107,7 +107,7 @@ module "scanning_organization_sink" {
   source = "../../modules/infrastructure/organization_sink"
 
   organization_id = data.google_organization.org.org_id
-  naming_prefix   = "${var.naming_prefix}-scanning"
+  name            = "${var.name}-cloudscanning"
   filter          = local.scanning_filter
 }
 
@@ -116,13 +116,13 @@ module "secure_secrets" {
 
   cloud_scanning_sa_email = google_service_account.scanning_sa.email
   sysdig_secure_api_token = var.sysdig_secure_api_token
-  naming_prefix           = var.naming_prefix
+  name                    = var.name
 }
 
 module "cloud_scanning" {
   source = "../../modules/services/cloud-scanning"
 
-  naming_prefix              = var.naming_prefix
+  name                       = "${var.name}-cloudscanning"
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
   sysdig_secure_api_token    = var.sysdig_secure_api_token
   sysdig_secure_endpoint     = var.sysdig_secure_endpoint

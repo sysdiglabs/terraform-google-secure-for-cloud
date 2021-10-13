@@ -29,14 +29,14 @@ variable "sysdig_secure_endpoint" {
   description = "Sysdig Secure API endpoint"
 }
 
-variable "naming_prefix" {
+variable "name" {
   type        = string
-  description = "Naming prefix for all the resources created"
+  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
   default     = "sfc"
 
   validation {
-    condition     = can(regex("^[a-z0-9]+$", var.naming_prefix))
-    error_message = "ERROR: Invalid naming_prefix. must contain only lowercase letters (a-z) and numbers (0-9)."
+    condition     = can(regex("^[a-z0-9]+$", var.name))
+    error_message = "ERROR: Invalid name. must contain only lowercase letters (a-z) and numbers (0-9)."
   }
 }
 
