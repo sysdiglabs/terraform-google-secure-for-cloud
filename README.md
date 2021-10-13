@@ -17,7 +17,12 @@ For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-a
 <br/>
 
 ## Prerequisites
-The following GCP APIs **must** be enabled to deploy resources correctly for:
+
+You **must** have following **roles** in your GCP credentials
+* _Owner_
+* _Organization Admin_ (organizational usage only)
+
+Besides, the following GCP **APIs must be enabled** to deploy resources correctly for:
 
 ##### Cloud Connector
 * [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
