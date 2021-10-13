@@ -12,12 +12,12 @@ You **must** have following **roles** in your GCP organization/project credentia
 
 Besides, the following GCP **APIs must be enabled** to deploy resources correctly for:
 
-##### Cloud Connector
+### Cloud Connector
 * [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
 * [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
 * [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
 
-##### Cloud Scanning
+### Cloud Scanning
 * [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
 * [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
 * [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
@@ -25,14 +25,15 @@ Besides, the following GCP **APIs must be enabled** to deploy resources correctl
 * [Cloud Build API](https://console.cloud.google.com/marketplace/product/google/cloudbuild.googleapis.com)
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 
- ##### Cloud Benchmarks
+ ### Cloud Benchmarks
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 * [IAM Service Account Credentials API](https://console.cloud.google.com/marketplace/product/google/iamcredentials.googleapis.com)
 * [Cloud Resource Manager API](https://console.cloud.google.com/marketplace/product/google/cloudresourcemanager.googleapis.com)
 * [Security Token Service API](https://console.cloud.google.com/marketplace/product/google/sts.googleapis.com)
 
 
-##Usage
+## Usage
+
 For quick testing, use this snippet on your terraform files
 
 ```
