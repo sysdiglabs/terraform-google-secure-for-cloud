@@ -30,7 +30,7 @@ resource "google_pubsub_topic" "gcr" {
 resource "google_eventarc_trigger" "gcr" {
   count = length(local.gcr_topic_id[*]) > 0 ? 1 : 0
   # We won't try to deploy this trigger if the GCR topic doesn't exist
-  name            = "${var.name}-cloud-scanning-trigger-gcr"
+  name            = "${var.name}-trigger-gcr"
   location        = var.location
   service_account = var.cloud_scanning_sa_email
   matching_criteria {

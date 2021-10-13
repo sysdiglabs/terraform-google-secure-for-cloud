@@ -37,7 +37,7 @@ locals {
 }
 resource "google_cloud_run_service" "cloud_connector" {
   location = var.location
-  name     = "${var.name}-cloud-connector"
+  name     = var.name
 
   lifecycle {
     # We ignore changes in some annotations Cloud Run adds to the resource so we can
@@ -91,7 +91,7 @@ resource "google_cloud_run_service" "cloud_connector" {
 }
 
 resource "google_eventarc_trigger" "trigger" {
-  name            = "${var.name}-cloud-connector-trigger"
+  name            = "${var.name}-trigger"
   location        = var.location
   service_account = var.cloud_connector_sa_email
   matching_criteria {

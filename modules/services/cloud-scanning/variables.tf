@@ -68,11 +68,6 @@ variable "name" {
   type        = string
   description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
   default     = "sfc-cloudscanning"
-
-  #  validation {
-  #    condition     = can(regex("^[a-z0-9_-]+$", var.name))
-  #    error_message = "ERROR: Invalid name. must contain only upper/lowercase letters (a-z) and numbers (0-9)."
-  #  }
 }
 
 variable "max_instances" {

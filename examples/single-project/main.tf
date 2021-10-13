@@ -37,12 +37,13 @@ resource "google_service_account" "connector_sa" {
 module "connector_project_sink" {
   source = "../../modules/infrastructure/project_sink"
   name   = "${var.name}-cloudconnector"
+
   filter = local.connector_filter
 }
 
 module "cloud_connector" {
   source = "../../modules/services/cloud-connector"
-
+  name   = "${var.name}-cloudconnector"
 
   cloud_connector_sa_email  = google_service_account.connector_sa.email
   sysdig_secure_api_token   = var.sysdig_secure_api_token
@@ -51,7 +52,6 @@ module "cloud_connector" {
   project_id                = var.project_id
 
   #defaults
-  name       = "${var.name}-cloudconnector"
   verify_ssl = local.verify_ssl
 }
 
@@ -66,10 +66,10 @@ resource "google_service_account" "scanning_sa" {
 
 module "secure_secrets" {
   source = "../../modules/infrastructure/secrets"
+  name   = "${var.name}-cloudscanning"
 
   cloud_scanning_sa_email = google_service_account.scanning_sa.email
   sysdig_secure_api_token = var.sysdig_secure_api_token
-  name                    = var.name
 }
 
 module "scanning_project_sink" {
@@ -81,6 +81,7 @@ module "scanning_project_sink" {
 # disable for testing purpose
 module "cloud_scanning" {
   source = "../../modules/services/cloud-scanning"
+  name   = "${var.name}-cloudscanning"
 
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
   scanning_pubsub_topic_id = module.scanning_project_sink.pubsub_topic_id
@@ -92,7 +93,6 @@ module "cloud_scanning" {
   sysdig_secure_endpoint     = var.sysdig_secure_endpoint
 
   #defaults
-  name       = "${var.name}-cloudscanning"
   verify_ssl = local.verify_ssl
 }
 
