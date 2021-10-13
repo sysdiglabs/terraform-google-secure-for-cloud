@@ -1,11 +1,18 @@
 locals {
   gcr_topic_id = var.create_gcr_topic ? google_pubsub_topic.gcr[0].id : data.google_pubsub_topic.gcr.id
+
+  # note
+  # topic name is hardcoded by GCP and cannot be changed
+  # resource cannot honor var.name
+  # https://cloud.google.com/container-registry/docs/configuring-notifications
+  # https://cloud.google.com/artifact-registry/docs/configure-notifications
+  gcr_topic_name = "gcr"
 }
 
 data "google_pubsub_topic" "gcr" {
   project = var.project_id
 
-  name = "gcr"
+  name = local.gcr_topic_name
   # MUST exist in the infra of the customer, that's the only topic GCR will publish events to.
 }
 
@@ -23,7 +30,7 @@ resource "google_project_iam_member" "builder" {
 
 resource "google_pubsub_topic" "gcr" {
   count = var.create_gcr_topic ? 1 : 0
-  name  = "gcr"
+  name  = local.gcr_topic_name
 }
 
 #new
