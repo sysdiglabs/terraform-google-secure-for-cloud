@@ -111,7 +111,7 @@ Notice that:
   ```bash
   # re-activate pool and provider
   $ gcloud iam workload-identity-pools undelete sysdigcloud  --location=global
-  $ gcloud beta iam workload-identity-pools providers undelete sysdigcloud --workload-identity-pool="sysdigcloud" --location=global
+  $ gcloud iam workload-identity-pools providers undelete sysdigcloud --workload-identity-pool="sysdigcloud" --location=global
 
   # import to terraform state
   # input your project-id, and for organization example, change the import resource accordingly
