@@ -6,9 +6,10 @@
     - bench
     - scan
     - docs
+    - tests
 - Maintain example **diagrams** for a better understanding of the architecture and Sysdig secure resources
-  - example diagram-as-code | https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project/diagram-single.py
-  - resulting diagram | https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project/diagram-single.png
+  - example diagram-as-code (check for `diagram.py` within the examples)
+  - resulting diagram (check for `diagram.png` within the examples)
 - Utilities
   - Useful Terraform development guides | https://www.terraform-best-practices.com
 
@@ -63,16 +64,13 @@ $ bundle exec kitchen tests
 
 ### Terraform Backend
 
-Because CI/CD sometimes fail, we setup the Terraform state to be handled in backend within the AWS `draios-demo` env
-- S3 bucket `kitchen-terraform`
-- Dynamo-DB table `kitchen_test` (eu-west-3)
-
+Because CI/CD sometimes fail, we setup the Terraform state to be handled in backend (s3+dynamo) within the Sysdig AWS backend (sysdig-test-account).
 In order to be able to use this Terraform backend AWS credentials are configured as Github project secret
 
 
-### Deployed infrastructure resources (consolidation WIP)
+### Deployed infrastructure resources
 
-We are running this tests in a personal account until we get access to **draios** GCP projects.
+Check project github secrets for clarification
 
 
 # Release
