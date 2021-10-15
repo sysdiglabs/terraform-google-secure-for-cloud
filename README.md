@@ -122,6 +122,11 @@ Notice that:
 - Q2: Scanning does not seem to work<br/>
   A2: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is ommited and won't be deployed. For more info see GCR PubSub topic.
 
+- Q3: Scanning, I get an error saying:
+  ```
+  error starting scan runner for image ****: rpc error: code = PermissionDenied desc = Cloud Build API has not been used in project *** before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/cloudbuild.googleapis.com/overview?project=*** then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry
+  ```
+  A3: Do as the error says and activate CloudBuild API. Check the list of all the required APIs that need to be activated per feature module.
 
 
 <br/><br/>
