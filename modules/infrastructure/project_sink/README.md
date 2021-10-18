@@ -38,6 +38,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_pubsub_topic_id"></a> [pubsub\_topic\_id](#output\_pubsub\_topic\_id) | Cloud Connector PubSub single account topic id |
+| <a name="output_pubsub_topic_name"></a> [pubsub\_topic\_name](#output\_pubsub\_topic\_name) | Cloud Connector PubSub single account topic name |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Authors
