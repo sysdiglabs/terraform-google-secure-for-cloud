@@ -119,10 +119,6 @@ module "secure_secrets" {
   name                    = var.name
 }
 
-data "google_projects" "my-org-projects" {
-  filter = "parent.id:012345678910 lifecycleState:DELETE_REQUESTED"
-}
-
 module "cloud_scanning" {
   source = "../../modules/services/cloud-scanning"
 
