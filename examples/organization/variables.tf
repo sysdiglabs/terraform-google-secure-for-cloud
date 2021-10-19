@@ -14,6 +14,12 @@ variable "project_id" {
   description = "Organization member project ID where the secure-for-cloud workload is going to be deployed"
 }
 
+variable "project_scan_ids" {
+  type        = list(string)
+  description = "Projects where a subscription must be created to pull events from their GCR topics. Warning, the GCR topic must already exist in each provided project."
+  default     = []
+}
+
 # --------------------------
 # optionals, with defaults
 # --------------------------

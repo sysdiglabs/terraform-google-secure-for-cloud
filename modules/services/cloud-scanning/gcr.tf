@@ -33,7 +33,28 @@ resource "google_pubsub_topic" "gcr" {
   name  = local.gcr_topic_name
 }
 
+
+resource "google_pubsub_subscription" "gcr" {
+  for_each = toset(var.project_scan_ids)
+  name     = "${var.name}-gcr-${each.key}"
+  topic    = "projects/${each.key}/topics/${local.gcr_topic_name}"
+
+  ack_deadline_seconds = 10
+
+  push_config {
+    push_endpoint = "${google_cloud_run_service.cloud_scanning.status.url}/gcr_scanning}"
+    oidc_token {
+      service_account_email = var.cloud_scanning_sa_email
+    }
+  }
+  retry_policy {
+    minimum_backoff = "10s"
+    maximum_backoff = "300s"
+  }
+}
+
 #new
+/*
 resource "google_eventarc_trigger" "gcr" {
   count = length(local.gcr_topic_id[*]) > 0 ? 1 : 0
   # We won't try to deploy this trigger if the GCR topic doesn't exist
@@ -57,3 +78,4 @@ resource "google_eventarc_trigger" "gcr" {
     }
   }
 }
+*/

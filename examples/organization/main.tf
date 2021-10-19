@@ -119,6 +119,10 @@ module "secure_secrets" {
   name                    = var.name
 }
 
+data "google_projects" "my-org-projects" {
+  filter = "parent.id:012345678910 lifecycleState:DELETE_REQUESTED"
+}
+
 module "cloud_scanning" {
   source = "../../modules/services/cloud-scanning"
 
@@ -132,6 +136,8 @@ module "cloud_scanning" {
   create_gcr_topic         = var.create_gcr_topic
   scanning_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
   project_id               = var.project_id
+
+  project_scan_ids = length(var.project_scan_ids) == 0 ? [var.project_id] : var.project_scan_ids
 
   max_instances = var.max_instances
 }
