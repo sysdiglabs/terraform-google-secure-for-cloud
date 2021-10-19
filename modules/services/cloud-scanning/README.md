@@ -5,14 +5,16 @@ deployment that trigger image scans based on changes in your infrastructure.
 
 ## Usage
 
-```hcl
+```terraform
 module "cloud_scanning_gcp" {
   source = "sysdiglabs/secure-for-cloud/google/services/cloud-scanning"
 
-  create_gcr_topic        = true
-  # Set to "false" if there's an existing PubSub topic called "gcr"
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
   sysdig_secure_endpoint  = "https://secure.sysdig.com"
+  project_scan_ids        = ["project-id-to-scan"]
+
+  # Set to "false" if there's an existing PubSub topic called "gcr"
+  create_gcr_topic = true
 }
 ```
 
@@ -65,7 +67,7 @@ No modules.
 | <a name="input_location"></a> [location](#input\_location) | Zone where the cloud scanning will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the Cloud Scanning | `number` | `1` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc-cloudscanning"` | no |
-| <a name="input_project_scan_ids"></a> [project\_scan\_ids](#input\_project\_scan\_ids) | Projects where a subscription must be created to pull events from their GCR topics. Warning, the GCR topic must already exist in each provided project. | `list(string)` | `[]` | no |
+| <a name="input_project_scan_ids"></a> [project\_scan\_ids](#input\_project\_scan\_ids) | Projects where a subscription must be created to pull events from their GCR topics to scan their images. Warning, a topic called `gcr` must already exist in each provided project. | `list(string)` | `[]` | no |
 | <a name="input_verify_ssl"></a> [verify\_ssl](#input\_verify\_ssl) | Verify the SSL certificate of the Secure endpoint | `bool` | `true` | no |
 
 ## Outputs

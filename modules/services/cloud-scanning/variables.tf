@@ -78,6 +78,6 @@ variable "max_instances" {
 
 variable "project_scan_ids" {
   type        = list(string)
-  description = "Projects where a subscription must be created to pull events from their GCR topics. Warning, the GCR topic must already exist in each provided project."
+  description = "Projects where a subscription must be created to pull events from their GCR topics to scan their images. Warning, a topic called `gcr` must already exist in each provided project."
   default     = []
 }

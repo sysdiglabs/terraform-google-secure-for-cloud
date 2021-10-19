@@ -129,11 +129,10 @@ module "cloud_scanning" {
   verify_ssl                 = local.verify_ssl
 
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
-  create_gcr_topic         = var.create_gcr_topic
   scanning_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
   project_id               = var.project_id
-
-  project_scan_ids = length(var.project_scan_ids) == 0 ? [var.project_id] : var.project_scan_ids
+  create_gcr_topic         = false # We assume all the project_scan_ids have a topic created called gcr
+  project_scan_ids         = var.project_scan_ids
 
   max_instances = var.max_instances
 }
