@@ -4,6 +4,10 @@ resource "random_string" "random" {
   upper   = false
 }
 
+resource "google_pubsub_topic" "gcr" {
+  project = var.project_id
+  name    = "gcr"
+}
 
 module "sfc_example_organization" {
   source = "../../../examples/organization"
