@@ -17,7 +17,6 @@ variable "project_id" {
 variable "project_scan_ids" {
   type        = list(string)
   description = "Projects where a subscription must be created to pull events from their GCR topics. Warning, the topic called `gcr` must already exist in each provided project."
-  default     = []
 }
 
 # --------------------------

@@ -95,6 +95,7 @@ module "secure-for-cloud_example_organization" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_organization_domain"></a> [organization\_domain](#input\_organization\_domain) | Organization domain. e.g. sysdig.com | `string` | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | Organization member project ID where the secure-for-cloud workload is going to be deployed | `string` | n/a | yes |
+| <a name="input_project_scan_ids"></a> [project\_scan\_ids](#input\_project\_scan\_ids) | Projects where a subscription must be created to pull events from their GCR topics. Warning, the topic called `gcr` must already exist in each provided project. | `list(string)` | n/a | yes |
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_benchmark_project_ids"></a> [benchmark\_project\_ids](#input\_benchmark\_project\_ids) | Google cloud project IDs to run Benchmarks on | `list(string)` | `[]` | no |
 | <a name="input_benchmark_regions"></a> [benchmark\_regions](#input\_benchmark\_regions) | List of regions in which to run the benchmark. If empty, the task will contain all regions by default. | `list(string)` | `[]` | no |
@@ -102,7 +103,6 @@ module "secure-for-cloud_example_organization" {
 | <a name="input_location"></a> [location](#input\_location) | Zone where the stack will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the workloads | `number` | `1` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc"` | no |
-| <a name="input_project_scan_ids"></a> [project\_scan\_ids](#input\_project\_scan\_ids) | Projects where a subscription must be created to pull events from their GCR topics. Warning, the topic called `gcr` must already exist in each provided project. | `list(string)` | `[]` | no |
 | <a name="input_role_name"></a> [role\_name](#input\_role\_name) | The name of the Service Account that will be created. | `string` | `"sysdigcloudbench"` | no |
 | <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig Secure API endpoint | `string` | `"https://secure.sysdig.com"` | no |
 
