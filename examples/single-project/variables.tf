@@ -41,20 +41,22 @@ variable "create_gcr_topic" {
   default     = true
 }
 
-variable "regions" {
-  type        = list(string)
-  description = "List of regions in which to run the benchmark. If empty, the task will contain all regions by default."
-  default     = []
-}
-
-variable "role_name" {
-  type        = string
-  description = "The name of the Service Account that will be created."
-  default     = "sysdigcloudbench"
-}
+# benchmark
 
 variable "deploy_bench" {
   type        = bool
   description = "whether benchmark module is to be deployed"
   default     = true
+}
+
+variable "benchmark_regions" {
+  type        = list(string)
+  description = "List of regions in which to run the benchmark. If empty, the task will contain all regions by default."
+  default     = []
+}
+
+variable "benchmark_role_name" {
+  type        = string
+  description = "The name of the Service Account that will be created."
+  default     = "sysdigcloudbench"
 }

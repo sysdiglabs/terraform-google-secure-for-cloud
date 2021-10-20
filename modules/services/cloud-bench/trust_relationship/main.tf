@@ -47,25 +47,23 @@ resource "google_project_iam_member" "viewer" {
   member = "serviceAccount:${google_service_account.sa.email}"
 }
 
+resource "google_project_iam_member" "custom" {
+  project = var.project_id
+
+  role   = google_project_iam_custom_role.custom.id
+  member = "serviceAccount:${google_service_account.sa.email}"
+}
+
 resource "google_project_iam_custom_role" "custom" {
   project = var.project_id
 
-  role_id     = "sysdigCloudBench"
+  role_id     = var.role_name
   title       = "Sysdig Cloud Benchmark Role"
   description = "A Role providing the required permissions for Sysdig Cloud Benchmarks that are not included in roles/viewer"
   permissions = ["storage.buckets.getIamPolicy"]
 }
 
-resource "google_service_account_iam_binding" "sa_custom_binding" {
-  service_account_id = google_service_account.sa.name
-  role               = google_project_iam_custom_role.custom.id
-
-  members = [
-    "principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.pool.workload_identity_pool_id}/attribute.aws_role/arn:aws:sts::${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id}:assumed-role/${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_role_name}/${local.external_id}",
-  ]
-}
-
-resource "google_service_account_iam_binding" "sa_viewer_binding" {
+resource "google_service_account_iam_binding" "sa_pool_binding" {
   service_account_id = google_service_account.sa.name
   role               = "roles/iam.workloadIdentityUser"
 
