@@ -36,12 +36,13 @@ Besides, the following GCP **APIs must be enabled** to deploy resources correctl
 
 For quick testing, use this snippet on your terraform files
 
-```
+```terraform
 module "secure-for-cloud_example_single-project" {
-  source  = "sysdiglabs/secure-for-cloud/google//examples/single-project"
+  source = "sysdiglabs/secure-for-cloud/google//examples/single-project"
 
-  sysdig_secure_api_token   = "00000000-1111-2222-3333-444444444444"
-  project_id                = "your-project-id"
+
+  sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
+  project_id              = "your-project-id"
 }
 ```
 

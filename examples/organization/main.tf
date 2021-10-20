@@ -92,7 +92,11 @@ resource "google_organization_iam_custom_role" "org_gcr_image_puller" {
   description = "Allows pulling GCR images from all accounts in the organization"
   permissions = [
     "storage.objects.get",
-    "storage.objects.list"
+    "storage.objects.list",
+    "artifactregistry.repositories.get",
+    "artifactregistry.repositories.downloadArtifacts",
+    "artifactregistry.tags.list",
+    "artifactregistry.tags.get"
   ]
 }
 
@@ -129,9 +133,10 @@ module "cloud_scanning" {
   verify_ssl                 = local.verify_ssl
 
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
-  create_gcr_topic         = var.create_gcr_topic
   scanning_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
   project_id               = var.project_id
+  create_gcr_topic         = false # We assume all the project_scan_ids have a topic created called gcr
+  project_scan_ids         = var.project_scan_ids
 
   max_instances = var.max_instances
 }
