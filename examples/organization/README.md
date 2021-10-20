@@ -44,7 +44,8 @@ module "secure-for-cloud_example_organization" {
   source  = "sysdiglabs/secure-for-cloud/google//examples/organization"
 
   sysdig_secure_api_token   = "00000000-1111-2222-3333-444444444444"
-  organization_domain       = "domain.com"
+  project_id                = "your-project-id"
+  organization_domain       = "your-domain.com"
 }
 ```
 
