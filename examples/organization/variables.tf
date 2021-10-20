@@ -63,7 +63,7 @@ variable "benchmark_project_ids" {
   description = "Google cloud project IDs to run Benchmarks on"
 }
 
-variable "role_name" {
+variable "benchmark_role_name" {
   type        = string
   description = "The name of the Service Account that will be created."
   default     = "sysdigcloudbench"

@@ -45,9 +45,10 @@ For quick testing, use this snippet on your terraform files
 module "secure-for-cloud_example_organization" {
   source = "sysdiglabs/secure-for-cloud/google//examples/organization"
 
-  sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
-  organization_domain     = "domain.com"
+  project_id              = "your-project-id"
   project_scan_ids        = ["project-to-scan-1", "project-to-scan-2"]
+  sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
+  organization_domain     = "your-domain.com"
 }
 ```
 
@@ -99,11 +100,11 @@ module "secure-for-cloud_example_organization" {
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_benchmark_project_ids"></a> [benchmark\_project\_ids](#input\_benchmark\_project\_ids) | Google cloud project IDs to run Benchmarks on | `list(string)` | `[]` | no |
 | <a name="input_benchmark_regions"></a> [benchmark\_regions](#input\_benchmark\_regions) | List of regions in which to run the benchmark. If empty, the task will contain all regions by default. | `list(string)` | `[]` | no |
+| <a name="input_benchmark_role_name"></a> [benchmark\_role\_name](#input\_benchmark\_role\_name) | The name of the Service Account that will be created. | `string` | `"sysdigcloudbench"` | no |
 | <a name="input_deploy_bench"></a> [deploy\_bench](#input\_deploy\_bench) | whether benchmark module is to be deployed | `bool` | `true` | no |
 | <a name="input_location"></a> [location](#input\_location) | Zone where the stack will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the workloads | `number` | `1` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc"` | no |
-| <a name="input_role_name"></a> [role\_name](#input\_role\_name) | The name of the Service Account that will be created. | `string` | `"sysdigcloudbench"` | no |
 | <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig Secure API endpoint | `string` | `"https://secure.sysdig.com"` | no |
 
 ## Outputs
