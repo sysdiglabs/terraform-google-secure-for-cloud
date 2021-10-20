@@ -92,7 +92,11 @@ resource "google_organization_iam_custom_role" "org_gcr_image_puller" {
   description = "Allows pulling GCR images from all accounts in the organization"
   permissions = [
     "storage.objects.get",
-    "storage.objects.list"
+    "storage.objects.list",
+    "artifactregistry.repositories.get",
+    "artifactregistry.repositories.downloadArtifacts",
+    "artifactregistry.tags.list",
+    "artifactregistry.tags.get"
   ]
 }
 

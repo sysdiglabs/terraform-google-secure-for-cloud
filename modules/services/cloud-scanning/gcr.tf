@@ -34,7 +34,7 @@ resource "google_pubsub_subscription" "gcr" {
   ack_deadline_seconds = 10
 
   push_config {
-    push_endpoint = "${google_cloud_run_service.cloud_scanning.status[0].url}/gcr_scanning}"
+    push_endpoint = "${google_cloud_run_service.cloud_scanning.status[0].url}/gcr_scanning"
     oidc_token {
       service_account_email = var.cloud_scanning_sa_email
     }
