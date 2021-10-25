@@ -1,3 +1,9 @@
+variable "sysdig_secure_endpoint" {
+  type        = string
+  default     = "https://secure.sysdig.com"
+  description = "Sysdig Secure API endpoint"
+}
+
 variable "sysdig_secure_api_token" {
   type        = string
   description = "Sysdig secure api token"

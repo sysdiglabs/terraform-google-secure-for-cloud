@@ -123,6 +123,15 @@ module "secure_secrets" {
   name                    = var.name
 }
 
+
+#--------------------
+# scanning
+#--------------------
+locals {
+  repository_project_ids = length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids
+}
+
+
 module "cloud_scanning" {
   source = "../../modules/services/cloud-scanning"
 
@@ -135,15 +144,15 @@ module "cloud_scanning" {
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
   scanning_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
   project_id               = var.project_id
-  create_gcr_topic         = false # We assume all the project_scan_ids have a topic created called gcr
-  project_scan_ids         = var.project_scan_ids
+  create_gcr_topic         = var.create_gcr_topic
+  repository_project_ids   = local.repository_project_ids
 
   max_instances = var.max_instances
 }
 
-#######################
-#      BENCHMARKS     #
-#######################
+#--------------------
+# benchmark
+#--------------------
 
 locals {
   benchmark_projects_ids = length(var.benchmark_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.benchmark_project_ids

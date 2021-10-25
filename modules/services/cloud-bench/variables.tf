@@ -20,7 +20,7 @@ variable "project_id" {
 # For organizational
 variable "project_ids" {
   type        = list(string)
-  description = "IDs of projects to run the benchmark on"
+  description = "IDs of projects to run the benchmark on. If empty, all organization projects will be defaulted."
   default     = []
 }
 

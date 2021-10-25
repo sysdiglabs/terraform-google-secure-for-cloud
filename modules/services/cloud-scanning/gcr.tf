@@ -5,6 +5,9 @@ locals {
   # https://cloud.google.com/container-registry/docs/configuring-notifications
   # https://cloud.google.com/artifact-registry/docs/configure-notifications
   gcr_topic_name = "gcr"
+
+  # currently all projects are subject to a single `create_gcr_topic` variable
+  repository_project_ids_create_topic = var.create_gcr_topic ? var.repository_project_ids : []
 }
 
 
@@ -21,13 +24,14 @@ resource "google_project_iam_member" "builder" {
 }
 
 resource "google_pubsub_topic" "gcr" {
-  count = var.create_gcr_topic ? 1 : 0
-  name  = local.gcr_topic_name
+  for_each = toset(local.repository_project_ids_create_topic)
+  name     = local.gcr_topic_name
+  project  = each.key
 }
 
 
 resource "google_pubsub_subscription" "gcr" {
-  for_each = toset(var.project_scan_ids)
+  for_each = toset(var.repository_project_ids)
   name     = "${var.name}-gcr-${each.key}"
   topic    = "projects/${each.key}/topics/${local.gcr_topic_name}"
 

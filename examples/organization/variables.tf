@@ -14,11 +14,6 @@ variable "project_id" {
   description = "Organization member project ID where the secure-for-cloud workload is going to be deployed"
 }
 
-variable "project_scan_ids" {
-  type        = list(string)
-  description = "Projects where a subscription must be created to pull events from their GCR topics. Warning, the topic called `gcr` must already exist in each provided project."
-}
-
 # --------------------------
 # optionals, with defaults
 # --------------------------
@@ -51,6 +46,30 @@ variable "max_instances" {
   default     = 1
 }
 
+
+# scanning
+
+variable "repository_project_ids" {
+  default     = []
+  type        = list(string)
+  description = "Projects were a `gcr`-named topic will be to subscribe to its repository events. If empty, all organization projects will be defaulted."
+}
+
+variable "create_gcr_topic" {
+  type        = bool
+  description = "Deploys a PubSub topic called `gcr` as part of this stack, which is needed for GCR scanning. Set to `true` if it doesn't exist yet. If this is not deployed, and no existing `gcr` topic is found, the GCR scanning is ommited and won't be deployed. For more info see [GCR PubSub topic](https://cloud.google.com/container-registry/docs/configuring-notifications#create_a_topic)."
+  default     = true
+}
+
+
+# benchmark
+
+variable "deploy_bench" {
+  type        = bool
+  description = "whether benchmark module is to be deployed"
+  default     = true
+}
+
 variable "benchmark_regions" {
   type        = list(string)
   description = "List of regions in which to run the benchmark. If empty, the task will contain all regions by default."
@@ -60,17 +79,11 @@ variable "benchmark_regions" {
 variable "benchmark_project_ids" {
   default     = []
   type        = list(string)
-  description = "Google cloud project IDs to run Benchmarks on"
+  description = "Google cloud project IDs to run Benchmarks on. If empty, all organization projects will be defaulted."
 }
 
 variable "benchmark_role_name" {
   type        = string
   description = "The name of the Service Account that will be created."
   default     = "sysdigcloudbench"
-}
-
-variable "deploy_bench" {
-  type        = bool
-  description = "whether benchmark module is to be deployed"
-  default     = true
 }
