@@ -43,7 +43,6 @@ data "google_projects" "all_projects" {
   filter = "parent.id:${data.google_organization.org.org_id} parent.type:organization lifecycleState:ACTIVE"
 }
 
-
 #######################
 #      CONNECTOR      #
 #######################
@@ -96,7 +95,8 @@ resource "google_organization_iam_custom_role" "org_gcr_image_puller" {
     "artifactregistry.repositories.get",
     "artifactregistry.repositories.downloadArtifacts",
     "artifactregistry.tags.list",
-    "artifactregistry.tags.get"
+    "artifactregistry.tags.get",
+    "run.services.get"
   ]
 }
 
