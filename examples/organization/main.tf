@@ -127,9 +127,7 @@ module "secure_secrets" {
 #--------------------
 # scanning
 #--------------------
-locals {
-  repository_project_ids = length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids
-}
+
 
 
 module "cloud_scanning" {
@@ -144,10 +142,25 @@ module "cloud_scanning" {
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
   scanning_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
   project_id               = var.project_id
-  create_gcr_topic         = var.create_gcr_topic
-  repository_project_ids   = local.repository_project_ids
 
   max_instances = var.max_instances
+}
+
+locals {
+  repository_project_ids = length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids
+}
+
+module "pubsub_http_subscription" {
+  for_each = toset(local.repository_project_ids)
+  source   = "../../modules/infrastructure/pubsub_push_http_subscription"
+
+  topic_project_id        = each.key
+  subscription_project_id = var.project_id
+  topic_name              = "gcr"
+  name                    = "${var.name}-gcr"
+  service_account_email   = google_service_account.scanning_sa.email
+
+  push_http_endpoint = "${module.cloud_scanning.cloud_run_service_url}/gcr_scanning"
 }
 
 #--------------------
