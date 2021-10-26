@@ -87,7 +87,7 @@ module "cloud_scanning" {
   scanning_pubsub_topic_id = module.scanning_project_sink.pubsub_topic_id
   create_gcr_topic         = var.create_gcr_topic
   project_id               = var.project_id
-  project_scan_ids         = [var.project_id]
+  repository_project_ids   = [var.project_id]
 
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
   sysdig_secure_api_token    = var.sysdig_secure_api_token
