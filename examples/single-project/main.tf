@@ -85,9 +85,7 @@ module "cloud_scanning" {
 
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
   scanning_pubsub_topic_id = module.scanning_project_sink.pubsub_topic_id
-  create_gcr_topic         = var.create_gcr_topic
   project_id               = var.project_id
-  repository_project_ids   = [var.project_id]
 
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
   sysdig_secure_api_token    = var.sysdig_secure_api_token
@@ -95,6 +93,18 @@ module "cloud_scanning" {
 
   #defaults
   verify_ssl = local.verify_ssl
+}
+
+module "pubsub_http_subscription" {
+  source = "../../modules/infrastructure/pubsub_push_http_subscription"
+
+  topic_project_id        = var.project_id
+  subscription_project_id = var.project_id
+  topic_name              = "gcr"
+  name                    = "${var.name}-gcr"
+  service_account_email   = google_service_account.scanning_sa.email
+
+  push_http_endpoint = "${module.cloud_scanning.cloud_run_service_url}/gcr_scanning"
 }
 
 
