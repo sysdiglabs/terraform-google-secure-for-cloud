@@ -47,8 +47,6 @@ No modules.
 | [google_project_iam_member.cloud_run_viewer](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_project_iam_member.service_account_user_itself](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_project_iam_member.token_creator](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
-| [google_pubsub_subscription.gcr](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/pubsub_subscription) | resource |
-| [google_pubsub_topic.gcr](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/pubsub_topic) | resource |
 | [google_project.project](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project) | data source |
 
 ## Inputs
@@ -61,18 +59,18 @@ No modules.
 | <a name="input_secure_api_token_secret_id"></a> [secure\_api\_token\_secret\_id](#input\_secure\_api\_token\_secret\_id) | Sysdig Secure API token secret id | `string` | n/a | yes |
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig's Secure API URL | `string` | n/a | yes |
-| <a name="input_create_gcr_topic"></a> [create\_gcr\_topic](#input\_create\_gcr\_topic) | true / false whether a `gcr`-named pubsub topic will be created. Needed for GCR scanning. If this topic does not exist nor is created,  the GCR scanning is ommited and won't be deployed. For more info see [GCR PubSub topic](https://cloud.google.com/container-registry/docs/configuring-notifications#create_a_topic). | `bool` | `true` | no |
 | <a name="input_extra_envs"></a> [extra\_envs](#input\_extra\_envs) | Extra environment variables for the Cloud Scanning instance | `map(string)` | `{}` | no |
 | <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Cloud scanning image to deploy | `string` | `"gcr.io/mateo-burillo-ns/cloud-scanning:latest"` | no |
 | <a name="input_location"></a> [location](#input\_location) | Zone where the cloud scanning will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the Cloud Scanning | `number` | `1` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc-cloudscanning"` | no |
-| <a name="input_repository_project_ids"></a> [repository\_project\_ids](#input\_repository\_project\_ids) | Projects were a `gcr`-named topic will be to subscribe to its repository events. If empty, all organization projects will be defaulted. | `list(string)` | `[]` | no |
 | <a name="input_verify_ssl"></a> [verify\_ssl](#input\_verify\_ssl) | Verify the SSL certificate of the Secure endpoint | `bool` | `true` | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_cloud_run_service_url"></a> [cloud\_run\_service\_url](#output\_cloud\_run\_service\_url) | URL of the Cloud Run service |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Authors

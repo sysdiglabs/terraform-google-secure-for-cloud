@@ -34,22 +34,6 @@ variable "project_id" {
 # --------------------------
 # optionals, with defaults
 # --------------------------
-
-variable "create_gcr_topic" {
-  type        = bool
-  description = "true / false whether a `gcr`-named pubsub topic will be created. Needed for GCR scanning. If this topic does not exist nor is created,  the GCR scanning is ommited and won't be deployed. For more info see [GCR PubSub topic](https://cloud.google.com/container-registry/docs/configuring-notifications#create_a_topic)."
-  default     = true
-}
-
-
-variable "repository_project_ids" {
-  type        = list(string)
-  description = "Projects were a `gcr`-named topic will be to subscribe to its repository events. If empty, all organization projects will be defaulted."
-  default     = []
-}
-
-
-
 variable "verify_ssl" {
   type        = bool
   description = "Verify the SSL certificate of the Secure endpoint"

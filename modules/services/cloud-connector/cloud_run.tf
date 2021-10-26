@@ -27,7 +27,8 @@ locals {
       name  = "GCP_REGION"
       value = var.location
     }
-    ], [for env_key, env_value in var.extra_envs :
+    ], [
+    for env_key, env_value in var.extra_envs :
     {
       name  = env_key,
       value = env_value
@@ -35,6 +36,7 @@ locals {
     ]
   )
 }
+
 resource "google_cloud_run_service" "cloud_connector" {
   location = var.location
   name     = var.name
@@ -46,6 +48,7 @@ resource "google_cloud_run_service" "cloud_connector" {
       metadata[0].annotations,
       metadata[0].labels,
       template[0].metadata[0].annotations,
+      template[0].spec[0].containers[0].ports[0].name
     ]
   }
 
