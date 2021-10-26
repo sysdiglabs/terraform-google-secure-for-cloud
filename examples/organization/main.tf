@@ -43,7 +43,6 @@ data "google_projects" "all_projects" {
   filter = "parent.id:${data.google_organization.org.org_id} parent.type:organization lifecycleState:ACTIVE"
 }
 
-
 #######################
 #      CONNECTOR      #
 #######################
@@ -92,7 +91,12 @@ resource "google_organization_iam_custom_role" "org_gcr_image_puller" {
   description = "Allows pulling GCR images from all accounts in the organization"
   permissions = [
     "storage.objects.get",
-    "storage.objects.list"
+    "storage.objects.list",
+    "artifactregistry.repositories.get",
+    "artifactregistry.repositories.downloadArtifacts",
+    "artifactregistry.tags.list",
+    "artifactregistry.tags.get",
+    "run.services.get"
   ]
 }
 
@@ -119,6 +123,15 @@ module "secure_secrets" {
   name                    = var.name
 }
 
+
+#--------------------
+# scanning
+#--------------------
+locals {
+  repository_project_ids = length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids
+}
+
+
 module "cloud_scanning" {
   source = "../../modules/services/cloud-scanning"
 
@@ -129,16 +142,17 @@ module "cloud_scanning" {
   verify_ssl                 = local.verify_ssl
 
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
-  create_gcr_topic         = var.create_gcr_topic
   scanning_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
   project_id               = var.project_id
+  create_gcr_topic         = var.create_gcr_topic
+  repository_project_ids   = local.repository_project_ids
 
   max_instances = var.max_instances
 }
 
-#######################
-#      BENCHMARKS     #
-#######################
+#--------------------
+# benchmark
+#--------------------
 
 locals {
   benchmark_projects_ids = length(var.benchmark_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.benchmark_project_ids
@@ -155,7 +169,7 @@ module "cloud_bench" {
 
   is_organizational   = true
   organization_domain = var.organization_domain
-  role_name           = var.role_name
+  role_name           = var.benchmark_role_name
   regions             = var.benchmark_regions
   project_ids         = local.benchmark_projects_ids
 }

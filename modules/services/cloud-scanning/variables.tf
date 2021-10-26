@@ -4,11 +4,6 @@ variable "cloud_scanning_sa_email" {
   description = "Cloud Connector service account email"
 }
 
-variable "create_gcr_topic" {
-  type        = bool
-  description = "Deploys a PubSub topic called `gcr` as part of this stack, which is needed for GCR scanning. Set to `true` only if it doesn't exist yet. If this is not deployed, and no existing `gcr` topic is found, the GCR scanning is ommited and won't be deployed. For more info see [GCR PubSub topic](https://cloud.google.com/container-registry/docs/configuring-notifications#create_a_topic)."
-}
-
 variable "secure_api_token_secret_id" {
   type        = string
   description = "Sysdig Secure API token secret id"
@@ -39,6 +34,21 @@ variable "project_id" {
 # --------------------------
 # optionals, with defaults
 # --------------------------
+
+variable "create_gcr_topic" {
+  type        = bool
+  description = "true / false whether a `gcr`-named pubsub topic will be created. Needed for GCR scanning. If this topic does not exist nor is created,  the GCR scanning is ommited and won't be deployed. For more info see [GCR PubSub topic](https://cloud.google.com/container-registry/docs/configuring-notifications#create_a_topic)."
+  default     = true
+}
+
+
+variable "repository_project_ids" {
+  type        = list(string)
+  description = "Projects were a `gcr`-named topic will be to subscribe to its repository events. If empty, all organization projects will be defaulted."
+  default     = []
+}
+
+
 
 variable "verify_ssl" {
   type        = bool

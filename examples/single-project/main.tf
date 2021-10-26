@@ -87,6 +87,7 @@ module "cloud_scanning" {
   scanning_pubsub_topic_id = module.scanning_project_sink.pubsub_topic_id
   create_gcr_topic         = var.create_gcr_topic
   project_id               = var.project_id
+  repository_project_ids   = [var.project_id]
 
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
   sysdig_secure_api_token    = var.sysdig_secure_api_token
@@ -105,7 +106,7 @@ module "cloud_bench" {
   source = "../../modules/services/cloud-bench"
 
   is_organizational = false
-  role_name         = var.role_name
+  role_name         = var.benchmark_role_name
   project_id        = var.project_id
-  regions           = var.regions
+  regions           = var.benchmark_regions
 }

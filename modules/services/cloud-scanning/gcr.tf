@@ -1,20 +1,15 @@
 locals {
-  gcr_topic_id = var.create_gcr_topic ? google_pubsub_topic.gcr[0].id : data.google_pubsub_topic.gcr.id
-
   # note
   # topic name is hardcoded by GCP and cannot be changed
   # resource cannot honor var.name
   # https://cloud.google.com/container-registry/docs/configuring-notifications
   # https://cloud.google.com/artifact-registry/docs/configure-notifications
   gcr_topic_name = "gcr"
+
+  # currently all projects are subject to a single `create_gcr_topic` variable
+  repository_project_ids_create_topic = var.create_gcr_topic ? var.repository_project_ids : []
 }
 
-data "google_pubsub_topic" "gcr" {
-  project = var.project_id
-
-  name = local.gcr_topic_name
-  # MUST exist in the infra of the customer, that's the only topic GCR will publish events to.
-}
 
 # FIXME: is this the right place?
 # Required to execute cloud build runs with this same service account
@@ -29,31 +24,27 @@ resource "google_project_iam_member" "builder" {
 }
 
 resource "google_pubsub_topic" "gcr" {
-  count = var.create_gcr_topic ? 1 : 0
-  name  = local.gcr_topic_name
+  for_each = toset(local.repository_project_ids_create_topic)
+  name     = local.gcr_topic_name
+  project  = each.key
 }
 
-#new
-resource "google_eventarc_trigger" "gcr" {
-  count = length(local.gcr_topic_id[*]) > 0 ? 1 : 0
-  # We won't try to deploy this trigger if the GCR topic doesn't exist
-  name            = "${var.name}-trigger-gcr"
-  location        = var.location
-  service_account = var.cloud_scanning_sa_email
-  matching_criteria {
-    attribute = "type"
-    value     = "google.cloud.pubsub.topic.v1.messagePublished"
-  }
-  destination {
-    cloud_run_service {
-      service = google_cloud_run_service.cloud_scanning.name
-      region  = var.location
-      path    = "/gcr_scanning"
+
+resource "google_pubsub_subscription" "gcr" {
+  for_each = toset(var.repository_project_ids)
+  name     = "${var.name}-gcr-${each.key}"
+  topic    = "projects/${each.key}/topics/${local.gcr_topic_name}"
+
+  ack_deadline_seconds = 10
+
+  push_config {
+    push_endpoint = "${google_cloud_run_service.cloud_scanning.status[0].url}/gcr_scanning"
+    oidc_token {
+      service_account_email = var.cloud_scanning_sa_email
     }
   }
-  transport {
-    pubsub {
-      topic = local.gcr_topic_id
-    }
+  retry_policy {
+    minimum_backoff = "10s"
+    maximum_backoff = "300s"
   }
 }

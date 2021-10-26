@@ -75,6 +75,11 @@ resource "google_eventarc_trigger" "trigger" {
   }
 }
 
+resource "google_project_iam_member" "cloud_run_viewer" {
+  member = "serviceAccount:${var.cloud_scanning_sa_email}"
+  role   = "roles/run.viewer"
+}
+
 resource "google_cloud_run_service_iam_member" "run_invoker" {
   role     = "roles/run.invoker"
   member   = "serviceAccount:${var.cloud_scanning_sa_email}"
