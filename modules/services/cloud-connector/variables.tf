@@ -20,8 +20,14 @@ variable "connector_pubsub_topic_id" {
   description = "Cloud Connector PubSub single account topic id"
 }
 
+variable "project_id" {
+  type        = string
+  description = "organizational member project ID where the secure-for-cloud workload is going to be deployed"
+}
 
-# Vars with defaults
+# --------------------------
+# optionals, with defaults
+# --------------------------
 
 variable "verify_ssl" {
   type        = bool
@@ -47,10 +53,10 @@ variable "extra_envs" {
   description = "Extra environment variables for the Cloud Connector instance"
 }
 
-variable "naming_prefix" {
+variable "name" {
   type        = string
-  description = "Naming prefix for all the resources created"
-  default     = "sfc"
+  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
+  default     = "sfc-cloudconnector"
 }
 
 variable "max_instances" {

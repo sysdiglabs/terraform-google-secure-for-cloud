@@ -1,6 +1,6 @@
 resource "google_cloud_run_service" "cloud_scanning" {
   location = var.location
-  name     = "${var.naming_prefix}-cloud-scanning"
+  name     = var.name
 
   lifecycle {
     # We ignore changes in some annotations Cloud Run adds to the resource so we can
@@ -9,6 +9,7 @@ resource "google_cloud_run_service" "cloud_scanning" {
       metadata[0].annotations,
       metadata[0].labels,
       template[0].metadata[0].annotations,
+      template[0].spec[0].containers[0].ports[0].name
     ]
   }
 
@@ -54,7 +55,7 @@ resource "google_cloud_run_service" "cloud_scanning" {
 }
 
 resource "google_eventarc_trigger" "trigger" {
-  name            = "${var.naming_prefix}-cloud-scanning-trigger"
+  name            = "${var.name}-trigger"
   location        = var.location
   service_account = var.cloud_scanning_sa_email
   matching_criteria {
@@ -73,6 +74,11 @@ resource "google_eventarc_trigger" "trigger" {
       topic = var.scanning_pubsub_topic_id
     }
   }
+}
+
+resource "google_project_iam_member" "cloud_run_viewer" {
+  member = "serviceAccount:${var.cloud_scanning_sa_email}"
+  role   = "roles/run.viewer"
 }
 
 resource "google_cloud_run_service_iam_member" "run_invoker" {

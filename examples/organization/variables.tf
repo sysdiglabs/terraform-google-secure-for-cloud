@@ -4,12 +4,19 @@ variable "sysdig_secure_api_token" {
   description = "Sysdig's Secure API Token"
 }
 
-variable "project_id" {
+variable "organization_domain" {
   type        = string
-  description = "Project ID"
+  description = "Organization domain. e.g. sysdig.com"
 }
 
-# Vars with defaults
+variable "project_id" {
+  type        = string
+  description = "Organization member project ID where the secure-for-cloud workload is going to be deployed"
+}
+
+# --------------------------
+# optionals, with defaults
+# --------------------------
 variable "location" {
   type        = string
   default     = "us-central1"
@@ -22,10 +29,15 @@ variable "sysdig_secure_endpoint" {
   description = "Sysdig Secure API endpoint"
 }
 
-variable "naming_prefix" {
+variable "name" {
   type        = string
-  description = "Naming prefix for all the resources created"
-  default     = "secure-for-cloud"
+  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
+  default     = "sfc"
+
+  validation {
+    condition     = can(regex("^[a-z0-9]+$", var.name))
+    error_message = "ERROR: Invalid name. must contain only lowercase letters (a-z) and numbers (0-9)."
+  }
 }
 
 variable "max_instances" {
@@ -34,8 +46,37 @@ variable "max_instances" {
   default     = 1
 }
 
-variable "create_gcr_topic" {
+
+# scanning
+
+variable "repository_project_ids" {
+  default     = []
+  type        = list(string)
+  description = "Projects were a `gcr`-named topic will be to subscribe to its repository events. If empty, all organization projects will be defaulted."
+}
+
+# benchmark
+
+variable "deploy_bench" {
   type        = bool
-  description = "Deploys a PubSub topic called `gcr` as part of this stack, which is needed for GCR scanning. Set to `true` only if it doesn't exist yet. If this is not deployed, and no existing `gcr` topic is found, the GCR scanning is ommited and won't be deployed. For more info see [GCR PubSub topic](https://cloud.google.com/container-registry/docs/configuring-notifications#create_a_topic)."
+  description = "whether benchmark module is to be deployed"
   default     = true
+}
+
+variable "benchmark_regions" {
+  type        = list(string)
+  description = "List of regions in which to run the benchmark. If empty, the task will contain all regions by default."
+  default     = []
+}
+
+variable "benchmark_project_ids" {
+  default     = []
+  type        = list(string)
+  description = "Google cloud project IDs to run Benchmarks on. If empty, all organization projects will be defaulted."
+}
+
+variable "benchmark_role_name" {
+  type        = string
+  description = "The name of the Service Account that will be created."
+  default     = "sysdigcloudbench"
 }

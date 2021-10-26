@@ -27,7 +27,8 @@ locals {
       name  = "GCP_REGION"
       value = var.location
     }
-    ], [for env_key, env_value in var.extra_envs :
+    ], [
+    for env_key, env_value in var.extra_envs :
     {
       name  = env_key,
       value = env_value
@@ -35,9 +36,10 @@ locals {
     ]
   )
 }
+
 resource "google_cloud_run_service" "cloud_connector" {
   location = var.location
-  name     = "${var.naming_prefix}-cloud-connector"
+  name     = var.name
 
   lifecycle {
     # We ignore changes in some annotations Cloud Run adds to the resource so we can
@@ -46,6 +48,7 @@ resource "google_cloud_run_service" "cloud_connector" {
       metadata[0].annotations,
       metadata[0].labels,
       template[0].metadata[0].annotations,
+      template[0].spec[0].containers[0].ports[0].name
     ]
   }
 
@@ -91,7 +94,7 @@ resource "google_cloud_run_service" "cloud_connector" {
 }
 
 resource "google_eventarc_trigger" "trigger" {
-  name            = "${var.naming_prefix}-cloud-connector-trigger"
+  name            = "${var.name}-trigger"
   location        = var.location
   service_account = var.cloud_connector_sa_email
   matching_criteria {

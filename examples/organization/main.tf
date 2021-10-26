@@ -8,28 +8,54 @@ EOT
 EOT
 }
 
+# This provider is project specific, and can only be used to provision resources in the
+# specified project. Primarily used for Cloud Connector and Cloud Scanning
 provider "google" {
   project = var.project_id
   region  = var.location
 }
 
-data "google_project" "project" {
-  project_id = var.project_id
+# This provider is project agnostic, and can be used to provision resources in any project,
+# provided the project is specified on the resource. Primarily used for Benchmarks
+provider "google" {
+  alias  = "multiproject"
+  region = var.location
+}
+
+# This provider is project agnostic, and can be used to provision resources in any project,
+# provided the project is specified on the resource. Primarily used for Benchmarks
+provider "google-beta" {
+  alias  = "multiproject"
+  region = var.location
+}
+
+provider "sysdig" {
+  sysdig_secure_url          = var.sysdig_secure_endpoint
+  sysdig_secure_api_token    = var.sysdig_secure_api_token
+  sysdig_secure_insecure_tls = !local.verify_ssl
+}
+
+data "google_organization" "org" {
+  domain = var.organization_domain
+}
+
+data "google_projects" "all_projects" {
+  filter = "parent.id:${data.google_organization.org.org_id} parent.type:organization lifecycleState:ACTIVE"
 }
 
 #######################
 #      CONNECTOR      #
 #######################
 resource "google_service_account" "connector_sa" {
-  account_id   = "${var.naming_prefix}-cloud-connector"
+  account_id   = "${var.name}-cloudconnector"
   display_name = "Service account for cloud-connector"
 }
 
 module "connector_organization_sink" {
   source = "../../modules/infrastructure/organization_sink"
 
-  organization_id = data.google_project.project.org_id
-  naming_prefix   = "${var.naming_prefix}-cloud-connector"
+  organization_id = data.google_organization.org.org_id
+  name            = "${var.name}-cloudconnector"
   filter          = local.connector_filter
 }
 
@@ -41,32 +67,41 @@ module "cloud_connector" {
   sysdig_secure_endpoint    = var.sysdig_secure_endpoint
   connector_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
   max_instances             = var.max_instances
+  project_id                = var.project_id
 
   #defaults
-  naming_prefix = var.naming_prefix
-  verify_ssl    = local.verify_ssl
+  name       = "${var.name}-cloudconnector"
+  verify_ssl = local.verify_ssl
 }
 
 #######################
 #       SCANNING      #
 #######################
 resource "google_service_account" "scanning_sa" {
-  account_id   = "${var.naming_prefix}-cloud-scanning"
+  account_id   = "${var.name}-cloudscanning"
   display_name = "Service account for cloud-scanning"
 }
 
 
 resource "google_organization_iam_custom_role" "org_gcr_image_puller" {
-  org_id = data.google_project.project.org_id
+  org_id = data.google_organization.org.org_id
 
-  role_id     = "${var.naming_prefix}_gcr_image_puller"
+  role_id     = "${var.name}_gcr_image_puller"
   title       = "Sysdig GCR Image Puller"
   description = "Allows pulling GCR images from all accounts in the organization"
-  permissions = ["storage.objects.get", "storage.objects.list"]
+  permissions = [
+    "storage.objects.get",
+    "storage.objects.list",
+    "artifactregistry.repositories.get",
+    "artifactregistry.repositories.downloadArtifacts",
+    "artifactregistry.tags.list",
+    "artifactregistry.tags.get",
+    "run.services.get"
+  ]
 }
 
 resource "google_organization_iam_member" "organization_image_puller" {
-  org_id = data.google_project.project.org_id
+  org_id = data.google_organization.org.org_id
 
   role   = google_organization_iam_custom_role.org_gcr_image_puller.id
   member = "serviceAccount:${google_service_account.scanning_sa.email}"
@@ -75,8 +110,8 @@ resource "google_organization_iam_member" "organization_image_puller" {
 module "scanning_organization_sink" {
   source = "../../modules/infrastructure/organization_sink"
 
-  organization_id = data.google_project.project.org_id
-  naming_prefix   = "${var.naming_prefix}-cloud-scanning"
+  organization_id = data.google_organization.org.org_id
+  name            = "${var.name}-cloudscanning"
   filter          = local.scanning_filter
 }
 
@@ -85,21 +120,69 @@ module "secure_secrets" {
 
   cloud_scanning_sa_email = google_service_account.scanning_sa.email
   sysdig_secure_api_token = var.sysdig_secure_api_token
-  naming_prefix           = var.naming_prefix
+  name                    = var.name
 }
+
+
+#--------------------
+# scanning
+#--------------------
+
+
 
 module "cloud_scanning" {
   source = "../../modules/services/cloud-scanning"
 
-  naming_prefix              = var.naming_prefix
+  name                       = "${var.name}-cloudscanning"
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
   sysdig_secure_api_token    = var.sysdig_secure_api_token
   sysdig_secure_endpoint     = var.sysdig_secure_endpoint
   verify_ssl                 = local.verify_ssl
 
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
-  create_gcr_topic         = var.create_gcr_topic
   scanning_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
+  project_id               = var.project_id
 
   max_instances = var.max_instances
+}
+
+locals {
+  repository_project_ids = length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids
+}
+
+module "pubsub_http_subscription" {
+  for_each = toset(local.repository_project_ids)
+  source   = "../../modules/infrastructure/pubsub_push_http_subscription"
+
+  topic_project_id        = each.key
+  subscription_project_id = var.project_id
+  topic_name              = "gcr"
+  name                    = "${var.name}-gcr"
+  service_account_email   = google_service_account.scanning_sa.email
+
+  push_http_endpoint = "${module.cloud_scanning.cloud_run_service_url}/gcr_scanning"
+}
+
+#--------------------
+# benchmark
+#--------------------
+
+locals {
+  benchmark_projects_ids = length(var.benchmark_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.benchmark_project_ids
+}
+
+module "cloud_bench" {
+  providers = {
+    google      = google.multiproject
+    google-beta = google-beta.multiproject
+  }
+
+  count  = var.deploy_bench ? 1 : 0
+  source = "../../modules/services/cloud-bench"
+
+  is_organizational   = true
+  organization_domain = var.organization_domain
+  role_name           = var.benchmark_role_name
+  regions             = var.benchmark_regions
+  project_ids         = local.benchmark_projects_ids
 }
