@@ -4,7 +4,7 @@ data "google_pubsub_topic" "topic" {
 }
 
 locals {
-  create_topic = (data.google_pubsub_topic.topic.name == null || lookup(coalesce(data.google_pubsub_topic.topic.labels, {}), "sysdig-managed", "false") == "true")
+  create_topic = (data.google_pubsub_topic.topic.name == null || lookup(coalesce(data.google_pubsub_topic.topic.labels, {}), "sysdig-managed", "NOT_A_VALUE") == var.name)
 }
 
 resource "google_pubsub_topic" "topic" {
@@ -12,7 +12,7 @@ resource "google_pubsub_topic" "topic" {
   name    = var.topic_name
   project = var.topic_project_id
   labels = {
-    sysdig-managed = "true"
+    sysdig-managed = var.name
   }
 }
 
