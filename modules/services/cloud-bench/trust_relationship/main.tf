@@ -40,11 +40,27 @@ resource "google_service_account" "sa" {
   display_name = "Service account for cloud-bench"
 }
 
-resource "google_project_iam_member" "security_viewer" {
+resource "google_project_iam_member" "viewer" {
   project = var.project_id
 
-  role   = "roles/iam.securityReviewer"
+  role   = "roles/viewer"
   member = "serviceAccount:${google_service_account.sa.email}"
+}
+
+resource "google_project_iam_member" "custom" {
+  project = var.project_id
+
+  role   = google_project_iam_custom_role.custom.id
+  member = "serviceAccount:${google_service_account.sa.email}"
+}
+
+resource "google_project_iam_custom_role" "custom" {
+  project = var.project_id
+
+  role_id     = var.role_name
+  title       = "Sysdig Cloud Benchmark Role"
+  description = "A Role providing the required permissions for Sysdig Cloud Benchmarks that are not included in roles/viewer"
+  permissions = ["storage.buckets.getIamPolicy", "bigquery.tables.list"]
 }
 
 resource "google_service_account_iam_binding" "sa_pool_binding" {
