@@ -24,13 +24,13 @@ module "cloud_scanning_gcp" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.67.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 3.67.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 3.67.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | ~> 3.67.0 |
 
 ## Modules
 
