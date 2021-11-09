@@ -1,6 +1,6 @@
-# Single Project Example
+# Sysdig Secure for Cloud in GCP<br/>[ Example :: Single-Project ]
 
-This example deploys Secure For Cloud into a single GCP project.
+This example deploys Secure For Cloud into a single GCP project.<br/>
 All the resources will be run in a single project.
 
 ![single project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project/diagram-single.png?raw=true)

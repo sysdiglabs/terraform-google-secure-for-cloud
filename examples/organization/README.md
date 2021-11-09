@@ -1,4 +1,4 @@
-# Organization Example
+# Sysdig Secure for Cloud in GCP<br/>[ Example :: Organization ]
 
 This example deploys Secure for Cloud into a GCP organizational account.
 
