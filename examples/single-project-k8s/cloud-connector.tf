@@ -65,7 +65,7 @@ resource "helm_release" "cloud_connector" {
 rules: []
 ingestors:
 - gcp-auditlog-pubsub:
-    project: ${var.project_id}
+    project: ${data.google_client_config.current.project}
     subscription: ${google_pubsub_subscription.subscription.name}
 notifiers: []
 gcpCredentials: |

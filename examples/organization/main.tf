@@ -8,25 +8,18 @@ EOT
 EOT
 }
 
-# This provider is project specific, and can only be used to provision resources in the
-# specified project. Primarily used for Cloud Connector and Cloud Scanning
-provider "google" {
-  project = var.project_id
-  region  = var.location
-}
-
 # This provider is project agnostic, and can be used to provision resources in any project,
 # provided the project is specified on the resource. Primarily used for Benchmarks
 provider "google" {
   alias  = "multiproject"
-  region = var.location
+  region = data.google_client_config.current.region
 }
 
 # This provider is project agnostic, and can be used to provision resources in any project,
 # provided the project is specified on the resource. Primarily used for Benchmarks
 provider "google-beta" {
   alias  = "multiproject"
-  region = var.location
+  region = data.google_client_config.current.region
 }
 
 provider "sysdig" {
@@ -67,7 +60,7 @@ module "cloud_connector" {
   sysdig_secure_endpoint    = var.sysdig_secure_endpoint
   connector_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
   max_instances             = var.max_instances
-  project_id                = var.project_id
+  project_id                = data.google_client_config.current.project
 
   #defaults
   name       = "${var.name}-cloudconnector"
@@ -141,7 +134,7 @@ module "cloud_scanning" {
 
   cloud_scanning_sa_email  = google_service_account.scanning_sa.email
   scanning_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
-  project_id               = var.project_id
+  project_id               = data.google_client_config.current.project
 
   max_instances = var.max_instances
 }
@@ -155,7 +148,7 @@ module "pubsub_http_subscription" {
   source   = "../../modules/infrastructure/pubsub_push_http_subscription"
 
   topic_project_id        = each.key
-  subscription_project_id = var.project_id
+  subscription_project_id = data.google_client_config.current.project
   topic_name              = "gcr"
   name                    = "${var.name}-gcr"
   service_account_email   = google_service_account.scanning_sa.email
