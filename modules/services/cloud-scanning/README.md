@@ -1,7 +1,6 @@
 # Cloud Scanning deploy in GCP Module
 
-This repository contains a Module for how to deploy the Cloud Scanning in the Google Cloud Platform as a Cloud Run
-deployment that trigger image scans based on changes in your infrastructure.
+A **Cloud Run deployment** that trigger image scans on **Cloud Builds** based on changes in your infrastructure.
 
 ## Usage
 

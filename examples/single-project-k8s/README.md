@@ -1,4 +1,4 @@
-# Sysdig Secure for Cloud in GCP :: Single-Account on Kubernetes Cluster
+# Sysdig Secure for Cloud in GCP<br/>[ Example :: Single-Project on Kubernetes Cluster ]
 
 Deploy Sysdig Secure for Cloud in a provided existing Kubernetes Cluster.
 
@@ -14,9 +14,9 @@ All the required resources and workloads will be run under the same GCP project.
 
 Minimum requirements:
 
-1. `gcloud` credentials configuration
-2. A Kubernetes cluster configured within your `~/.kube/config`
-3. Secure requirements, as input variable value
+1. **GCP** profile credentials configuration
+2. **Kubernetes** cluster configured within your helm provider
+3. **Sysdig** Secure requirements, as input variable value
     ```
     sysdig_secure_api_token=<SECURE_API_TOKEN>
     ```
@@ -29,8 +29,8 @@ For quick testing, use this snippet on your terraform files
 module "secure_for_cloud_gcp_single_project_k8s" {
   source = "sysdiglabs/secure-for-cloud/google//examples/single-project-k8s"
 
-  project_id              = "your-project-id"
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
+  project_id              = "your-project-id"
 }
 ```
 

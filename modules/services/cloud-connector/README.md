@@ -1,7 +1,6 @@
 # Cloud Connector deploy in GCP Module
 
-This repository contains a Module for how to deploy the Cloud Connector in the Google Cloud Platform as a Cloud Run
-deployment that will detect events in your infrastructure.
+A **Cloud Run** deployment that will detect events in your infrastructure.
 
 ## Usage
 
