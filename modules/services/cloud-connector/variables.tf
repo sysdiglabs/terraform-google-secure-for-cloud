@@ -25,6 +25,11 @@ variable "project_id" {
   description = "organizational member project ID where the secure-for-cloud workload is going to be deployed"
 }
 
+variable "secure_api_token_secret_id" {
+  type        = string
+  description = "Sysdig Secure API token secret id"
+}
+
 # --------------------------
 # optionals, with defaults
 # --------------------------

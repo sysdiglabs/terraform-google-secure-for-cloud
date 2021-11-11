@@ -62,12 +62,13 @@ module "connector_organization_sink" {
 module "cloud_connector" {
   source = "../../modules/services/cloud-connector"
 
-  cloud_connector_sa_email  = google_service_account.connector_sa.email
-  sysdig_secure_api_token   = var.sysdig_secure_api_token
-  sysdig_secure_endpoint    = var.sysdig_secure_endpoint
-  connector_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
-  max_instances             = var.max_instances
-  project_id                = var.project_id
+  cloud_connector_sa_email   = google_service_account.connector_sa.email
+  sysdig_secure_api_token    = var.sysdig_secure_api_token
+  sysdig_secure_endpoint     = var.sysdig_secure_endpoint
+  connector_pubsub_topic_id  = module.connector_organization_sink.pubsub_topic_id
+  secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
+  max_instances              = var.max_instances
+  project_id                 = var.project_id
 
   #defaults
   name       = "${var.name}-cloudconnector"
