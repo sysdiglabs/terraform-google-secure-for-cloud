@@ -55,17 +55,17 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
             csPubSub = PubSub("CS PubSub Topic")
             gcrPubSub = PubSub("GCR PubSub Topic")
             csEventarc = Code("CS Eventarc\nTrigger")
-            gcrEventarc = Code("GCR Eventarc\nTrigger")
+            gcrSubscription = Code("GCR PubSub\nSubscription")
             csCloudrun = Run("Cloud Scanning")
             csCloudBuild = Build("Triggered\n Cloud Builds")
             gcr = GCR("Google \n Cloud Registry")
 
-            gcrEventarc << gcrPubSub
+            gcrSubscription << gcrPubSub
             csEventarc >> csCloudrun
             csEventarc << csPubSub
             csCloudrun << keys
             csCloudBuild << keys
-            gcrEventarc >> csCloudrun
+            gcrSubscription >> csCloudrun
             csProjectSink >> csPubSub
             csCloudrun >> csCloudBuild
             gcr >> gcrPubSub
