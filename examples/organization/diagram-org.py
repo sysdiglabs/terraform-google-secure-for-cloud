@@ -28,45 +28,35 @@ with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr,
         sds >> Edge(label="schedule on 0 6 * * *") >> bench
     with Cluster("GCP organization project", graph_attr={"bgcolor": "pink"}):
         ccProjectSink = Custom("\nCC Project\n Sink", "../../resources/sink.png")
-        csProjectSink = Custom("\nCS Project\n Sink", "../../resources/sink.png")
         orgBenchRole = Iam("Cloud Bench Role")
 
-    with Cluster("Cloud Connector (children project)"):
+    with Cluster("Secure for Cloud (children project)"):
         ccBenchRole = Iam("Cloud Bench Role")
         ccPubSub = PubSub("CC PubSub Topic")
         ccEventarc = Code("CC Eventarc\nTrigger")
         ccCloudRun = Run("Cloud Connector")
         bucket = GCS("Bucket\nCC Config")
+        keys = KMS("Sysdig \n Secure Keys")
 
-        bucket <<  Edge(style="dashed", label="Get CC config file") << ccCloudRun
+        ccCloudRun << Edge(style="dashed") << keys
+        bucket <<  Edge(style="dashed", label="Get CC \n config file") << ccCloudRun
         ccEventarc >> ccCloudRun
         ccEventarc << ccPubSub
         ccProjectSink >> ccPubSub
 
-    ccCloudRun >> sds
-    with Cluster("Cloud Scanning (children project)"):
-        csBenchRole = Iam("Cloud Bench Role")
-        keys = KMS("Sysdig \n Secure Keys")
-        csPubSub = PubSub("CS PubSub Topic")
         gcrPubSub = PubSub("GCR PubSub Topic")
-        csEventarc = Code("CS Eventarc\nTrigger")
         gcrSubscription = Code("GCR PubSub\nSubscription")
-        csCloudrun = Run("Cloud Scanning")
         csCloudBuild = Build("Triggered\n Cloud Builds")
         gcr = GCR("Google \n Cloud Registry")
 
+        gcrSubscription >> ccCloudRun
+        ccCloudRun >> csCloudBuild
         gcrSubscription << gcrPubSub
-        csEventarc >> csCloudrun
-        csEventarc << csPubSub
-        csCloudrun << Edge(style="dashed") << keys
         csCloudBuild << Edge(style="dashed") << keys
-        gcrSubscription >> csCloudrun
-        csProjectSink >> csPubSub
-        csCloudrun >> csCloudBuild
         gcr >> gcrPubSub
     csCloudBuild >> sds
+    ccCloudRun >> sds
 
 
-    csBenchRole << bench
     ccBenchRole << bench
     orgBenchRole << bench
