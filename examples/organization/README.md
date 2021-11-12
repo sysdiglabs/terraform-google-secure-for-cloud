@@ -74,10 +74,8 @@ module "secure-for-cloud_example_organization" {
 |------|--------|---------|
 | <a name="module_cloud_bench"></a> [cloud\_bench](#module\_cloud\_bench) | ../../modules/services/cloud-bench |  |
 | <a name="module_cloud_connector"></a> [cloud\_connector](#module\_cloud\_connector) | ../../modules/services/cloud-connector |  |
-| <a name="module_cloud_scanning"></a> [cloud\_scanning](#module\_cloud\_scanning) | ../../modules/services/cloud-scanning |  |
 | <a name="module_connector_organization_sink"></a> [connector\_organization\_sink](#module\_connector\_organization\_sink) | ../../modules/infrastructure/organization_sink |  |
 | <a name="module_pubsub_http_subscription"></a> [pubsub\_http\_subscription](#module\_pubsub\_http\_subscription) | ../../modules/infrastructure/pubsub_push_http_subscription |  |
-| <a name="module_scanning_organization_sink"></a> [scanning\_organization\_sink](#module\_scanning\_organization\_sink) | ../../modules/infrastructure/organization_sink |  |
 | <a name="module_secure_secrets"></a> [secure\_secrets](#module\_secure\_secrets) | ../../modules/infrastructure/secrets |  |
 
 ## Resources
@@ -87,7 +85,6 @@ module "secure-for-cloud_example_organization" {
 | [google_organization_iam_custom_role.org_gcr_image_puller](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/organization_iam_custom_role) | resource |
 | [google_organization_iam_member.organization_image_puller](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/organization_iam_member) | resource |
 | [google_service_account.connector_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
-| [google_service_account.scanning_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [google_organization.org](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/organization) | data source |
 | [google_projects.all_projects](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/projects) | data source |
 
