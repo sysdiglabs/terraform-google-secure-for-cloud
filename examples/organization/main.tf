@@ -1,11 +1,9 @@
 locals {
-  verify_ssl       = length(regexall("^https://.*?\\.sysdig.com/?", var.sysdig_secure_endpoint)) != 0
-  connector_filter = <<EOT
+  verify_ssl             = length(regexall("^https://.*?\\.sysdig.com/?", var.sysdig_secure_endpoint)) != 0
+  connector_filter       = <<EOT
   logName=~"/logs/cloudaudit.googleapis.com%2Factivity$" AND -resource.type="k8s_cluster"
 EOT
-  scanning_filter  = <<EOT
-  protoPayload.methodName = "google.cloud.run.v1.Services.CreateService" OR protoPayload.methodName = "google.cloud.run.v1.Services.ReplaceService"
-EOT
+  repository_project_ids = length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids
 }
 
 # This provider is project specific, and can only be used to provision resources in the
@@ -59,30 +57,6 @@ module "connector_organization_sink" {
   filter          = local.connector_filter
 }
 
-module "cloud_connector" {
-  source = "../../modules/services/cloud-connector"
-
-  cloud_connector_sa_email  = google_service_account.connector_sa.email
-  sysdig_secure_api_token   = var.sysdig_secure_api_token
-  sysdig_secure_endpoint    = var.sysdig_secure_endpoint
-  connector_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
-  max_instances             = var.max_instances
-  project_id                = var.project_id
-
-  #defaults
-  name       = "${var.name}-cloudconnector"
-  verify_ssl = local.verify_ssl
-}
-
-#######################
-#       SCANNING      #
-#######################
-resource "google_service_account" "scanning_sa" {
-  account_id   = "${var.name}-cloudscanning"
-  display_name = "Service account for cloud-scanning"
-}
-
-
 resource "google_organization_iam_custom_role" "org_gcr_image_puller" {
   org_id = data.google_organization.org.org_id
 
@@ -104,50 +78,31 @@ resource "google_organization_iam_member" "organization_image_puller" {
   org_id = data.google_organization.org.org_id
 
   role   = google_organization_iam_custom_role.org_gcr_image_puller.id
-  member = "serviceAccount:${google_service_account.scanning_sa.email}"
-}
-
-module "scanning_organization_sink" {
-  source = "../../modules/infrastructure/organization_sink"
-
-  organization_id = data.google_organization.org.org_id
-  name            = "${var.name}-cloudscanning"
-  filter          = local.scanning_filter
+  member = "serviceAccount:${google_service_account.connector_sa.email}"
 }
 
 module "secure_secrets" {
   source = "../../modules/infrastructure/secrets"
 
-  cloud_scanning_sa_email = google_service_account.scanning_sa.email
+  cloud_scanning_sa_email = google_service_account.connector_sa.email
   sysdig_secure_api_token = var.sysdig_secure_api_token
   name                    = var.name
 }
 
+module "cloud_connector" {
+  source = "../../modules/services/cloud-connector"
 
-#--------------------
-# scanning
-#--------------------
-
-
-
-module "cloud_scanning" {
-  source = "../../modules/services/cloud-scanning"
-
-  name                       = "${var.name}-cloudscanning"
-  secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
+  cloud_connector_sa_email   = google_service_account.connector_sa.email
   sysdig_secure_api_token    = var.sysdig_secure_api_token
   sysdig_secure_endpoint     = var.sysdig_secure_endpoint
-  verify_ssl                 = local.verify_ssl
+  connector_pubsub_topic_id  = module.connector_organization_sink.pubsub_topic_id
+  secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
+  max_instances              = var.max_instances
+  project_id                 = var.project_id
 
-  cloud_scanning_sa_email  = google_service_account.scanning_sa.email
-  scanning_pubsub_topic_id = module.connector_organization_sink.pubsub_topic_id
-  project_id               = var.project_id
-
-  max_instances = var.max_instances
-}
-
-locals {
-  repository_project_ids = length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids
+  #defaults
+  name       = "${var.name}-cloudconnector"
+  verify_ssl = local.verify_ssl
 }
 
 module "pubsub_http_subscription" {
@@ -158,9 +113,9 @@ module "pubsub_http_subscription" {
   subscription_project_id = var.project_id
   topic_name              = "gcr"
   name                    = "${var.name}-gcr"
-  service_account_email   = google_service_account.scanning_sa.email
+  service_account_email   = google_service_account.connector_sa.email
 
-  push_http_endpoint = "${module.cloud_scanning.cloud_run_service_url}/gcr_scanning"
+  push_http_endpoint = "${module.cloud_connector.cloud_run_service_url}/gcr_scanning"
 }
 
 #--------------------
