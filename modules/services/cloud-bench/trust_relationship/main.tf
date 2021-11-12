@@ -60,7 +60,7 @@ resource "google_project_iam_custom_role" "custom" {
   role_id     = var.role_name
   title       = "Sysdig Cloud Benchmark Role"
   description = "A Role providing the required permissions for Sysdig Cloud Benchmarks that are not included in roles/viewer"
-  permissions = ["storage.buckets.getIamPolicy"]
+  permissions = ["storage.buckets.getIamPolicy", "bigquery.tables.list"]
 }
 
 resource "google_service_account_iam_binding" "sa_pool_binding" {

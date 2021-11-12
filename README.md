@@ -46,21 +46,27 @@ Besides, the following GCP **APIs must be enabled** to deploy resources correctl
 
 ## Usage
 
-### Single-Project
+### - Single-Project
 
 Sysdig workload will be deployed in the same account where user's resources will be watched.<br/>
 More info in [`./examples/single-project`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project)
 
 ![single-project diagram](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/examples/single-project/diagram-single.png)
 
-### Organization
+### - Single-Project with a pre-existing Kubernetes Cluster
+
+If you already own a Kubernetes Cluster on GCP, you can use it to deploy Sysdig Secure for Cloud, instead of default CloudRun.<br/>
+More info in [`./examples/single-project-k8s`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project-k8s)
+
+
+### - Organization
 
 Using an organization to collect all the AuditLogs.
 More info in [`./examples/organization`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/organization)
 
 ![organization diagram](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/examples/organization/diagram-org.png)
 
-### Self-Baked
+### - Self-Baked
 
 If no [examples](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples) fit your use-case, be free to call desired modules directly.
 
