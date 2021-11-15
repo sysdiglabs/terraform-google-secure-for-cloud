@@ -138,7 +138,7 @@ Notice that:
   A3: Do as the error says and activate CloudBuild API. Check the list of all the required APIs that need to be activated per feature module.
 
 
-<br/><br/>
+<br/><br/><br/>
 ## Authors
 
 Module is maintained and supported by [Sysdig](https://sysdig.com).
