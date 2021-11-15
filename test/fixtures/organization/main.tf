@@ -1,3 +1,8 @@
+provider "google" {
+  project = var.project_id
+  region  = var.location
+}
+
 resource "random_string" "random" {
   length  = 5
   special = false
@@ -12,7 +17,6 @@ module "sfc_example_organization" {
 
   organization_domain    = var.organization_domain
   name                   = "sfc${random_string.random.result}"
-  project_id             = var.project_id
   repository_project_ids = [var.project_id]
   deploy_bench           = false
 }

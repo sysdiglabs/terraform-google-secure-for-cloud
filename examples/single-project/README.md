@@ -7,10 +7,10 @@ All the resources will be run in a single project.
 
 ## Prerequisites
 
-You **must** have following **roles** in your GCP organization/project credentials
-* _Owner_
-
-Besides, the following GCP **APIs must be enabled** to deploy resources correctly for:
+1. Configure [Terraform **GCP** Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs)
+1. Following **roles** are required in your GCP organization/project credentials
+   * _Owner_
+1. Besides, the following GCP **APIs must be enabled** to deploy resources correctly for:
 
 ### Cloud Connector
 * [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
@@ -37,12 +37,19 @@ Besides, the following GCP **APIs must be enabled** to deploy resources correctl
 For quick testing, use this snippet on your terraform files
 
 ```terraform
+provider "google" {
+   project = "<PROJECT_ID>"
+   region  = "<REGION_ID>; ex. us-central-1"
+}
+
+provider "google-beta" {
+   project = "<PROJECT_ID>"
+   region  = "<REGION_ID>; ex. us-central-1"
+}
+
 module "secure-for-cloud_example_single-project" {
   source = "sysdiglabs/secure-for-cloud/google//examples/single-project"
-
-
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
-  project_id              = "your-project-id"
 }
 ```
 
@@ -77,17 +84,16 @@ module "secure-for-cloud_example_single-project" {
 | Name | Type |
 |------|------|
 | [google_service_account.connector_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
+| [google_client_config.current](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_project_id"></a> [project\_id](#input\_project\_id) | Project ID where the secure-for-cloud workload is going to be deployed | `string` | n/a | yes |
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_benchmark_regions"></a> [benchmark\_regions](#input\_benchmark\_regions) | List of regions in which to run the benchmark. If empty, the task will contain all regions by default. | `list(string)` | `[]` | no |
 | <a name="input_benchmark_role_name"></a> [benchmark\_role\_name](#input\_benchmark\_role\_name) | The name of the Service Account that will be created. | `string` | `"sysdigcloudbench"` | no |
 | <a name="input_deploy_bench"></a> [deploy\_bench](#input\_deploy\_bench) | whether benchmark module is to be deployed | `bool` | `true` | no |
-| <a name="input_location"></a> [location](#input\_location) | Zone where the stack will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc"` | no |
 | <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig Secure API endpoint | `string` | `"https://secure.sysdig.com"` | no |
 

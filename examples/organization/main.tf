@@ -6,25 +6,18 @@ EOT
   repository_project_ids = length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids
 }
 
-# This provider is project specific, and can only be used to provision resources in the
-# specified project. Primarily used for Cloud Connector and Cloud Scanning
-provider "google" {
-  project = var.project_id
-  region  = var.location
-}
-
 # This provider is project agnostic, and can be used to provision resources in any project,
 # provided the project is specified on the resource. Primarily used for Benchmarks
 provider "google" {
   alias  = "multiproject"
-  region = var.location
+  region = data.google_client_config.current.region
 }
 
 # This provider is project agnostic, and can be used to provision resources in any project,
 # provided the project is specified on the resource. Primarily used for Benchmarks
 provider "google-beta" {
   alias  = "multiproject"
-  region = var.location
+  region = data.google_client_config.current.region
 }
 
 provider "sysdig" {
@@ -98,7 +91,7 @@ module "cloud_connector" {
   connector_pubsub_topic_id  = module.connector_organization_sink.pubsub_topic_id
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
   max_instances              = var.max_instances
-  project_id                 = var.project_id
+  project_id                 = data.google_client_config.current.project
 
   #defaults
   name       = "${var.name}-cloudconnector"
@@ -110,7 +103,7 @@ module "pubsub_http_subscription" {
   source   = "../../modules/infrastructure/pubsub_push_http_subscription"
 
   topic_project_id        = each.key
-  subscription_project_id = var.project_id
+  subscription_project_id = data.google_client_config.current.project
   topic_name              = "gcr"
   name                    = "${var.name}-gcr"
   service_account_email   = google_service_account.connector_sa.email

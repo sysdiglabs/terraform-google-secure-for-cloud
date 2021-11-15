@@ -14,8 +14,8 @@ All the required resources and workloads will be run under the same GCP project.
 
 Minimum requirements:
 
-1. **GCP** profile credentials configuration
-2. **Kubernetes** cluster configured within your helm provider
+1. Configure [Terraform **GCP** Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs)
+2. Configure [**Helm** Provider](https://registry.terraform.io/providers/hashicorp/helm/latest/docs) for **Kubernetes** cluster
 3. **Sysdig** Secure requirements, as input variable value
     ```
     sysdig_secure_api_token=<SECURE_API_TOKEN>
@@ -26,11 +26,20 @@ Minimum requirements:
 For quick testing, use this snippet on your terraform files
 
 ```terraform
+provider "google" {
+  project = "<PROJECT_ID>"
+  region  = "<REGION_ID>; ex. us-central-1"
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"
+  }
+}
+
 module "secure_for_cloud_gcp_single_project_k8s" {
   source = "sysdiglabs/secure-for-cloud/google//examples/single-project-k8s"
-
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
-  project_id              = "your-project-id"
 }
 ```
 
@@ -73,15 +82,14 @@ Notice that:
 | [google_service_account.connector_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [google_service_account_key.connector_sa_key](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account_key) | resource |
 | [helm_release.cloud_connector](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [google_client_config.current](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_project_id"></a> [project\_id](#input\_project\_id) | Project ID where the secure-for-cloud workload is going to be deployed | `string` | n/a | yes |
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_cloud_connector_image"></a> [cloud\_connector\_image](#input\_cloud\_connector\_image) | Cloud-connector image to deploy | `string` | `"quay.io/sysdig/cloud-connector"` | no |
-| <a name="input_location"></a> [location](#input\_location) | Zone where the stack will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc"` | no |
 | <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig Secure API endpoint | `string` | `"https://secure.sysdig.com"` | no |
 
