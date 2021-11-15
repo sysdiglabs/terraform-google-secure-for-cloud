@@ -34,7 +34,7 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
         sds >> Edge(label="schedule on 0 6 * * *") >> bench
 
     with Cluster("GCP project"):
-        with Cluster("Cloud Connector"):
+        with Cluster("Secure for Cloud"):
             ccBenchRole = Iam("Cloud Bench Role")
             ccProjectSink = Custom("\nCC Project\n Sink", "../../resources/sink.png")
             ccPubSub = PubSub("CC PubSub Topic")
@@ -47,28 +47,20 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
             ccEventarc << ccPubSub
             ccProjectSink >> ccPubSub
 
-        ccCloudRun >> sds
-        with Cluster("Cloud Scanning"):
-            csBenchRole = Iam("Cloud Bench Role")
+            ccCloudRun >> sds
             keys = KMS("Sysdig Keys")
-            csProjectSink = Custom("\nCS Project\n Sink", "../../resources/sink.png")
-            csPubSub = PubSub("CS PubSub Topic")
             gcrPubSub = PubSub("GCR PubSub Topic")
             csEventarc = Code("CS Eventarc\nTrigger")
-            gcrEventarc = Code("GCR Eventarc\nTrigger")
-            csCloudrun = Run("Cloud Scanning")
+            gcrSubscription = Code("GCR PubSub\nSubscription")
             csCloudBuild = Build("Triggered\n Cloud Builds")
             gcr = GCR("Google \n Cloud Registry")
 
-            gcrEventarc << gcrPubSub
-            csEventarc >> csCloudrun
-            csEventarc << csPubSub
-            csCloudrun << keys
+            gcrSubscription << gcrPubSub
+            csEventarc >> ccCloudRun
+            ccCloudRun << keys
             csCloudBuild << keys
-            gcrEventarc >> csCloudrun
-            csProjectSink >> csPubSub
-            csCloudrun >> csCloudBuild
+            gcrSubscription >> ccCloudRun
+            ccCloudRun >> csCloudBuild
             gcr >> gcrPubSub
-        csCloudBuild >> sds
-    csBenchRole << bench
+            csCloudBuild >> sds
     ccBenchRole << bench
