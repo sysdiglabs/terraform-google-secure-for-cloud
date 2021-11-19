@@ -1,20 +1,18 @@
 # Sysdig Secure for Cloud in GCP
 
-Terraform module that deploys the **Sysdig Secure for Cloud** stack in **Google Cloud**.
+Terraform module that deploys the [**Sysdig Secure for Cloud** stack in **Google Cloud**](https://docs.sysdig.com/en/docs/installation/sysdig-secure-for-cloud/deploy-sysdig-secure-for-cloud-on-gcp/).
 <br/>It provides unified threat detection, compliance, forensics and analysis.
 
 There are three major components:
 
-* **Cloud Threat Detection**: Tracks abnormal and suspicious activities in your cloud environment based on Falco language. Managed through [cloud-connector module](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/modules/services/cloud-connector).
-<br/><br/>
 * **CSPM/Compliance**: It evaluates periodically your cloud configuration, using Cloud Custodian, against some benchmarks and returns the results and remediation you need to fix. Managed through [cloud-bench module](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/modules/services/cloud-bench).
   <br/><br/>
-* **Cloud Scanning**: Automatically scans all container images pushed to the registry or as soon a new task which involves a container is spawned in your account.Managed through [cloud-scanning module](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/modules/services/cloud-scanning).
+* **Cloud Threat Detection**: Tracks abnormal and suspicious activities in your cloud environment based on Falco language. Managed through [cloud-connector module](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/modules/services/cloud-connector).
+<br/><br/>
+* **Cloud Scanning**: Automatically scans all container images pushed to the registry or as soon a new task which involves a container is spawned in your account. Managed through [cloud-connector module](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/modules/services/cloud-connector).
   <br/><br/>
 
 For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud), [Azure](https://github.com/sysdiglabs/terraform-azurerm-secure-for-cloud)
-
-<br/>
 
 ## Prerequisites
 
@@ -106,6 +104,22 @@ Notice that:
 
 
 <br/><br/>
+
+
+## Forcing Events
+
+**Threat Detection**
+
+Choose one of the rules contained in the `GCP Best Practices` policy and execute it in your GCP account.
+ex.: Create an alert (Monitoring > Alerting > Create policy). Delete it to prompt the event.
+
+Remember that in case you add new rules to the policy you need to give it time to propagate the changes.
+
+**Image Scanning**
+
+Upload an image to a new Repository in a Container Registry. Follow repository `Setup Instructions` provided by GCP
+
+
 ## Troubleshooting
 
 - Q1: Getting "Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists"<br/>
@@ -127,7 +141,7 @@ Notice that:
 
 - Q2: Scanning does not seem to work<br/>
   A2: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is ommited and won't be deployed. For more info see GCR PubSub topic.
-
+<br/><br/>
 - Q3: Scanning, I get an error saying:
   ```
   error starting scan runner for image ****: rpc error: code = PermissionDenied desc = Cloud Build API has not been used in project *** before or it is disabled.
@@ -136,9 +150,7 @@ Notice that:
   If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry
   ```
   A3: Do as the error says and activate CloudBuild API. Check the list of all the required APIs that need to be activated per feature module.
-
-
-<br/><br/><br/>
+<br/><br/>
 ## Authors
 
 Module is maintained and supported by [Sysdig](https://sysdig.com).
