@@ -40,12 +40,6 @@ variable "verify_ssl" {
   default     = true
 }
 
-variable "location" {
-  type        = string
-  default     = "us-central1"
-  description = "Zone where the cloud connector will be deployed"
-}
-
 variable "image_name" {
   type        = string
   default     = "gcr.io/mateo-burillo-ns/cloud-connector:latest"
