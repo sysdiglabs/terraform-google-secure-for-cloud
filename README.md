@@ -115,10 +115,21 @@ ex.: Create an alert (Monitoring > Alerting > Create policy). Delete it to promp
 
 Remember that in case you add new rules to the policy you need to give it time to propagate the changes.
 
+In the `cloud-connector` logs you should see similar logs to these
+> An alert has been deleted (requesting user=..., requesting IP=..., resource name=projects/test/alertPolicies/3771445340801051512)
+
 **Image Scanning**
 
 Upload an image to a new Repository in a Artifact Registry. Follow repository `Setup Instructions` provided by GCP
+```bash
+$ docker tag REPO_REGION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:latest
+$ docker push REPO_REGION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:latest
+````
 
+In the `cloud-connector` logs you should see similar logs to these
+> An image has been pushed to GCR registry (project=..., tag=europe-west2-docker.pkg.dev/test-repo/alpine/alpine:latest, digest=europe-west2-docker.pkg.dev/test-repo/alpine/alpine@sha256:be9bdc0ef8e96dbc428dc189b31e2e3b05523d96d12ed627c37aa2936653258c)
+
+> Starting GCR scanning for 'europe-west2-docker.pkg.dev/test-repo/alpine/alpine:latest
 
 ## Troubleshooting
 
