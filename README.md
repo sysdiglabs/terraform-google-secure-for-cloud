@@ -117,7 +117,7 @@ Remember that in case you add new rules to the policy you need to give it time t
 
 **Image Scanning**
 
-Upload an image to a new Repository in a Container Registry. Follow repository `Setup Instructions` provided by GCP
+Upload an image to a new Repository in a Artifact Registry. Follow repository `Setup Instructions` provided by GCP
 
 
 ## Troubleshooting
