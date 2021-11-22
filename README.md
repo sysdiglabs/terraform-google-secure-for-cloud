@@ -133,10 +133,12 @@ In the `cloud-connector` logs you should see similar logs to these
 
 ## Troubleshooting
 
-- Q1: Getting "Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists"<br/>
-  A1: This is default behaviour we cannot control
+### Q1: Getting "Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists"<br/>
+  A1: Currently Sysdig Backend does not support dynamic WorkloadPool and it's name is fixed to `sysdiglcoud`.
+  <br/>Besides, Google, only performs a soft-deletion of this resource.
   https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers#delete-pool
-    > You can undelete a pool for up to 30 days after deletion. After 30 days, deletion is permanent. Until a pool is permanently deleted, you cannot reuse its   name when creating a new workload identity pool.<br/>
+
+> You can undelete a pool for up to 30 days after deletion. After 30 days, deletion is permanent. Until a pool is permanently deleted, you cannot reuse its   name when creating a new workload identity pool.<br/>
 
   S1: For the moment, federation workload identity pool+provider have fixed name. In case you want to reuse it, you can reactivate and import it, into your terraform state manually.
   ```bash
@@ -146,14 +148,15 @@ In the `cloud-connector` logs you should see similar logs to these
 
   # import to terraform state
   # input your project-id, and for organization example, change the import resource accordingly
-  $ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool.pool' sysdigcloud
-  $ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
+  $ terraform import 'module.sfc_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool.pool' sysdigcloud
+  $ terraform import 'module.sfc_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
    ```
 
-- Q2: Scanning does not seem to work<br/>
+### Q2: Scanning does not seem to work<br/>
   A2: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is ommited and won't be deployed. For more info see GCR PubSub topic.
 <br/><br/>
-- Q3: Scanning, I get an error saying:
+
+### Q3: Scanning, I get an error saying:
   ```
   error starting scan runner for image ****: rpc error: code = PermissionDenied desc = Cloud Build API has not been used in project *** before or it is disabled.
   Enable it by visiting https://console.developers.google.com/apis/api/cloudbuild.googleapis.com/overview?project=*** then retry.
