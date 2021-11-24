@@ -55,7 +55,7 @@ Notice that:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.67.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 3.67.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >=2.3.0 |
 | <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 0.5.19 |
 
@@ -63,7 +63,7 @@ Notice that:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 3.67.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | ~> 3.67.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | >=2.3.0 |
 
 ## Modules
