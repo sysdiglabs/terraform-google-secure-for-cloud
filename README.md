@@ -1,16 +1,18 @@
 # Sysdig Secure for Cloud in GCP
 
 Terraform module that deploys the [**Sysdig Secure for Cloud** stack in **Google Cloud**](https://docs.sysdig.com/en/docs/installation/sysdig-secure-for-cloud/deploy-sysdig-secure-for-cloud-on-gcp/).
-<br/>It provides unified threat detection, compliance, forensics and analysis.
+<br/>
 
-There are three major components:
+Provides unified threat-detection, compliance, forensics and analysis through these major components:
 
-* **CSPM/Compliance**: It evaluates periodically your cloud configuration, using Cloud Custodian, against some benchmarks and returns the results and remediation you need to fix. Managed through [cloud-bench module](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/modules/services/cloud-bench).
-  <br/><br/>
-* **Cloud Threat Detection**: Tracks abnormal and suspicious activities in your cloud environment based on Falco language. Managed through [cloud-connector module](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/modules/services/cloud-connector).
-<br/><br/>
-* **Cloud Scanning**: Automatically scans all container images pushed to the registry or as soon a new task which involves a container is spawned in your account. Managed through [cloud-connector module](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/modules/services/cloud-connector).
-  <br/><br/>
+* **[CSPM/Compliance](https://docs.sysdig.com/en/docs/sysdig-secure/benchmarks/)**: It evaluates periodically your cloud configuration, using Cloud Custodian, against some benchmarks and returns the results and remediation you need to fix. Managed through `cloud-bench` module. <br/>
+
+* **[CIEM](https://docs.sysdig.com/en/docs/sysdig-secure/posture/)**: Permissions and Entitlements management. Requires BOTH modules  `cloud-connector` and `cloud-bench`. <br/>
+
+* **[Cloud Threat Detection](https://docs.sysdig.com/en/docs/sysdig-secure/insights/)**: Tracks abnormal and suspicious activities in your cloud environment based on Falco language. Managed through `cloud-connector` module. <br/>
+
+* **[Cloud Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/)**: Automatically scans all container images pushed to the registry or as soon a new task which involves a container is spawned in your account. Managed through `cloud-connector`. <br/>
+
 
 For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud), [Azure](https://github.com/sysdiglabs/terraform-azurerm-secure-for-cloud)
 
@@ -133,38 +135,40 @@ In the `cloud-connector` logs you should see similar logs to these
 
 ## Troubleshooting
 
-### Q1: Getting "Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists"<br/>
-  A1: Currently Sysdig Backend does not support dynamic WorkloadPool and it's name is fixed to `sysdiglcoud`.
-  <br/>Besides, Google, only performs a soft-deletion of this resource.
-  https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers#delete-pool
+### Q: Getting "Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists"<br/>
+A: Currently Sysdig Backend does not support dynamic WorkloadPool and it's name is fixed to `sysdiglcoud`.
+<br/>Besides, Google, only performs a soft-deletion of this resource.
+https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers#delete-pool
 
 > You can undelete a pool for up to 30 days after deletion. After 30 days, deletion is permanent. Until a pool is permanently deleted, you cannot reuse its   name when creating a new workload identity pool.<br/>
 
-  S1: For the moment, federation workload identity pool+provider have fixed name. In case you want to reuse it, you can reactivate and import it, into your terraform state manually.
-  ```bash
-  # re-activate pool and provider
-  $ gcloud iam workload-identity-pools undelete sysdigcloud  --location=global
-  $ gcloud iam workload-identity-pools providers undelete sysdigcloud --workload-identity-pool="sysdigcloud" --location=global
+S: For the moment, federation workload identity pool+provider have fixed name. In case you want to reuse it, you can reactivate and import it, into your terraform state manually.
+```bash
+# re-activate pool and provider
+$ gcloud iam workload-identity-pools undelete sysdigcloud  --location=global
+$ gcloud iam workload-identity-pools providers undelete sysdigcloud --workload-identity-pool="sysdigcloud" --location=global
 
-  # import to terraform state
-  # input your project-id, and for organization example, change the import resource accordingly
-  $ terraform import 'module.sfc_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool.pool' sysdigcloud
-  $ terraform import 'module.sfc_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
-   ```
+# import to terraform state
+# input your project-id, and for organization example, change the import resource accordingly
+$ terraform import 'module.sfc_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool.pool' sysdigcloud
+$ terraform import 'module.sfc_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
+ ```
 
-### Q2: Scanning does not seem to work<br/>
-  A2: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is ommited and won't be deployed. For more info see GCR PubSub topic.
+### Q: Scanning does not seem to work<br/>
+A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is ommited and won't be deployed. For more info see GCR PubSub topic.
 <br/><br/>
 
-### Q3: Scanning, I get an error saying:
-  ```
-  error starting scan runner for image ****: rpc error: code = PermissionDenied desc = Cloud Build API has not been used in project *** before or it is disabled.
-  Enable it by visiting https://console.developers.google.com/apis/api/cloudbuild.googleapis.com/overview?project=*** then retry.
+### Q: Scanning, I get an error saying:
+```
+error starting scan runner for image ****: rpc error: code = PermissionDenied desc = Cloud Build API has not been used in project *** before or it is disabled.
+Enable it by visiting https://console.developers.google.com/apis/api/cloudbuild.googleapis.com/overview?project=*** then retry.
 
-  If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry
-  ```
-  A3: Do as the error says and activate CloudBuild API. Check the list of all the required APIs that need to be activated per feature module.
+If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry
+```
+A: Do as the error says and activate CloudBuild API. Check the list of all the required APIs that need to be activated per feature module.
 <br/><br/>
+
+
 ## Authors
 
 Module is maintained and supported by [Sysdig](https://sysdig.com).

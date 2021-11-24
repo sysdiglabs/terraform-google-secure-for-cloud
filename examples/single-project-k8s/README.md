@@ -2,11 +2,10 @@
 
 Deploy Sysdig Secure for Cloud in a provided existing Kubernetes Cluster.
 
-- Sysdig **Helm** charts will be used to deploy the secure-for-cloud stack:
-    - [Cloud-Connector Chart](https://charts.sysdig.com/charts/cloud-connector/)
-    - Because these charts require specific GCP credentials to be passed by parameter, a new service account + key will
-      be created within the project. See [`credentials.tf`](./credentials.tf)
-- Used architecture is similar to [single-project](../single-project) but changing Cloud Run <---> with an existing K8s
+- Sysdig **Helm** [cloud-connector chart](https://charts.sysdig.com/charts/cloud-connector/) will be used to deploy threat-detection and scanning features
+  <br/>Because these charts require specific GCP credentials to be passed by parameter, a new service account + key will be created
+  within the project. See [`credentials.tf`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project-k8s/credentials.tf)
+- Used architecture is similar to [single-project](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project) but changing Cloud Run <---> with an existing K8s
 
 All the required resources and workloads will be run under the same GCP project.
 
@@ -71,6 +70,7 @@ Notice that:
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_cloud_bench"></a> [cloud\_bench](#module\_cloud\_bench) | ../../modules/services/cloud-bench |  |
 | <a name="module_connector_project_sink"></a> [connector\_project\_sink](#module\_connector\_project\_sink) | ../../modules/infrastructure/project_sink |  |
 
 ## Resources
@@ -89,7 +89,10 @@ Notice that:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
+| <a name="input_benchmark_regions"></a> [benchmark\_regions](#input\_benchmark\_regions) | List of regions in which to run the benchmark. If empty, the task will contain all regions by default. | `list(string)` | `[]` | no |
+| <a name="input_benchmark_role_name"></a> [benchmark\_role\_name](#input\_benchmark\_role\_name) | The name of the Service Account that will be created. | `string` | `"sysdigcloudbench"` | no |
 | <a name="input_cloud_connector_image"></a> [cloud\_connector\_image](#input\_cloud\_connector\_image) | Cloud-connector image to deploy | `string` | `"quay.io/sysdig/cloud-connector"` | no |
+| <a name="input_deploy_benchmark"></a> [deploy\_benchmark](#input\_deploy\_benchmark) | whether benchmark module is to be deployed | `bool` | `true` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc"` | no |
 | <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig Secure API endpoint | `string` | `"https://secure.sysdig.com"` | no |
 
