@@ -62,16 +62,3 @@ module "pubsub_http_subscription" {
 
   push_http_endpoint = "${module.cloud_connector.cloud_run_service_url}/gcr_scanning"
 }
-
-#######################
-#      BENCHMARKS     #
-#######################
-module "cloud_bench" {
-  count  = var.deploy_bench ? 1 : 0
-  source = "../../modules/services/cloud-bench"
-
-  is_organizational = false
-  role_name         = "${var.name}${var.benchmark_role_name}"
-  project_id        = data.google_client_config.current.project
-  regions           = var.benchmark_regions
-}
