@@ -124,7 +124,7 @@ In the `cloud-connector` logs you should see similar logs to these
 
 Upload an image to a new Repository in a Artifact Registry. Follow repository `Setup Instructions` provided by GCP
 ```bash
-$ docker tag REPO_REGION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:latest
+$ docker tag IMAGE:VERSION REPO_REGION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:latest
 $ docker push REPO_REGION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:latest
 ````
 
