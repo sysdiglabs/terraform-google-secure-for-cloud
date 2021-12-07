@@ -154,6 +154,10 @@ $ terraform import 'module.sfc_example_single-project.module.cloud_bench[0].modu
 $ terraform import 'module.sfc_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
  ```
 
+### Q: Getting "message: Cloud Run error: Container failed to start. Failed to start and then listen on the port defined by the PORT environment variable"
+A: Contrary to AWS, Terraform Google deployment requires just-started workload to start in a healthy status. If this does not happen it will fail.
+S: Check your workload services (cloud run) logs to see what really failed. One common cause is a wrong Sysdig Secure API Token
+
 ### Q: Scanning does not seem to work<br/>
 A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is ommited and won't be deployed. For more info see GCR PubSub topic.
 <br/><br/>
