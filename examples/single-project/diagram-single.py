@@ -36,9 +36,9 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
     with Cluster("GCP project"):
         with Cluster("Secure for Cloud"):
             ccBenchRole = Iam("Cloud Bench Role")
-            ccProjectSink = Custom("\nCC Project\n Sink", "../../resources/sink.png")
+            ccProjectSink = Custom("\nLog Router\n Sink", "../../resources/sink.png")
             ccPubSub = PubSub("CC PubSub Topic")
-            ccEventarc = Code("CC Eventarc\nTrigger")
+            ccEventarc = Code("CloudRun\n Eventarc Trigger")
             ccCloudRun = Run("Cloud Connector")
             bucket = GCS("Bucket\nCC Config")
 
