@@ -27,13 +27,13 @@ with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr,
 
         sds >> Edge(label="schedule on 0 6 * * *") >> bench
     with Cluster("GCP organization project", graph_attr={"bgcolor": "pink"}):
-        ccProjectSink = Custom("\nCC Project\n Sink", "../../resources/sink.png")
+        ccProjectSink = Custom("\nLog Router \n Sink", "../../resources/sink.png")
         orgBenchRole = Iam("Cloud Bench Role")
 
     with Cluster("Secure for Cloud (children project)"):
         ccBenchRole = Iam("Cloud Bench Role")
         ccPubSub = PubSub("CC PubSub Topic")
-        ccEventarc = Code("CC Eventarc\nTrigger")
+        ccEventarc = Code("CloudRun\nEventarc Trigger")
         ccCloudRun = Run("Cloud Connector")
         bucket = GCS("Bucket\nCC Config")
         keys = KMS("Sysdig \n Secure Keys")
