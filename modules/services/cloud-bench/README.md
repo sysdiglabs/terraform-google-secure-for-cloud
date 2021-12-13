@@ -18,12 +18,15 @@ module "cloud_benchmark_gcp" {
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | ~> 3.67.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.0 |
 | <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | ~> 3.67.0 |
 | <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 0.5.21 |
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.0 |
 
 ## Modules
 
@@ -31,6 +34,8 @@ No providers.
 |------|--------|---------|
 | <a name="module_task"></a> [task](#module\_task) | ./task |  |
 | <a name="module_trust_relationship"></a> [trust\_relationship](#module\_trust\_relationship) | ./trust_relationship |  |
+| [random_integer.hour](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/integer) | resource |
+| [random_integer.minute](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/integer) | resource |
 
 ## Resources
 
