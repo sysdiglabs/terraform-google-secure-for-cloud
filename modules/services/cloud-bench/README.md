@@ -34,7 +34,6 @@ module "cloud_benchmark_gcp" {
 |------|--------|---------|
 | <a name="module_task"></a> [task](#module\_task) | ./task |  |
 | <a name="module_trust_relationship"></a> [trust\_relationship](#module\_trust\_relationship) | ./trust_relationship |  |
-| <a name="module_random"></a> [random_integer](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/integer) | resource |
 
 ## Resources
 
