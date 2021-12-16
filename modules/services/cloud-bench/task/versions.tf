@@ -10,5 +10,8 @@ terraform {
       source  = "sysdiglabs/sysdig"
       version = ">= 0.5.21"
     }
+    random = {
+      version = ">= 3.1.0"
+    }
   }
 }
