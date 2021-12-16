@@ -5,13 +5,17 @@ A **Cloud Run** deployment that will detect events in your infrastructure.
 ## Usage
 
 ```hcl
+provider "google" {
+  project = "<PROJECT_ID>"
+  region  = "<REGION_ID>; ex. us-central-1"
+}
+
 module "cloud_connector_gcp" {
   source = "sysdiglabs/secure-for-cloud/google/services/cloud-connector"
 
   sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
   sysdig_secure_endpoint  = "https://secure.sysdig.com"
   bucket_config_name      = "cloud-connector-config-bucket"
-  location                = "us-central1"
 }
 ```
 
@@ -44,6 +48,7 @@ No modules.
 | [google_eventarc_trigger.trigger](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/eventarc_trigger) | resource |
 | [google_project_iam_member.builder](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_project_iam_member.event_receiver](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
+| [google_project_iam_member.run_viewer](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_project_iam_member.service_account_user_itself](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_project_iam_member.token_creator](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_storage_bucket.bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket) | resource |
@@ -51,6 +56,7 @@ No modules.
 | [google_storage_bucket_iam_member.read_access](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_member) | resource |
 | [google_storage_bucket_object.config](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_object) | resource |
 | [random_string.random](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [google_client_config.current](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config) | data source |
 | [google_project.project](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project) | data source |
 
 ## Inputs
@@ -68,7 +74,6 @@ No modules.
 | <a name="input_config_source"></a> [config\_source](#input\_config\_source) | Path to a file that contains the contents of the configuration file to be saved in the bucket | `string` | `null` | no |
 | <a name="input_extra_envs"></a> [extra\_envs](#input\_extra\_envs) | Extra environment variables for the Cloud Connector instance | `map(string)` | `{}` | no |
 | <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Cloud Connector image to deploy | `string` | `"gcr.io/mateo-burillo-ns/cloud-connector:latest"` | no |
-| <a name="input_location"></a> [location](#input\_location) | Zone where the cloud connector will be deployed | `string` | `"us-central1"` | no |
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the Cloud Connector | `number` | `1` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc-cloudconnector"` | no |
 | <a name="input_verify_ssl"></a> [verify\_ssl](#input\_verify\_ssl) | Verify the SSL certificate of the Secure endpoint | `bool` | `true` | no |

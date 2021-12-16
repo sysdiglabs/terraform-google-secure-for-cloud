@@ -25,7 +25,7 @@ locals {
     },
     {
       name  = "GCP_REGION"
-      value = var.location
+      value = data.google_client_config.current.region
     }
     ], [
     for env_key, env_value in var.extra_envs :
@@ -38,7 +38,7 @@ locals {
 }
 
 resource "google_cloud_run_service" "cloud_connector" {
-  location = var.location
+  location = data.google_client_config.current.region
   name     = var.name
 
   lifecycle {
@@ -95,7 +95,7 @@ resource "google_cloud_run_service" "cloud_connector" {
 
 resource "google_eventarc_trigger" "trigger" {
   name            = "${var.name}-trigger"
-  location        = var.location
+  location        = data.google_client_config.current.region
   service_account = var.cloud_connector_sa_email
   matching_criteria {
     attribute = "type"
@@ -104,7 +104,7 @@ resource "google_eventarc_trigger" "trigger" {
   destination {
     cloud_run_service {
       service = google_cloud_run_service.cloud_connector.name
-      region  = var.location
+      region  = data.google_client_config.current.region
       path    = "/audit"
     }
   }
@@ -121,4 +121,9 @@ resource "google_cloud_run_service_iam_member" "run_invoker" {
   service  = google_cloud_run_service.cloud_connector.name
   project  = google_cloud_run_service.cloud_connector.project
   location = google_cloud_run_service.cloud_connector.location
+}
+
+resource "google_project_iam_member" "run_viewer" {
+  member = "serviceAccount:${var.cloud_connector_sa_email}"
+  role   = "roles/run.viewer"
 }
