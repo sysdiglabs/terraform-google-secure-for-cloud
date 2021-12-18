@@ -20,13 +20,10 @@ locals {
 
 resource "sysdig_secure_cloud_account" "cloud_account" {
   account_id     = data.google_project.project.number
+  alias          = data.google_project.project.project_id
   cloud_provider = "gcp"
   role_enabled   = "true"
   role_name      = var.role_name
-
-  # Required as datasource prefixes id with '/projects/':
-  # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project#id
-  alias = trimprefix(data.google_project.project.id, "projects/")
 }
 
 ###################################################
