@@ -1,11 +1,12 @@
 # Sysdig Secure for Cloud in GCP<br/>[ Example :: Single-Project ]
-This example helps to trigger GCP Events. Cloud connector stack is required to be able to generate events.  
-After applying the module, this will create a new sink and assign it to a new pub/subtopic. _GCP Update, Disable or Delete Sink_ event **will prompt once the module is destroyed**.
-```
-$ terraform apply
-$ terraform destroy
-```
+This example helps to trigger GCP Events. Cloud connector stack is required to be able to generate events.
+After applying, this will create a new sink and assign it to a new pub/sub topic. **GCP Update, Disable or Delete Sink** event will prompt once the module is destroyed.
 
+## Prerequisites
+
+Minimum requirements:
+1. Deploy Cloud Connector Stack on GCP.
+2. Configure Terraform GCP Provider.
 
 ## Usage
 
@@ -17,14 +18,9 @@ provider "google" {
    region  = "<REGION_ID>; ex. us-central-1"
 }
 
-provider "google-beta" {
-   project = "<PROJECT_ID>"
-   region  = "<REGION_ID>; ex. us-central-1"
-}
-
 module "secure-for-cloud_trigger_events" {
   source = "sysdiglabs/secure-for-cloud/google//examples/trigger-events"
-   project_id = "<PROJECT_ID>"
+  project_id = "<PROJECT_ID>"
 }
 ```
 
