@@ -18,6 +18,6 @@ variable "sysdig_secure_endpoint" {
 
 variable "location" {
   type        = string
-  default     = "asia-northeast1"
+  default     = "us-central1"
   description = "Zone where the stack will be deployed"
 }

@@ -110,7 +110,9 @@ Notice that:
 
 **Threat Detection**
 
-Choose one of the rules contained in the `GCP Best Practices` policy and execute it in your GCP account.
+Terraform example module to trigger **GCP Update, Disable or Delete Sink** event can be found on [examples/trigger-events ](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/trigger-events)
+
+In another case, you can do it manually. Choose one of the rules contained in the `GCP Best Practices` policy and execute it in your GCP account.
 ex.: Create an alert (Monitoring > Alerting > Create policy). Delete it to prompt the event.
 
 Remember that in case you add new rules to the policy you need to give it time to propagate the changes.
