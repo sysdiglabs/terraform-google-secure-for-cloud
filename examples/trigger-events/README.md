@@ -1,4 +1,4 @@
-# Sysdig Secure for Cloud in GCP<br/>[ Example :: Single-Project ]
+# Sysdig Secure for Cloud in GCP<br/>[ Example :: Trigger-Events]
 This example helps to trigger GCP Events. Cloud connector stack is required to be able to generate events.
 After applying, this will create a new sink and assign it to a new pub/sub topic. **GCP Update, Disable or Delete Sink** event will prompt once the module is destroyed.
 
