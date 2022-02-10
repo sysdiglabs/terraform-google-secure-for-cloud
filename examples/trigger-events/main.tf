@@ -1,6 +1,9 @@
+data "google_project" "project" {
+}
+
 resource "google_pubsub_topic" "trigger_topic" {
   name    = "trigger-event-topic"
-  project = var.project_id
+  project = data.google_project.project.project_id
 }
 
 resource "google_logging_project_sink" "project_sink" {

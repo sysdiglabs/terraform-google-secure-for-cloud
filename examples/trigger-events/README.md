@@ -39,7 +39,7 @@ module "secure-for-cloud_trigger_events" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 3.67.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 3.67.0 |
 
 ## Modules
 
@@ -52,12 +52,11 @@ No modules.
 | [google_logging_project_sink.project_sink](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/logging_project_sink) | resource |
 | [google_pubsub_topic.trigger_topic](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/pubsub_topic) | resource |
 | [google_pubsub_topic_iam_member.writer](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/pubsub_topic_iam_member) | resource |
+| [google_project.project](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project) | data source |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_project_id"></a> [project\_id](#input\_project\_id) | Organization member project ID where the secure-for-cloud workload is going to be deployed | `string` | n/a | yes |
+No inputs.
 
 ## Outputs
 
