@@ -20,7 +20,6 @@ provider "google" {
 
 module "secure-for-cloud_trigger_events" {
   source = "sysdiglabs/secure-for-cloud/google//examples/trigger-events"
-  project_id = "<PROJECT_ID>"
 }
 ```
 
