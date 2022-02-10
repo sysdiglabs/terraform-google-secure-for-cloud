@@ -67,7 +67,7 @@ module "secure-for-cloud_example_single-project" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 3.86.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 3.67.0 |
 
 ## Modules
 
