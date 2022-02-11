@@ -1,4 +1,6 @@
 # diagrams as code vía https://diagrams.mingrammer.com
+
+from diagrams.aws.general import General
 from diagrams import Cluster, Diagram, Edge
 from diagrams.gcp.analytics import PubSub
 from diagrams.gcp.compute import Run
@@ -25,13 +27,14 @@ color_permission = "red"
 color_non_important = "gray"
 color_sysdig = "lightblue"
 
-with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_attr, filename="diagram-single", show=True,
-             direction="TB"):
+with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_attr, filename="diagram-single", show=True, direction="TB"):
+
+    public_registries = Custom("Public Registries","../../resources/diag-registry-icon.png")
+
     with Cluster("GCP account (sysdig)"):
         sds = Custom("Sysdig Secure", "../../resources/diag-sysdig-icon.png")
-        bench = Code("Cloud Bench")
-
-        sds >> Edge(label="schedule on 0 6 * * *") >> bench
+        bench = General("Cloud Bench")
+        sds >> Edge(label="schedule on rand rand * * *") >> bench
 
     with Cluster("GCP project"):
         with Cluster("Secure for Cloud"):
@@ -49,7 +52,7 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
 
             ccCloudRun >> sds
             keys = KMS("Sysdig Keys")
-            gcrPubSub = PubSub("GCR PubSub Topic")
+            gcrPubSub = PubSub("GCR PubSub Topic\n(gcr named)")
             csEventarc = Code("CS Eventarc\nTrigger")
             gcrSubscription = Code("GCR PubSub\nSubscription")
             csCloudBuild = Build("Triggered\n Cloud Builds")
@@ -63,4 +66,9 @@ with Diagram("Sysdig Secure for Cloud\n(single project)", graph_attr=diagram_att
             ccCloudRun >> csCloudBuild
             gcr >> gcrPubSub
             csCloudBuild >> sds
-    ccBenchRole << bench
+
+            # scanning
+            ccCloudRun >> Edge(color=color_non_important) >> gcr
+            ccCloudRun >> Edge(color=color_non_important) >> public_registries
+
+    ccBenchRole <<  Edge(color=color_non_important) << bench
