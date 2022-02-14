@@ -27,15 +27,16 @@ locals {
       name  = "GCP_REGION"
       value = data.google_client_config.current.region
     }
-    ], [
-    for env_key, env_value in var.extra_envs :
-    {
-      name  = env_key,
-      value = env_value
-    }
-    ]
+  ], [
+  for env_key, env_value in var.extra_envs :
+  {
+    name  = env_key,
+    value = env_value
+  }
+  ]
   )
 }
+
 
 resource "google_cloud_run_service" "cloud_connector" {
   location = data.google_client_config.current.region
@@ -68,6 +69,13 @@ resource "google_cloud_run_service" "cloud_connector" {
     spec {
       containers {
         image = var.image_name
+
+        resources {
+          limits = {
+            cpu    = var.cpu,
+            memory = var.memory,
+          }
+        }
 
         ports {
           container_port = 5000
