@@ -27,13 +27,13 @@ locals {
       name  = "GCP_REGION"
       value = data.google_client_config.current.region
     }
-  ], [
-  for env_key, env_value in var.extra_envs :
-  {
-    name  = env_key,
-    value = env_value
-  }
-  ]
+    ], [
+    for env_key, env_value in var.extra_envs :
+    {
+      name  = env_key,
+      value = env_value
+    }
+    ]
   )
 }
 

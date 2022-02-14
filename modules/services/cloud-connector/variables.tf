@@ -83,13 +83,13 @@ variable "config_source" {
 }
 
 variable "cpu" {
-  type = string
-  default = "1"
+  type        = string
+  default     = "1"
   description = "Amount of CPU to reserve for cloud-connector cloud run service"
 }
 
 variable "memory" {
-  type = string
-  default = "500Mi"
+  type        = string
+  default     = "500Mi"
   description = "Amount of memory to reserve for cloud-connector cloud run service"
 }
