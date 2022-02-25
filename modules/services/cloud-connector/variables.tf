@@ -43,7 +43,7 @@ variable "verify_ssl" {
 variable "image_name" {
   type        = string
   default     = "gcr.io/mateo-burillo-ns/cloud-connector:latest"
-  description = "Cloud Connector image to deploy"
+  description = "Sysdig Owned Cloud Connector public image. GCP only allows the deployment of images that are registered in gcr.io"
 }
 
 variable "extra_envs" {

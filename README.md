@@ -5,12 +5,11 @@ Terraform module that deploys the [**Sysdig Secure for Cloud** stack in **Google
 
 Provides unified threat-detection, compliance, forensics and analysis through these major components:
 
-* **[CSPM/Compliance](https://docs.sysdig.com/en/docs/sysdig-secure/benchmarks/)**: It evaluates periodically your cloud configuration, using Cloud Custodian, against some benchmarks and returns the results and remediation you need to fix. Managed through `cloud-bench` module. <br/>
+* **[CSPM/Compliance](https://docs.sysdig.com/en/docs/sysdig-secure/posture/compliance-unified-/)**: It evaluates periodically your cloud configuration, using Cloud Custodian, against some benchmarks and returns the results and remediation you need to fix. Managed through `cloud-bench` module. <br/>
 
 * **[Cloud Threat Detection](https://docs.sysdig.com/en/docs/sysdig-secure/insights/)**: Tracks abnormal and suspicious activities in your cloud environment based on Falco language. Managed through `cloud-connector` module. <br/>
 
-* **[Cloud Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/)**: Automatically scans all container images pushed to the registry or as soon a new task which involves a container is spawned in your account. Managed through `cloud-connector`. <br/>
-
+* **[Cloud Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/)**: Automatically scans all container images pushed to the registry (GCR) and the images that run on the GCP workload (currently CloudRun). Managed through `cloud-connector`. <br/>
 
 For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud), [Azure](https://github.com/sysdiglabs/terraform-azurerm-secure-for-cloud)
 
@@ -122,16 +121,19 @@ In the `cloud-connector` logs you should see similar logs to these
 
 **Image Scanning**
 
-Upload an image to a new Repository in a Artifact Registry. Follow repository `Setup Instructions` provided by GCP
-```bash
-$ docker tag IMAGE:VERSION REPO_REGION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:latest
-$ docker push REPO_REGION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:latest
-````
+- For Repository image scanning, upload an image to a new Repository in a Artifact Registry. Follow repository `Setup Instructions` provided by GCP
+    ```bash
+    $ docker tag IMAGE:VERSION REPO_REGION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:latest
+    $ docker push REPO_REGION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:latest
+    ````
 
-In the `cloud-connector` logs you should see similar logs to these
+- For CloudRun image scanning, deploy a runner.
+
+It may take some time, but you should see logs detecting the new image in the `cloud-connector` logs, similar to these
 > An image has been pushed to GCR registry (project=..., tag=europe-west2-docker.pkg.dev/test-repo/alpine/alpine:latest, digest=europe-west2-docker.pkg.dev/test-repo/alpine/alpine@sha256:be9bdc0ef8e96dbc428dc189b31e2e3b05523d96d12ed627c37aa2936653258c)
-
 > Starting GCR scanning for 'europe-west2-docker.pkg.dev/test-repo/alpine/alpine:latest
+
+And a CloudBuild being launched successfully.
 
 ## Troubleshooting
 
@@ -139,10 +141,9 @@ In the `cloud-connector` logs you should see similar logs to these
 A: Currently Sysdig Backend does not support dynamic WorkloadPool and it's name is fixed to `sysdiglcoud`.
 <br/>Besides, Google, only performs a soft-deletion of this resource.
 https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers#delete-pool
-
 > You can undelete a pool for up to 30 days after deletion. After 30 days, deletion is permanent. Until a pool is permanently deleted, you cannot reuse its   name when creating a new workload identity pool.<br/>
 
-S: For the moment, federation workload identity pool+provider have fixed name. In case you want to reuse it, you can reactivate and import it, into your terraform state manually.
+<br/>S: For the moment, federation workload identity pool+provider have fixed name. In case you want to reuse it, you can reactivate and import it, into your terraform state manually.
 ```bash
 # re-activate pool and provider
 $ gcloud iam workload-identity-pools undelete sysdigcloud  --location=global
@@ -154,13 +155,31 @@ $ terraform import 'module.sfc_example_single-project.module.cloud_bench[0].modu
 $ terraform import 'module.sfc_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
  ```
 
-### Q: Getting "message: Cloud Run error: Container failed to start. Failed to start and then listen on the port defined by the PORT environment variable"
-A: Contrary to AWS, Terraform Google deployment requires just-started workload to start in a healthy status. If this does not happen it will fail.
-S: Check your workload services (cloud run) logs to see what really failed. One common cause is a wrong Sysdig Secure API Token
+### Q: Gettint "Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=gcr)"
+```text
+│ Error: Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=gcr).
+│
+│   with module.sfc_example_single_project.module.pubsub_http_subscription.google_pubsub_topic.topic[0],
+│   on ../../../modules/infrastructure/pubsub_push_http_subscription/main.tf line 10, in resource "google_pubsub_topic" "topic":
+│   10: resource "google_pubsub_topic" "topic" {
+```
+A: This error happens due to a GCP limitation where only a single topic named `gcr` can exist. This name is [gcp hardcoded](https://cloud.google.com/container-registry/docs/configuring-notifications#create_a_topic) and is the one we used to detect images pushed to the registry.
+<br/>S: If the topic already exists, you can import it in your terraform state, BUT BEWARE that once you call destroy it will be removed.
+
+```terraform
+$ terraform import 'module.sfc_example_single_project.module.pubsub_http_subscription.google_pubsub_topic.topic[0]' gcr
+```
+Contact us to develop a workaround for this, where the topic name is to be reused.
+
+
 
 ### Q: Scanning does not seem to work<br/>
-A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is ommited and won't be deployed. For more info see GCR PubSub topic.
+A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is omitted and won't be deployed. For more info see GCR PubSub topic.
 <br/><br/>
+
+### Q: Getting "message: Cloud Run error: Container failed to start. Failed to start and then listen on the port defined by the PORT environment variable"
+A: Contrary to AWS, Terraform Google deployment requires just-started workload to start in a healthy status. If this does not happen it will fail.
+<br/>S: Check your workload services (cloud run) logs to see what really failed. One common cause is a wrong Sysdig Secure API Token
 
 ### Q: Scanning, I get an error saying:
 ```
