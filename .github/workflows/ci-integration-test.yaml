@@ -64,9 +64,7 @@ jobs:
         if: ${{ failure() }}
         run: |
           kubectl get namespaces
-          kubectl get deployments -n sfc-tests-kitchen-singlek8s
-          kubectl describe deployment cloud-connector -n sfc-tests-kitchen-singlek8s
-          kubectl logs deployment.apps/cloud-connector -n sfc-tests-kitchen-singlek8s
+        # removing get deployments and pods because of random name in GCP
       - name: Destroy single-project-k8s resources
         if: ${{ failure() }}
         run: bundle exec kitchen destroy "single-project-k8s-gcp"
