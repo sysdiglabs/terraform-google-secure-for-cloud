@@ -40,9 +40,33 @@ jobs:
           service_account_key: ${{ secrets.GCP_DRAIOS_SA_KEY }}
           export_default_credentials: true
 
-      - name: Run test
-        run: bundle exec kitchen test
+      - name: Run single-project test
+        run: bundle exec kitchen test "single-project-gcp"
 
-      - name: Destroy resources
+      - name: Destroy single-project resources
         if: ${{ failure() }}
-        run: bundle exec kitchen destroy
+        run: bundle exec kitchen destroy "single-project-gcp"
+
+      - name: Run organization test
+        run: bundle exec kitchen test "organization-gcp"
+
+      - name: Destroy organization resources
+        if: ${{ failure() }}
+        run: bundle exec kitchen destroy "organization-gcp"
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1.2.0
+
+      - name: Run single-project-k8s test
+        run: bundle exec kitchen test "single-project-k8s-gcp"
+
+      - name: Inspect k8s failures
+        if: ${{ failure() }}
+        run: |
+          kubectl get namespaces
+          kubectl get deployments -n sfc-tests-kitchen-singlek8s
+          kubectl describe deployment cloud-connector -n sfc-tests-kitchen-singlek8s
+          kubectl logs deployment.apps/cloud-connector -n sfc-tests-kitchen-singlek8s
+      - name: Destroy single-project-k8s resources
+        if: ${{ failure() }}
+        run: bundle exec kitchen destroy "single-project-k8s-gcp"
