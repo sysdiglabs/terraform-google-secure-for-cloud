@@ -25,6 +25,6 @@ module "sfc_example_single_project" {
 
   sysdig_secure_api_token = var.sysdig_secure_api_token
   sysdig_secure_endpoint  = var.sysdig_secure_endpoint
-  name                    = "sfcK8s${random_string.random.result}"
+  name                    = "sfck8s${random_string.random.result}"
   deploy_benchmark        = false
 }
