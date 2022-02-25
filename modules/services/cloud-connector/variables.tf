@@ -81,3 +81,15 @@ variable "config_source" {
   type        = string
   description = "Path to a file that contains the contents of the configuration file to be saved in the bucket"
 }
+
+variable "cpu" {
+  type        = string
+  default     = "1"
+  description = "Amount of CPU to reserve for cloud-connector cloud run service"
+}
+
+variable "memory" {
+  type        = string
+  default     = "500Mi"
+  description = "Amount of memory to reserve for cloud-connector cloud run service"
+}

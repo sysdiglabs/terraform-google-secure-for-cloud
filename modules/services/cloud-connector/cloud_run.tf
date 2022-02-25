@@ -37,6 +37,7 @@ locals {
   )
 }
 
+
 resource "google_cloud_run_service" "cloud_connector" {
   location = data.google_client_config.current.region
   name     = var.name
@@ -68,6 +69,13 @@ resource "google_cloud_run_service" "cloud_connector" {
     spec {
       containers {
         image = var.image_name
+
+        resources {
+          limits = {
+            cpu    = var.cpu,
+            memory = var.memory,
+          }
+        }
 
         ports {
           container_port = 5000
