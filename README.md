@@ -138,7 +138,7 @@ And a CloudBuild being launched successfully.
 ## Troubleshooting
 
 ### Q: Getting "Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists"<br/>
-A: Currently Sysdig Backend does not support dynamic WorkloadPool and it's name is fixed to `sysdiglcoud`.
+A: Currently Sysdig Backend does not support dynamic WorkloadPool and it's name is fixed to `sysdigcloud`.
 <br/>Besides, Google, only performs a soft-deletion of this resource.
 https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers#delete-pool
 > You can undelete a pool for up to 30 days after deletion. After 30 days, deletion is permanent. Until a pool is permanently deleted, you cannot reuse its   name when creating a new workload identity pool.<br/>
@@ -160,7 +160,7 @@ $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_be
 $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
  ```
 
-### Q: Gettint "Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=gcr)"
+### Q: Getting "Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=gcr)"
 ```text
 │ Error: Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=gcr).
 │
@@ -177,6 +177,9 @@ $ terraform import 'module.sfc_example_single_project.module.pubsub_http_subscri
 Contact us to develop a workaround for this, where the topic name is to be reused.
 
 
+### Q: Getting "Cloud Run error: Container failed to start. Failed to start and then listen on the port defined by the PORT environment variable."
+A: If cloud-connector cloud run module cannot start it will give this error. The error is given by the health-check system, it's not specific to its PORT per-se
+S: Verify possible logs before the deployment crashes. Could be limitations due to Sysdig license (expired trial subscription or free-tier usage where cloud-account limit has been surpassed)
 
 ### Q: Scanning does not seem to work<br/>
 A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is omitted and won't be deployed. For more info see GCR PubSub topic.
