@@ -150,9 +150,14 @@ $ gcloud iam workload-identity-pools undelete sysdigcloud  --location=global
 $ gcloud iam workload-identity-pools providers undelete sysdigcloud --workload-identity-pool="sysdigcloud" --location=global
 
 # import to terraform state
-# input your project-id, and for organization example, change the import resource accordingly
-$ terraform import 'module.sfc_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool.pool' sysdigcloud
-$ terraform import 'module.sfc_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
+# for this you have to adapt the import resource to your specific usage
+# ex.: for single-project, input your project-id
+$ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool.pool' sysdigcloud
+$ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
+
+# ex.: for organization example you should change its reference too, per project
+$ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool.pool' sysdigcloud
+$ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
  ```
 
 ### Q: Gettint "Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=gcr)"
