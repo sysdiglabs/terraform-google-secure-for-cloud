@@ -43,7 +43,8 @@ provider "helm" {
 
 module "secure_for_cloud_gcp_single_project_k8s" {
   source = "sysdiglabs/secure-for-cloud/google//examples/single-project-k8s"
-  sysdig_secure_api_token = "00000000-1111-2222-3333-444444444444"
+  sysdig_secure_url         = "<SYSDIG_SECURE_URL>"
+  sysdig_secure_endpoint    = "<SYSDIG_SECURE_API_TOKEN>"
 }
 ```
 
