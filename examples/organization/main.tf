@@ -94,8 +94,9 @@ module "cloud_connector" {
   project_id                 = data.google_client_config.current.project
 
   #defaults
-  name       = "${var.name}-cloudconnector"
-  verify_ssl = local.verify_ssl
+  name              = "${var.name}-cloudconnector"
+  verify_ssl        = local.verify_ssl
+  is_organizational = true
 }
 
 module "pubsub_http_subscription" {

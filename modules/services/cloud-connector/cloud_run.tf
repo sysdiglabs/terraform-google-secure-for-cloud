@@ -21,7 +21,7 @@ locals {
     },
     {
       name  = "TELEMETRY_DEPLOYMENT_METHOD"
-      value = "terraform_gcp_cr"
+      value = "terraform_gcp_cr_${var.is_organizational}?org:single"
     },
     {
       name  = "GCP_REGION"

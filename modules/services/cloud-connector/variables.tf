@@ -93,3 +93,9 @@ variable "memory" {
   default     = "500Mi"
   description = "Amount of memory to reserve for cloud-connector cloud run service"
 }
+
+variable "is_organizational" {
+  type        = bool
+  default     = false
+  description = "whether secure-for-cloud should be deployed in an organizational setup"
+}

@@ -57,7 +57,7 @@ resource "helm_release" "cloud_connector" {
 
   set {
     name  = "extraEnvVars[0].TELEMETRY_DEPLOYMENT_METHOD"
-    value = "terraform_gcp_k8s"
+    value = "terraform_gcp_k8s_single"
   }
 
   set {
