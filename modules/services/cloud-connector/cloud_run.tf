@@ -1,4 +1,5 @@
 locals {
+  suffix_org = var.is_organizational ? "org" : "single"
   task_env_vars = concat([
     # This allows the revision to be created again if the configuration changes.
     # Annotations can't be used or they can't be ignored in the lifecycle, thus triggering
@@ -21,7 +22,7 @@ locals {
     },
     {
       name  = "TELEMETRY_DEPLOYMENT_METHOD"
-      value = "terraform_gcp_cr_${var.is_organizational}?org:single"
+      value = "terraform_gcp_cr_${local.suffix_org}"
     },
     {
       name  = "GCP_REGION"
