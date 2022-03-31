@@ -94,10 +94,10 @@ jobs:
       - name: Install Terraform v${{ matrix.version }}
         uses: hashicorp/setup-terraform@v1
       - name: Install pre-commit dependencies
-          run: |
-            pip install pre-commit
-            go install github.com/terraform-docs/terraform-docs@v0.16.0
-            curl -L "$(curl -s https://api.github.com/repos/terraform-linters/tflint/releases/latest | grep -o -E "https://.+?_linux_amd64.zip")" > tflint.zip && unzip tflint.zip && rm tflint.zip && sudo mv tflint /usr/bin/
+        run: |
+          pip install pre-commit
+          go install github.com/terraform-docs/terraform-docs@v0.16.0
+          curl -L "$(curl -s https://api.github.com/repos/terraform-linters/tflint/releases/latest | grep -o -E "https://.+?_linux_amd64.zip")" > tflint.zip && unzip tflint.zip && rm tflint.zip && sudo mv tflint /usr/bin/
           with:
             terraform_version: ${{ matrix.version }}
       - name: Install pre-commit dependencies
