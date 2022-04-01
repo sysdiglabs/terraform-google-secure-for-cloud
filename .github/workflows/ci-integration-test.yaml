@@ -2,14 +2,9 @@ name: CI - Integration Tests
 
 on:
   pull_request:
-# :( not compatible with action requirement
-#    paths:
-#      - '**.tf'
   push:
     branches:
       - master
-#    paths:
-#      - '**.tf'
   workflow_dispatch:
 concurrency: terraform
 jobs:
