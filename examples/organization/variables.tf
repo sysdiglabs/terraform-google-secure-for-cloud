@@ -12,22 +12,13 @@ variable "organization_domain" {
 # --------------------------
 # optionals, with defaults
 # --------------------------
-variable "sysdig_secure_endpoint" {
-  type        = string
-  default     = "https://secure.sysdig.com"
-  description = "Sysdig Secure API endpoint"
+
+variable "deploy_cloud_connector_module" {
+  type        = bool
+  description = "whether cloud-connector module and requirements are to be deployed. TODO enable deploy_thread_detection/scanning options"
+  default     = false
 }
 
-variable "name" {
-  type        = string
-  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
-  default     = "sfc"
-
-  validation {
-    condition     = can(regex("^[a-z0-9]+$", var.name))
-    error_message = "ERROR: Invalid name. must contain only lowercase letters (a-z) and numbers (0-9)."
-  }
-}
 
 variable "max_instances" {
   type        = number
@@ -36,16 +27,20 @@ variable "max_instances" {
 }
 
 
-# scanning
 
+#
+# scanning
+#
 variable "repository_project_ids" {
   default     = []
   type        = list(string)
   description = "Projects were a `gcr`-named topic will be to subscribe to its repository events. If empty, all organization projects will be defaulted."
 }
 
-# benchmark
 
+#
+# benchmark
+#
 variable "deploy_bench" {
   type        = bool
   description = "whether benchmark module is to be deployed"
@@ -68,4 +63,25 @@ variable "benchmark_role_name" {
   type        = string
   description = "The name of the Service Account that will be created."
   default     = "sysdigcloudbench"
+}
+
+
+#
+# general
+#
+variable "sysdig_secure_endpoint" {
+  type        = string
+  default     = "https://secure.sysdig.com"
+  description = "Sysdig Secure API endpoint"
+}
+
+variable "name" {
+  type        = string
+  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
+  default     = "sfc"
+
+  validation {
+    condition     = can(regex("^[a-z0-9]+$", var.name))
+    error_message = "ERROR: Invalid name. must contain only lowercase letters (a-z) and numbers (0-9)."
+  }
 }
