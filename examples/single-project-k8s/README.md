@@ -70,7 +70,7 @@ Notice that:
 | Name | Version |
 |------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | 3.67.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.5.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.5.1 |
 
 ## Modules
 
