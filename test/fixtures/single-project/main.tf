@@ -22,4 +22,6 @@ module "sfc_example_single_project" {
   sysdig_secure_endpoint  = var.sysdig_secure_endpoint
   name                    = "sfc${random_string.random.result}"
   deploy_benchmark        = false
+
+  deploy_cloud_connector_module = true
 }
