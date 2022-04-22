@@ -20,10 +20,16 @@ variable "max_instances" {
 }
 
 
-
 #
 # scanning
 #
+
+variable "deploy_scanning" {
+  type        = bool
+  description = "true/false whether scanning module is to be deployed"
+  default     = false
+}
+
 variable "repository_project_ids" {
   default     = []
   type        = list(string)

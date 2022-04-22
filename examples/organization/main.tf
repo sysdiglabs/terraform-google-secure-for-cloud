@@ -3,7 +3,7 @@ locals {
   connector_filter       = <<EOT
   logName=~"/logs/cloudaudit.googleapis.com%2Factivity$" AND -resource.type="k8s_cluster"
 EOT
-  repository_project_ids = length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids
+  repository_project_ids = var.deploy_scanning ? length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids : []
 }
 
 # This provider is project agnostic, and can be used to provision resources in any project,

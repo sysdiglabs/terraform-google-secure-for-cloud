@@ -8,6 +8,13 @@ variable "sysdig_secure_api_token" {
 # optionals, with defaults
 # --------------------------
 
+variable "deploy_scanning" {
+  type        = bool
+  description = "true/false whether scanning module is to be deployed"
+  default     = false
+}
+
+
 #
 # benchmark
 #
