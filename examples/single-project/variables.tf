@@ -8,15 +8,6 @@ variable "sysdig_secure_api_token" {
 # optionals, with defaults
 # --------------------------
 
-variable "deploy_cloud_connector_module" {
-  type        = bool
-  description = "whether cloud-connector module and requirements are to be deployed. TODO enable deploy_thread_detection/scanning options"
-  default     = false
-}
-
-
-
-
 #
 # benchmark
 #

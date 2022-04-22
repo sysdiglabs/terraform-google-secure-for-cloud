@@ -19,6 +19,4 @@ module "sfc_example_organization" {
   name                   = "sfc${random_string.random.result}"
   repository_project_ids = [var.project_id]
   deploy_bench           = false
-
-  deploy_cloud_connector_module = true
 }

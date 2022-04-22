@@ -13,13 +13,6 @@ variable "organization_domain" {
 # optionals, with defaults
 # --------------------------
 
-variable "deploy_cloud_connector_module" {
-  type        = bool
-  description = "whether cloud-connector module and requirements are to be deployed. TODO enable deploy_thread_detection/scanning options"
-  default     = false
-}
-
-
 variable "max_instances" {
   type        = number
   description = "Max number of instances for the workloads"

@@ -3,7 +3,7 @@ locals {
   connector_filter       = <<EOT
   logName=~"/logs/cloudaudit.googleapis.com%2Factivity$" AND -resource.type="k8s_cluster"
 EOT
-  repository_project_ids = var.deploy_cloud_connector_module ? length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids : []
+  repository_project_ids = length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids
 }
 
 # This provider is project agnostic, and can be used to provision resources in any project,
@@ -36,7 +36,6 @@ data "google_projects" "all_projects" {
 
 
 resource "google_service_account" "connector_sa" {
-  count        = var.deploy_cloud_connector_module ? 1 : 0
   account_id   = "${var.name}-cloudconnector"
   display_name = "Service account for cloud-connector"
 }
@@ -46,7 +45,6 @@ resource "google_service_account" "connector_sa" {
 #      CONNECTOR      #
 #######################
 module "connector_organization_sink" {
-  count  = var.deploy_cloud_connector_module ? 1 : 0
   source = "../../modules/infrastructure/organization_sink"
 
   organization_id = data.google_organization.org.org_id
@@ -55,8 +53,6 @@ module "connector_organization_sink" {
 }
 
 resource "google_organization_iam_custom_role" "org_gcr_image_puller" {
-  count = var.deploy_cloud_connector_module ? 1 : 0
-
   org_id = data.google_organization.org.org_id
 
   role_id     = "${var.name}_gcr_image_puller"
@@ -74,32 +70,28 @@ resource "google_organization_iam_custom_role" "org_gcr_image_puller" {
 }
 
 resource "google_organization_iam_member" "organization_image_puller" {
-  count = var.deploy_cloud_connector_module ? 1 : 0
-
   org_id = data.google_organization.org.org_id
 
-  role   = google_organization_iam_custom_role.org_gcr_image_puller[0].id
-  member = "serviceAccount:${google_service_account.connector_sa[0].email}"
+  role   = google_organization_iam_custom_role.org_gcr_image_puller.id
+  member = "serviceAccount:${google_service_account.connector_sa.email}"
 }
 
 module "secure_secrets" {
-  count  = var.deploy_cloud_connector_module ? 1 : 0
   source = "../../modules/infrastructure/secrets"
 
-  cloud_scanning_sa_email = google_service_account.connector_sa[0].email
+  cloud_scanning_sa_email = google_service_account.connector_sa.email
   sysdig_secure_api_token = var.sysdig_secure_api_token
   name                    = var.name
 }
 
 module "cloud_connector" {
-  count  = var.deploy_cloud_connector_module ? 1 : 0
   source = "../../modules/services/cloud-connector"
 
-  cloud_connector_sa_email   = google_service_account.connector_sa[0].email
+  cloud_connector_sa_email   = google_service_account.connector_sa.email
   sysdig_secure_api_token    = var.sysdig_secure_api_token
   sysdig_secure_endpoint     = var.sysdig_secure_endpoint
-  connector_pubsub_topic_id  = module.connector_organization_sink[0].pubsub_topic_id
-  secure_api_token_secret_id = module.secure_secrets[0].secure_api_token_secret_name
+  connector_pubsub_topic_id  = module.connector_organization_sink.pubsub_topic_id
+  secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
   max_instances              = var.max_instances
   project_id                 = data.google_client_config.current.project
 
@@ -122,9 +114,9 @@ module "pubsub_http_subscription" {
   subscription_project_id = data.google_client_config.current.project
   topic_name              = "gcr"
   name                    = "${var.name}-gcr"
-  service_account_email   = google_service_account.connector_sa[0].email
+  service_account_email   = google_service_account.connector_sa.email
 
-  push_http_endpoint = "${module.cloud_connector[0].cloud_run_service_url}/gcr_scanning"
+  push_http_endpoint = "${module.cloud_connector.cloud_run_service_url}/gcr_scanning"
 }
 
 
