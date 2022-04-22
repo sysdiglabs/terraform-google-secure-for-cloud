@@ -2,7 +2,10 @@
 
 This example deploys Secure for Cloud into a GCP organizational account.
 
-Sysdig workload will be deployed in the `project_id` defined in the required input parameter.
+### Notice
+* Sysdig workload will be deployed in the `project_id` defined in the required input parameter.
+* All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameters.<br/>
+* This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
 
 ![single project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/organization/diagram-org.png?raw=true)
 
@@ -35,6 +38,7 @@ Sysdig workload will be deployed in the `project_id` defined in the required inp
 * [IAM Service Account Credentials API](https://console.cloud.google.com/marketplace/product/google/iamcredentials.googleapis.com)
 * [Cloud Resource Manager API](https://console.cloud.google.com/marketplace/product/google/cloudresourcemanager.googleapis.com)
 * [Security Token Service API](https://console.cloud.google.com/marketplace/product/google/sts.googleapis.com)
+
 
 ## Usage
 

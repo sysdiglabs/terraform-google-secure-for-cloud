@@ -1,7 +1,11 @@
 # Sysdig Secure for Cloud in GCP<br/>[ Example :: Single-Project ]
 
 This example deploys Secure For Cloud into a single GCP project.<br/>
-All the resources will be run in a single project.
+
+### Notice
+* All the resources will be run in a single project.<br/>
+* All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameters.<br/>
+* This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
 
 ![single project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project/diagram-single.png?raw=true)
 
@@ -30,7 +34,6 @@ All the resources will be run in a single project.
 * [IAM Service Account Credentials API](https://console.cloud.google.com/marketplace/product/google/iamcredentials.googleapis.com)
 * [Cloud Resource Manager API](https://console.cloud.google.com/marketplace/product/google/cloudresourcemanager.googleapis.com)
 * [Security Token Service API](https://console.cloud.google.com/marketplace/product/google/sts.googleapis.com)
-
 
 ## Usage
 
