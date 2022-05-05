@@ -38,11 +38,9 @@ with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr,
         ccPubSub = PubSub("CC PubSub Topic")
         ccEventarc = Code("CloudRun\nEventarc Trigger")
         ccCloudRun = Run("Cloud Connector")
-        bucket = GCS("Bucket\nCC Config")
         keys = KMS("Sysdig \n Secure Keys")
 
         ccCloudRun << Edge(style="dashed") << keys
-        bucket <<  Edge(style="dashed", label="Get CC \n config file") << ccCloudRun
         ccEventarc >> ccCloudRun
         ccEventarc << ccPubSub
         ccProjectSink >> ccPubSub

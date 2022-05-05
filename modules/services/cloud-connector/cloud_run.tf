@@ -5,12 +5,8 @@ locals {
     # Annotations can't be used or they can't be ignored in the lifecycle, thus triggering
     # recreations even if the config hasn't changed.
     {
-      name  = "CONFIG_MD5"
-      value = google_storage_bucket_object.config.md5hash
-    },
-    {
-      name  = "CONFIG_PATH"
-      value = "${google_storage_bucket.bucket.url}/${google_storage_bucket_object.config.output_name}"
+      name  = "CONFIG"
+      value = base64encode(local.default_config)
     },
     {
       name  = "SECURE_URL"
