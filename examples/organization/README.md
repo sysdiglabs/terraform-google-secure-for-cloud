@@ -2,7 +2,10 @@
 
 This example deploys Secure for Cloud into a GCP organizational account.
 
-Sysdig workload will be deployed in the `project_id` defined in the required input parameter.
+### Notice
+* Sysdig workload will be deployed in the `project_id` defined in the required input parameter.
+* All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameters.<br/>
+* This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
 
 ![single project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/organization/diagram-org.png?raw=true)
 
@@ -35,6 +38,7 @@ Sysdig workload will be deployed in the `project_id` defined in the required inp
 * [IAM Service Account Credentials API](https://console.cloud.google.com/marketplace/product/google/iamcredentials.googleapis.com)
 * [Cloud Resource Manager API](https://console.cloud.google.com/marketplace/product/google/cloudresourcemanager.googleapis.com)
 * [Security Token Service API](https://console.cloud.google.com/marketplace/product/google/sts.googleapis.com)
+
 
 ## Usage
 
@@ -103,6 +107,7 @@ module "secure-for-cloud_example_organization" {
 | <a name="input_benchmark_regions"></a> [benchmark\_regions](#input\_benchmark\_regions) | List of regions in which to run the benchmark. If empty, the task will contain all regions by default. | `list(string)` | `[]` | no |
 | <a name="input_benchmark_role_name"></a> [benchmark\_role\_name](#input\_benchmark\_role\_name) | The name of the Service Account that will be created. | `string` | `"sysdigcloudbench"` | no |
 | <a name="input_deploy_bench"></a> [deploy\_bench](#input\_deploy\_bench) | whether benchmark module is to be deployed | `bool` | `true` | no |
+| <a name="input_deploy_scanning"></a> [deploy\_scanning](#input\_deploy\_scanning) | true/false whether scanning module is to be deployed | `bool` | `false` | no |
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the workloads | `number` | `1` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc"` | no |
 | <a name="input_repository_project_ids"></a> [repository\_project\_ids](#input\_repository\_project\_ids) | Projects were a `gcr`-named topic will be to subscribe to its repository events. If empty, all organization projects will be defaulted. | `list(string)` | `[]` | no |
@@ -115,7 +120,7 @@ No outputs.
 
 ## Authors
 
-Module is maintained and supported by [Sysdig](https://github.com/sysdiglabs/terraform-google-cloudvision).
+Module is maintained and supported by [Sysdig](https://github.com/sysdiglabs/terraform-google-secure-for-cloud).
 
 ## License
 

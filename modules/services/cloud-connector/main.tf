@@ -1,4 +1,3 @@
-# This lines are here because of pre-commit hook
 locals {
   default_config = yamlencode({
     rules     = []
@@ -34,9 +33,19 @@ locals {
       }
     ]
   })
-  config_content = var.config_content == null && var.config_source == null ? local.default_config : var.config_content
-}
 
-data "google_project" "project" {
-  project_id = var.project_id
+  default_config_without_scanning = yamlencode({
+    rules     = []
+    notifiers = []
+    ingestors = [
+      {
+        gcp-auditlog-pubsub-http = {
+          url     = "/audit"
+          project = data.google_project.project.project_id
+        }
+      }
+    ]
+  })
+
+  config_content = var.config_content == null && var.config_source == null ? var.deploy_scanning ? local.default_config : local.default_config_without_scanning : var.config_content
 }

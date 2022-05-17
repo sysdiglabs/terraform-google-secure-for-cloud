@@ -43,7 +43,7 @@ No modules.
 
 ## Authors
 
-Module is maintained and supported by [Sysdig](https://github.com/sysdiglabs/terraform-google-cloudvision).
+Module is maintained and supported by [Sysdig](https://github.com/sysdiglabs/terraform-google-secure-for-cloud).
 
 ## License
 
