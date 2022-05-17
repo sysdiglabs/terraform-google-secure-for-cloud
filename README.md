@@ -44,6 +44,9 @@ Besides, the following GCP **APIs must be enabled** to deploy resources correctl
 
 ## Usage
 
+If you're unsure about what/how to use this module, please fill the [questionnaire](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/blob/master/use-cases/_questionnaire.md) report as an issue and let us know your context, we will be happy to help and improve our module.
+
+
 ### - Single-Project
 
 Sysdig workload will be deployed in the same account where user's resources will be watched.<br/>
