@@ -3,7 +3,7 @@ locals {
   connector_filter       = <<EOT
   logName=~"/logs/cloudaudit.googleapis.com%2Factivity$" AND -resource.type="k8s_cluster"
 EOT
-  repository_project_ids = length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids
+  repository_project_ids = var.deploy_scanning ? length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids : []
 }
 
 data "google_organization" "org" {
@@ -14,14 +14,16 @@ data "google_projects" "all_projects" {
   filter = "parent.id:${data.google_organization.org.org_id} parent.type:organization lifecycleState:ACTIVE"
 }
 
-#######################
-#      CONNECTOR      #
-#######################
+
 resource "google_service_account" "connector_sa" {
   account_id   = "${var.name}-cloudconnector"
   display_name = "Service account for cloud-connector"
 }
 
+
+#######################
+#      CONNECTOR      #
+#######################
 module "connector_organization_sink" {
   source = "../../modules/infrastructure/organization_sink"
 
@@ -79,6 +81,11 @@ module "cloud_connector" {
   is_organizational = true
 }
 
+
+#--------------------
+# scanning
+#--------------------
+
 module "pubsub_http_subscription" {
   for_each = toset(local.repository_project_ids)
   source   = "../../modules/infrastructure/pubsub_push_http_subscription"
@@ -91,6 +98,7 @@ module "pubsub_http_subscription" {
 
   push_http_endpoint = "${module.cloud_connector.cloud_run_service_url}/gcr_scanning"
 }
+
 
 #--------------------
 # benchmark

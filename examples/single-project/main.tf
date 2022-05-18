@@ -14,7 +14,6 @@ resource "google_service_account" "connector_sa" {
   display_name = "Service account for cloud-connector"
 }
 
-
 module "connector_project_sink" {
   source = "../../modules/infrastructure/project_sink"
   name   = "${var.name}-cloudconnector"
@@ -34,18 +33,24 @@ module "cloud_connector" {
   source = "../../modules/services/cloud-connector"
   name   = "${var.name}-cloudconnector"
 
+  sysdig_secure_api_token = var.sysdig_secure_api_token
+  sysdig_secure_endpoint  = var.sysdig_secure_endpoint
+  verify_ssl              = local.verify_ssl
+
+  project_id                 = data.google_client_config.current.project
   cloud_connector_sa_email   = google_service_account.connector_sa.email
-  sysdig_secure_api_token    = var.sysdig_secure_api_token
-  sysdig_secure_endpoint     = var.sysdig_secure_endpoint
   connector_pubsub_topic_id  = module.connector_project_sink.pubsub_topic_id
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
-  project_id                 = data.google_client_config.current.project
 
-  #defaults
-  verify_ssl = local.verify_ssl
+  deploy_scanning = var.deploy_scanning
 }
 
+
+#######################
+#      SCANNER       #
+#######################
 module "pubsub_http_subscription" {
+  count  = var.deploy_scanning ? 1 : 0
   source = "../../modules/infrastructure/pubsub_push_http_subscription"
 
   topic_project_id        = data.google_client_config.current.project

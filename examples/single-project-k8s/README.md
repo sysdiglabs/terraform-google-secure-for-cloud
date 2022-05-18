@@ -7,7 +7,11 @@ Deploy Sysdig Secure for Cloud in a provided existing Kubernetes Cluster.
   within the project. See [`credentials.tf`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project-k8s/credentials.tf)
 - Used architecture is similar to [single-project](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project) but changing Cloud Run <---> with an existing K8s
 
-All the required resources and workloads will be run under the same GCP project.
+### Notice
+* All the required resources and workloads will be run **under the same GCP project**.
+* **[Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) is not available** in this example yet.
+* This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
+
 
 ## Prerequisites
 
@@ -49,11 +53,6 @@ module "secure_for_cloud_gcp_single_project_k8s" {
 ```
 
 See [inputs summary](#inputs) or module module [`variables.tf`](./variables.tf) file for more optional configuration.
-
-Notice that:
-
-* This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
-* All created resources will be created within the tags `product:sysdig-secure-for-cloud`.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
