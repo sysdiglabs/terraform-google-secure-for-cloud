@@ -6,26 +6,6 @@ EOT
   repository_project_ids = length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids
 }
 
-# This provider is project agnostic, and can be used to provision resources in any project,
-# provided the project is specified on the resource. Primarily used for Benchmarks
-provider "google" {
-  alias  = "multiproject"
-  region = data.google_client_config.current.region
-}
-
-# This provider is project agnostic, and can be used to provision resources in any project,
-# provided the project is specified on the resource. Primarily used for Benchmarks
-provider "google-beta" {
-  alias  = "multiproject"
-  region = data.google_client_config.current.region
-}
-
-provider "sysdig" {
-  sysdig_secure_url          = var.sysdig_secure_endpoint
-  sysdig_secure_api_token    = var.sysdig_secure_api_token
-  sysdig_secure_insecure_tls = !local.verify_ssl
-}
-
 data "google_organization" "org" {
   domain = var.organization_domain
 }
