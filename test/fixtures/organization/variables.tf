@@ -32,4 +32,3 @@ variable "region" {
   description = "Region in which the cloudtrail and EKS are deployed. Currently same region is required"
   default     = "europe-north1"
 }
-
