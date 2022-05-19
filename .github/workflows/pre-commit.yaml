@@ -57,7 +57,9 @@ jobs:
           pip install pre-commit
           go install github.com/hashicorp/terraform-config-inspect@latest
       - name: Execute generate-terraform-providers for organizational
-        run: pre-commit run generate-terraform-providers
+        run: |
+          pre-commit run generate-terraform-providers
+          ls ./examples/organization
       - name: Execute pre-commit
         # Run only validate pre-commit check on min version supported
         if: ${{ matrix.directory !=  '.' }}
