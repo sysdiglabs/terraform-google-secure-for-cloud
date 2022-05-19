@@ -59,5 +59,5 @@ module "sfc_example_organization" {
   name                   = "sfc${random_string.random.result}"
   repository_project_ids = [var.project_id]
   deploy_scanning        = true
-  deploy_bench           = true
+  deploy_bench           = false
 }
