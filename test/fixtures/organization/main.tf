@@ -4,7 +4,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 3.67.0"
+      version = "~> 4.21.0"
     }
     random = {
       version = ">= 3.1.0"
@@ -59,5 +59,5 @@ module "sfc_example_organization" {
   name                   = "sfc${random_string.random.result}"
   repository_project_ids = [var.project_id]
   deploy_scanning        = true
-  deploy_bench           = false
+  deploy_bench           = true
 }
