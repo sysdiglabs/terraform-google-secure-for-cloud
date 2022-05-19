@@ -34,6 +34,12 @@ variable "secure_api_token_secret_id" {
 # optionals, with defaults
 # --------------------------
 
+variable "deploy_scanning" {
+  type        = bool
+  description = "true/false whether scanning module is to be deployed"
+  default     = false
+}
+
 variable "verify_ssl" {
   type        = bool
   description = "Verify the SSL certificate of the Secure endpoint"

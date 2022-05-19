@@ -12,22 +12,6 @@ variable "organization_domain" {
 # --------------------------
 # optionals, with defaults
 # --------------------------
-variable "sysdig_secure_endpoint" {
-  type        = string
-  default     = "https://secure.sysdig.com"
-  description = "Sysdig Secure API endpoint"
-}
-
-variable "name" {
-  type        = string
-  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
-  default     = "sfc"
-
-  validation {
-    condition     = can(regex("^[a-z0-9]+$", var.name))
-    error_message = "ERROR: Invalid name. must contain only lowercase letters (a-z) and numbers (0-9)."
-  }
-}
 
 variable "max_instances" {
   type        = number
@@ -36,7 +20,15 @@ variable "max_instances" {
 }
 
 
+#
 # scanning
+#
+
+variable "deploy_scanning" {
+  type        = bool
+  description = "true/false whether scanning module is to be deployed"
+  default     = false
+}
 
 variable "repository_project_ids" {
   default     = []
@@ -44,8 +36,10 @@ variable "repository_project_ids" {
   description = "Projects were a `gcr`-named topic will be to subscribe to its repository events. If empty, all organization projects will be defaulted."
 }
 
-# benchmark
 
+#
+# benchmark
+#
 variable "deploy_bench" {
   type        = bool
   description = "whether benchmark module is to be deployed"
@@ -68,4 +62,25 @@ variable "benchmark_role_name" {
   type        = string
   description = "The name of the Service Account that will be created."
   default     = "sysdigcloudbench"
+}
+
+
+#
+# general
+#
+variable "sysdig_secure_endpoint" {
+  type        = string
+  default     = "https://secure.sysdig.com"
+  description = "Sysdig Secure API endpoint"
+}
+
+variable "name" {
+  type        = string
+  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
+  default     = "sfc"
+
+  validation {
+    condition     = can(regex("^[a-z0-9]+$", var.name))
+    error_message = "ERROR: Invalid name. must contain only lowercase letters (a-z) and numbers (0-9)."
+  }
 }

@@ -33,4 +33,19 @@ locals {
       }
     ]
   })
+
+  default_config_without_scanning = yamlencode({
+    rules     = []
+    notifiers = []
+    ingestors = [
+      {
+        gcp-auditlog-pubsub-http = {
+          url     = "/audit"
+          project = data.google_project.project.project_id
+        }
+      }
+    ]
+  })
+
+  config_content = var.deploy_scanning ? local.default_config : local.default_config_without_scanning
 }

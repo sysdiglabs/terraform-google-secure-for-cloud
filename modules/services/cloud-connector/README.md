@@ -33,6 +33,7 @@ module "cloud_connector_gcp" {
 | Name | Version |
 |------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | 3.67.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.1.3 |
 
 ## Modules
 
@@ -64,6 +65,7 @@ No modules.
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig's Secure API URL | `string` | n/a | yes |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | Amount of CPU to reserve for cloud-connector cloud run service | `string` | `"1"` | no |
+| <a name="input_deploy_scanning"></a> [deploy\_scanning](#input\_deploy\_scanning) | true/false whether scanning module is to be deployed | `bool` | `false` | no |
 | <a name="input_extra_envs"></a> [extra\_envs](#input\_extra\_envs) | Extra environment variables for the Cloud Connector instance | `map(string)` | `{}` | no |
 | <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Sysdig Owned Cloud Connector public image. GCP only allows the deployment of images that are registered in gcr.io | `string` | `"gcr.io/mateo-burillo-ns/cloud-connector:latest"` | no |
 | <a name="input_is_organizational"></a> [is\_organizational](#input\_is\_organizational) | whether secure-for-cloud should be deployed in an organizational setup | `bool` | `false` | no |
@@ -81,7 +83,7 @@ No modules.
 
 ## Authors
 
-Module is maintained and supported by [Sysdig](https://github.com/sysdiglabs/terraform-google-cloudvision).
+Module is maintained and supported by [Sysdig](https://github.com/sysdiglabs/terraform-google-secure-for-cloud).
 
 ## License
 
