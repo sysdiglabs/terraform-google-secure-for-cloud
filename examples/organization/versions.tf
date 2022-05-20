@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 0.15.0"
 
   required_providers {
-    google      = {
+    google = {
       source                = "hashicorp/google"
       version               = "~> 4.21.0"
       configuration_aliases = [google.multiproject]
@@ -12,7 +12,7 @@ terraform {
       version               = "~> 4.21.0"
       configuration_aliases = [google-beta.multiproject]
     }
-    sysdig      = {
+    sysdig = {
       source  = "sysdiglabs/sysdig"
       version = ">= 0.5.21"
     }
