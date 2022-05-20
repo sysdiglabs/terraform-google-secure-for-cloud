@@ -16,6 +16,7 @@ repos:
       - id: generate-terraform-providers
         name: generate-terraform-providers
         require_serial: true
+        always_run: true
         entry: ./examples/organization/.generate-providers.sh
         language: script
         pass_filenames: false
