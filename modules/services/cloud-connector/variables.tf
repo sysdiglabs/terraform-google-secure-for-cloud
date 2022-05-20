@@ -70,24 +70,6 @@ variable "max_instances" {
   default     = 1
 }
 
-variable "bucket_config_name" {
-  type        = string
-  description = "Google Cloud Storage Bucket where the configuration will be saved"
-  default     = "cloud-connector-config"
-}
-
-variable "config_content" {
-  default     = null
-  type        = string
-  description = "Contents of the configuration file to be saved in the bucket"
-}
-
-variable "config_source" {
-  default     = null
-  type        = string
-  description = "Path to a file that contains the contents of the configuration file to be saved in the bucket"
-}
-
 variable "cpu" {
   type        = string
   default     = "1"

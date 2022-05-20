@@ -33,7 +33,6 @@ module "cloud_connector_gcp" {
 | Name | Version |
 |------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | 4.21.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.2.0 |
 
 ## Modules
 
@@ -51,11 +50,6 @@ No modules.
 | [google_project_iam_member.run_viewer](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_project_iam_member.service_account_user_itself](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_project_iam_member.token_creator](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
-| [google_storage_bucket.bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket) | resource |
-| [google_storage_bucket_iam_member.list_objects](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_member) | resource |
-| [google_storage_bucket_iam_member.read_access](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_member) | resource |
-| [google_storage_bucket_object.config](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_object) | resource |
-| [random_string.random](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [google_client_config.current](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config) | data source |
 | [google_project.project](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project) | data source |
 
@@ -69,9 +63,6 @@ No modules.
 | <a name="input_secure_api_token_secret_id"></a> [secure\_api\_token\_secret\_id](#input\_secure\_api\_token\_secret\_id) | Sysdig Secure API token secret id | `string` | n/a | yes |
 | <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig's Secure API URL | `string` | n/a | yes |
-| <a name="input_bucket_config_name"></a> [bucket\_config\_name](#input\_bucket\_config\_name) | Google Cloud Storage Bucket where the configuration will be saved | `string` | `"cloud-connector-config"` | no |
-| <a name="input_config_content"></a> [config\_content](#input\_config\_content) | Contents of the configuration file to be saved in the bucket | `string` | `null` | no |
-| <a name="input_config_source"></a> [config\_source](#input\_config\_source) | Path to a file that contains the contents of the configuration file to be saved in the bucket | `string` | `null` | no |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | Amount of CPU to reserve for cloud-connector cloud run service | `string` | `"1"` | no |
 | <a name="input_deploy_scanning"></a> [deploy\_scanning](#input\_deploy\_scanning) | true/false whether scanning module is to be deployed | `bool` | `false` | no |
 | <a name="input_extra_envs"></a> [extra\_envs](#input\_extra\_envs) | Extra environment variables for the Cloud Connector instance | `map(string)` | `{}` | no |

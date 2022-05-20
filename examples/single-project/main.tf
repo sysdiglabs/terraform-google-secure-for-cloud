@@ -44,7 +44,6 @@ module "cloud_connector" {
   deploy_scanning = var.deploy_scanning
 }
 
-
 #######################
 #      SCANNER       #
 #######################
