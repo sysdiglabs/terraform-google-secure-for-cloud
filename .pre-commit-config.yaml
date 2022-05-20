@@ -8,6 +8,19 @@ repos:
         language: system
         entry: bash -c "find . \( -iname ".terraform*" ! -iname ".terraform-docs*" ! -path "*/test/*" \)  -print0 | xargs -0 rm -r; true"
 
+  - repo: local
+    # https://github.com/antonbabenko/pre-commit-terraform/#terraform_validate
+    # Adding this patch to fix organizational multi-provider terraform validate error
+    # 'missing provider provider["registry.terraform.io/hashicorp/google"].multiproject'
+    hooks:
+      - id: generate-terraform-providers
+        name: generate-terraform-providers
+        require_serial: true
+        always_run: true
+        entry: ./examples/organization/.generate-providers.sh
+        language: script
+        pass_filenames: false
+
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.64.0
     hooks:
@@ -17,7 +30,7 @@ repos:
         args:
           - '--args=--sort-by required'
       - id: terraform_tflint
-        exclude: (test)|(examples-internal)\/.*$
+        exclude: (test)|(examples-internal)\/.*$|(examples/organization)
         args:
           - '--args=--only=terraform_deprecated_interpolation'
           - '--args=--only=terraform_deprecated_index'
