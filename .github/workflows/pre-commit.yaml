@@ -60,7 +60,6 @@ jobs:
         if: ${{ matrix.directory !=  '.' }}
         run: |
           pre-commit run generate-terraform-providers
-          ls ./examples/organization
       - name: Execute pre-commit
         # Run only validate pre-commit check on min version supported
         if: ${{ matrix.directory !=  '.' }}
