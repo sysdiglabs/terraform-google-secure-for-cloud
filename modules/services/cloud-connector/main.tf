@@ -1,12 +1,12 @@
 locals {
-  suffix_org    = var.is_organizational ? "org" : "single"
+  suffix_org = var.is_organizational ? "org" : "single"
   task_env_vars = concat([
     # This allows the revision to be created again if the configuration changes.
     # Annotations can't be used or they can't be ignored in the lifecycle, thus triggering
     # recreations even if the config hasn't changed.
     {
       name  = "CONFIG"
-      value = base64encode(local.default_config)
+      value = base64encode(local.config_content)
     },
     {
       name  = "SECURE_URL"
@@ -129,6 +129,7 @@ resource "google_cloud_run_service_iam_member" "run_invoker" {
 }
 
 resource "google_project_iam_member" "run_viewer" {
-  member = "serviceAccount:${var.cloud_connector_sa_email}"
-  role   = "roles/run.viewer"
+  project = var.project_id
+  member  = "serviceAccount:${var.cloud_connector_sa_email}"
+  role    = "roles/run.viewer"
 }
