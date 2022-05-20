@@ -7,6 +7,7 @@ resource "random_string" "random" {
 resource "google_storage_bucket" "bucket" {
   name          = "${var.name}-${var.bucket_config_name}-${random_string.random.result}"
   force_destroy = true
+  location      = "us-central1"
   versioning {
     # TODO Can we disable the versioning in this bucket, since the content is managed by Terraform?
     enabled = true

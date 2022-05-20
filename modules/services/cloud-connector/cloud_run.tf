@@ -133,6 +133,7 @@ resource "google_cloud_run_service_iam_member" "run_invoker" {
 }
 
 resource "google_project_iam_member" "run_viewer" {
-  member = "serviceAccount:${var.cloud_connector_sa_email}"
-  role   = "roles/run.viewer"
+  project = var.project_id
+  member  = "serviceAccount:${var.cloud_connector_sa_email}"
+  role    = "roles/run.viewer"
 }

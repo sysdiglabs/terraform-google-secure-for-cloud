@@ -26,3 +26,9 @@ variable "location" {
   default     = "us-central1"
   description = "Zone where the stack will be deployed"
 }
+
+variable "region" {
+  type        = string
+  description = "Region in which the cloudtrail and EKS are deployed. Currently same region is required"
+  default     = "europe-north1"
+}
