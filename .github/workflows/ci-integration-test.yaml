@@ -13,7 +13,6 @@ on:
       - '.github/workflows/**'
   workflow_dispatch:
 
-
 concurrency: terraform
 jobs:
   integration_test:
