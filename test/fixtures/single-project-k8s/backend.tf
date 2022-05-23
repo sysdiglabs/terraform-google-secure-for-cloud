@@ -2,7 +2,7 @@
 terraform {
   backend "s3" {
     bucket         = "secure-cloud-terraform-tests"
-    key            = "gcp-single/terraform.tfstate"
+    key            = "gcp-single-k8s/terraform.tfstate"
     dynamodb_table = "secure-cloud-terraform-tests"
     region         = "eu-west-3"
   }
