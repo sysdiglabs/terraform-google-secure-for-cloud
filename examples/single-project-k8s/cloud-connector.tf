@@ -47,7 +47,7 @@ resource "helm_release" "cloud_connector" {
 
   set {
     name  = "sysdig.url"
-    value = data.sysdig_secure_connection.current.secure_api_token
+    value = data.sysdig_secure_connection.current.secure_url
   }
 
   set {
