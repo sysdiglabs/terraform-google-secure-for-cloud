@@ -81,16 +81,16 @@ See [inputs summary](#inputs) or module module [`variables.tf`](./variables.tf) 
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 4.21.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | >=2.3.0 |
-| <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | >= 0.5.21 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.21.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.5.1 |
+| <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | 0.5.37 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cloud_bench"></a> [cloud\_bench](#module\_cloud\_bench) | ../../modules/services/cloud-bench |  |
-| <a name="module_connector_project_sink"></a> [connector\_project\_sink](#module\_connector\_project\_sink) | ../../modules/infrastructure/project_sink |  |
+| <a name="module_cloud_bench"></a> [cloud\_bench](#module\_cloud\_bench) | ../../modules/services/cloud-bench | n/a |
+| <a name="module_connector_project_sink"></a> [connector\_project\_sink](#module\_connector\_project\_sink) | ../../modules/infrastructure/project_sink | n/a |
 
 ## Resources
 
