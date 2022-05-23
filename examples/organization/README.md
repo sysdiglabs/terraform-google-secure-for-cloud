@@ -45,17 +45,41 @@ This example deploys Secure for Cloud into a GCP organizational account.
 For quick testing, use this snippet on your terraform files
 
 ```terraform
+terraform {
+   required_providers {
+      aws = {}
+      sysdig = {
+         source  = "sysdiglabs/sysdig"
+      }
+   }
+}
+
+provider "sysdig" {
+   sysdig_secure_url         = "<SYSDIG_SECURE_URL>"
+   sysdig_secure_api_token   = "<SYSDIG_SECURE_API_TOKEN>"
+}
+
 provider "google" {
    project = "<PROJECT_ID>"
    region  = "<REGION_ID>; ex. us-central-1"
 }
 
+# This two "multiproject" providers are required for benchmark trust-identity activation on the organizational level
+provider "google" {
+   alias  = "multiproject"
+   region = "<REGION_ID>; ex. us-central-1"
+}
+
+provider "google-beta" {
+   alias  = "multiproject"
+   region = "<REGION_ID>; ex. us-central-1"
+}
+
+
 module "secure-for-cloud_example_organization" {
   source = "sysdiglabs/secure-for-cloud/google//examples/organization"
 
   repository_project_ids    = ["<PROJECT_SCAN_ID1>", "<PROJECT_SCAN_ID2>"]
-   sysdig_secure_url         = "<SYSDIG_SECURE_URL>"
-   sysdig_secure_endpoint    = "<SYSDIG_SECURE_API_TOKEN>"
   organization_domain       = "<ORG_DOMAIN>"
 }
 ```
@@ -75,6 +99,7 @@ module "secure-for-cloud_example_organization" {
 | Name | Version |
 |------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | 4.21.0 |
+| <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | 0.5.37 |
 
 ## Modules
 
@@ -96,13 +121,13 @@ module "secure-for-cloud_example_organization" {
 | [google_client_config.current](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config) | data source |
 | [google_organization.org](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/organization) | data source |
 | [google_projects.all_projects](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/projects) | data source |
+| [sysdig_secure_connection.current](https://registry.terraform.io/providers/sysdiglabs/sysdig/latest/docs/data-sources/secure_connection) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_organization_domain"></a> [organization\_domain](#input\_organization\_domain) | Organization domain. e.g. sysdig.com | `string` | n/a | yes |
-| <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_benchmark_project_ids"></a> [benchmark\_project\_ids](#input\_benchmark\_project\_ids) | Google cloud project IDs to run Benchmarks on. If empty, all organization projects will be defaulted. | `list(string)` | `[]` | no |
 | <a name="input_benchmark_regions"></a> [benchmark\_regions](#input\_benchmark\_regions) | List of regions in which to run the benchmark. If empty, the task will contain all regions by default. | `list(string)` | `[]` | no |
 | <a name="input_benchmark_role_name"></a> [benchmark\_role\_name](#input\_benchmark\_role\_name) | The name of the Service Account that will be created. | `string` | `"sysdigcloudbench"` | no |
@@ -111,7 +136,6 @@ module "secure-for-cloud_example_organization" {
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the workloads | `number` | `1` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc"` | no |
 | <a name="input_repository_project_ids"></a> [repository\_project\_ids](#input\_repository\_project\_ids) | Projects were a `gcr`-named topic will be to subscribe to its repository events. If empty, all organization projects will be defaulted. | `list(string)` | `[]` | no |
-| <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig Secure API endpoint | `string` | `"https://secure.sysdig.com"` | no |
 
 ## Outputs
 

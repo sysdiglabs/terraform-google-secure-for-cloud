@@ -29,6 +29,20 @@ Minimum requirements:
 For quick testing, use this snippet on your terraform files
 
 ```terraform
+terraform {
+  required_providers {
+    aws = {}
+    sysdig = {
+      source  = "sysdiglabs/sysdig"
+    }
+  }
+}
+
+provider "sysdig" {
+  sysdig_secure_url         = "<SYSDIG_SECURE_URL>"
+  sysdig_secure_api_token   = "<SYSDIG_SECURE_API_TOKEN>"
+}
+
 provider "google" {
   project = "<PROJECT_ID>"
   region  = "<REGION_ID>; ex. us-central-1"
@@ -47,8 +61,6 @@ provider "helm" {
 
 module "secure_for_cloud_gcp_single_project_k8s" {
   source = "sysdiglabs/secure-for-cloud/google//examples/single-project-k8s"
-  sysdig_secure_url         = "<SYSDIG_SECURE_URL>"
-  sysdig_secure_endpoint    = "<SYSDIG_SECURE_API_TOKEN>"
 }
 ```
 
@@ -71,6 +83,7 @@ See [inputs summary](#inputs) or module module [`variables.tf`](./variables.tf) 
 |------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | 4.21.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.5.1 |
+| <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | 0.5.37 |
 
 ## Modules
 
@@ -89,18 +102,17 @@ See [inputs summary](#inputs) or module module [`variables.tf`](./variables.tf) 
 | [google_service_account_key.connector_sa_key](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account_key) | resource |
 | [helm_release.cloud_connector](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [google_client_config.current](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config) | data source |
+| [sysdig_secure_connection.current](https://registry.terraform.io/providers/sysdiglabs/sysdig/latest/docs/data-sources/secure_connection) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_benchmark_regions"></a> [benchmark\_regions](#input\_benchmark\_regions) | List of regions in which to run the benchmark. If empty, the task will contain all regions by default. | `list(string)` | `[]` | no |
 | <a name="input_benchmark_role_name"></a> [benchmark\_role\_name](#input\_benchmark\_role\_name) | The name of the Service Account that will be created. | `string` | `"sysdigcloudbench"` | no |
 | <a name="input_cloud_connector_image"></a> [cloud\_connector\_image](#input\_cloud\_connector\_image) | Cloud-connector image to deploy | `string` | `"quay.io/sysdig/cloud-connector"` | no |
 | <a name="input_deploy_benchmark"></a> [deploy\_benchmark](#input\_deploy\_benchmark) | whether benchmark module is to be deployed | `bool` | `true` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc"` | no |
-| <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig Secure API endpoint | `string` | `"https://secure.sysdig.com"` | no |
 
 ## Outputs
 

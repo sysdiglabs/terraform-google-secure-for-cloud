@@ -1,9 +1,4 @@
 # Mandatory vars
-variable "sysdig_secure_api_token" {
-  type        = string
-  description = "Sysdig's Secure API Token"
-}
-
 variable "organization_domain" {
   type        = string
   description = "Organization domain. e.g. sysdig.com"
@@ -68,12 +63,6 @@ variable "benchmark_role_name" {
 #
 # general
 #
-variable "sysdig_secure_endpoint" {
-  type        = string
-  default     = "https://secure.sysdig.com"
-  description = "Sysdig Secure API endpoint"
-}
-
 variable "name" {
   type        = string
   description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
