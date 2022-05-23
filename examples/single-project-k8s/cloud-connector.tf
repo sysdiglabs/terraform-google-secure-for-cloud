@@ -42,12 +42,12 @@ resource "helm_release" "cloud_connector" {
 
   set_sensitive {
     name  = "sysdig.secureAPIToken"
-    value = var.sysdig_secure_api_token
+    value = data.sysdig_secure_connection.current.secure_api_token
   }
 
   set {
     name  = "sysdig.url"
-    value = var.sysdig_secure_endpoint
+    value = data.sysdig_secure_connection.current.secure_api_token
   }
 
   set {

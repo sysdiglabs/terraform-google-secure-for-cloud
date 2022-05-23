@@ -15,9 +15,27 @@ terraform {
   }
 }
 
+
+provider "sysdig" {
+  sysdig_secure_url       = var.sysdig_secure_endpoint
+  sysdig_secure_api_token = var.sysdig_secure_api_token
+}
+
 provider "google" {
   project = var.project_id
   region  = var.location
+}
+
+
+# This two "multiproject" providers are required for benchmark trust-identity activation on the organizational level
+provider "google" {
+  alias  = "multiproject"
+  region = var.region
+}
+
+provider "google-beta" {
+  alias  = "multiproject"
+  region = var.region
 }
 
 resource "random_string" "random" {
@@ -26,34 +44,12 @@ resource "random_string" "random" {
   upper   = false
 }
 
-# This provider is project agnostic, and can be used to provision resources in any project,
-# provided the project is specified on the resource. Primarily used for Benchmarks
-provider "google" {
-  alias  = "multiproject"
-  region = var.region
-}
-
-# This provider is project agnostic, and can be used to provision resources in any project,
-# provided the project is specified on the resource. Primarily used for Benchmarks
-provider "google-beta" {
-  alias  = "multiproject"
-  region = var.region
-}
-
-provider "sysdig" {
-  sysdig_secure_url       = var.sysdig_secure_endpoint
-  sysdig_secure_api_token = var.sysdig_secure_api_token
-}
-
 module "sfc_example_organization" {
   providers = {
     google.multiproject      = google.multiproject
     google-beta.multiproject = google-beta.multiproject
   }
   source = "../../../examples/organization"
-
-  sysdig_secure_api_token = var.sysdig_secure_api_token
-  sysdig_secure_endpoint  = var.sysdig_secure_endpoint
 
   organization_domain    = var.organization_domain
   name                   = "sfc${random_string.random.result}"

@@ -1,5 +1,5 @@
 locals {
-  verify_ssl             = length(regexall("^https://.*?\\.sysdig.com/?", var.sysdig_secure_endpoint)) != 0
+  verify_ssl             = length(regexall("^https://.*?\\.sysdig.com/?", data.sysdig_secure_connection.current.secure_url)) != 0
   connector_filter       = <<EOT
   logName=~"/logs/cloudaudit.googleapis.com%2Factivity$" AND -resource.type="k8s_cluster"
 EOT
@@ -60,7 +60,7 @@ module "secure_secrets" {
   source = "../../modules/infrastructure/secrets"
 
   cloud_scanning_sa_email = google_service_account.connector_sa.email
-  sysdig_secure_api_token = var.sysdig_secure_api_token
+  sysdig_secure_api_token = data.sysdig_secure_connection.current.secure_api_token
   name                    = var.name
 }
 
@@ -68,8 +68,8 @@ module "cloud_connector" {
   source = "../../modules/services/cloud-connector"
 
   cloud_connector_sa_email   = google_service_account.connector_sa.email
-  sysdig_secure_api_token    = var.sysdig_secure_api_token
-  sysdig_secure_endpoint     = var.sysdig_secure_endpoint
+  sysdig_secure_endpoint     = data.sysdig_secure_connection.current.secure_url
+  sysdig_secure_api_token    = data.sysdig_secure_connection.current.secure_api_token
   connector_pubsub_topic_id  = module.connector_organization_sink.pubsub_topic_id
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
   max_instances              = var.max_instances
