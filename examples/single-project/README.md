@@ -42,7 +42,6 @@ For quick testing, use this snippet on your terraform files
 ```terraform
 terraform {
   required_providers {
-    aws = {}
     sysdig = {
       source  = "sysdiglabs/sysdig"
     }
