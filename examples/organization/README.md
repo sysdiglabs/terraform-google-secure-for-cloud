@@ -81,7 +81,7 @@ module "secure-for-cloud_example_organization" {
     google.multiproject      = google.multiproject
     google-beta.multiproject = google-beta.multiproject
   }
-  
+
   source = "sysdiglabs/secure-for-cloud/google//examples/organization"
 
   repository_project_ids    = ["<PROJECT_SCAN_ID1>", "<PROJECT_SCAN_ID2>"]
