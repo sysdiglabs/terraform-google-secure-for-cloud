@@ -35,7 +35,7 @@ variable "repository_project_ids" {
 #
 # benchmark
 #
-variable "deploy_bench" {
+variable "deploy_benchmark" {
   type        = bool
   description = "whether benchmark module is to be deployed"
   default     = true

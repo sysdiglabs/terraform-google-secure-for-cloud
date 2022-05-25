@@ -114,7 +114,7 @@ module "cloud_bench" {
     google-beta = google-beta.multiproject
   }
 
-  count  = var.deploy_bench ? 1 : 0
+  count  = var.deploy_benchmark ? 1 : 0
   source = "../../modules/services/cloud-bench"
 
   is_organizational   = true
