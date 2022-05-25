@@ -47,7 +47,6 @@ For quick testing, use this snippet on your terraform files
 ```terraform
 terraform {
    required_providers {
-      aws = {}
       sysdig = {
          source  = "sysdiglabs/sysdig"
       }
@@ -77,6 +76,11 @@ provider "google-beta" {
 
 
 module "secure-for-cloud_example_organization" {
+  providers = {
+    google.multiproject      = google.multiproject
+    google-beta.multiproject = google-beta.multiproject
+  }
+
   source = "sysdiglabs/secure-for-cloud/google//examples/organization"
 
   repository_project_ids    = ["<PROJECT_SCAN_ID1>", "<PROJECT_SCAN_ID2>"]
