@@ -14,6 +14,12 @@ Provides unified threat-detection, compliance, forensics and analysis through th
 
 For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud), [Azure](https://github.com/sysdiglabs/terraform-azurerm-secure-for-cloud)
 
+
+## Notice
+* [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available)
+* All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameter of each example.<br/>
+* This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
+
 ## Prerequisites
 
 You **must** have following **roles** in your GCP credentials
@@ -102,10 +108,6 @@ $ terraform init
 $ terraform plan
 $ terraform apply
 ```
-
-Notice that:
-* This example will create resources that cost money.<br/>Run `terraform destroy` when you don't need them anymore
-
 
 <br/><br/>
 
