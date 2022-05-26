@@ -79,6 +79,8 @@ module "cloud_connector" {
   name              = "${var.name}-cloudconnector"
   verify_ssl        = local.verify_ssl
   is_organizational = true
+
+  deploy_scanning = var.deploy_scanning
 }
 
 
