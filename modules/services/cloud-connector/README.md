@@ -7,7 +7,7 @@ A **Cloud Run** deployment that will detect events in your infrastructure.
 ```hcl
 provider "google" {
   project = "<PROJECT_ID>"
-  region  = "<REGION_ID>; ex. us-central-1"
+  region  = "<REGION_ID>; ex. us-central1"
 }
 
 module "cloud_connector_gcp" {
