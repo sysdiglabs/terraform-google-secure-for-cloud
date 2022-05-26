@@ -15,7 +15,7 @@ For quick testing, use this snippet on your terraform files
 ```terraform
 provider "google" {
    project = "<PROJECT_ID>"
-   region  = "<REGION_ID>; ex. us-central-1"
+   region  = "<REGION_ID>; ex. us-central1"
 }
 
 module "secure-for-cloud_trigger_events" {

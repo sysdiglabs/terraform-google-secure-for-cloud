@@ -60,18 +60,18 @@ provider "sysdig" {
 
 provider "google" {
    project = "<PROJECT_ID>"
-   region  = "<REGION_ID>; ex. us-central-1"
+   region  = "<REGION_ID>; ex. us-central1"
 }
 
 # This two "multiproject" providers are required for benchmark trust-identity activation on the organizational level
 provider "google" {
    alias  = "multiproject"
-   region = "<REGION_ID>; ex. us-central-1"
+   region = "<REGION_ID>; ex. us-central1"
 }
 
 provider "google-beta" {
    alias  = "multiproject"
-   region = "<REGION_ID>; ex. us-central-1"
+   region = "<REGION_ID>; ex. us-central1"
 }
 
 

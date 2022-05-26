@@ -44,12 +44,12 @@ provider "sysdig" {
 
 provider "google" {
   project = "<PROJECT_ID>"
-  region  = "<REGION_ID>; ex. us-central-1"
+  region  = "<REGION_ID>; ex. us-central1"
 }
 
 provider "google-beta" {
   project = "<PROJECT_ID>"
-  region  = "<REGION_ID>; ex. us-central-1"
+  region  = "<REGION_ID>; ex. us-central1"
 }
 
 provider "helm" {
