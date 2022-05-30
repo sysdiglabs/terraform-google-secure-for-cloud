@@ -142,7 +142,13 @@ It may take some time, but you should see logs detecting the new image in the `c
 
 And a CloudBuild being launched successfully.
 
+
+
 ## Troubleshooting
+
+### Q: Why do we need `google-beta` provider?
+
+A: Some resources we use, such as the [`google_iam_workload_identity_pool_provider`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iam_workload_identity_pool_provider) are only available in the beta version.<br/>
 
 ### Q: Getting "Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists"<br/>
 A: Currently Sysdig Backend does not support dynamic WorkloadPool and it's name is fixed to `sysdigcloud`.
