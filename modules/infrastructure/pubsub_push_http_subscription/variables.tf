@@ -1,17 +1,18 @@
 variable "gcr_topic_name" {
   type        = string
   description = "Topic to create a subscription"
+  default     = ""
 }
 
-
 variable "pubsub_topic_name" {
-  type = string
+  type        = string
   description = "PubSub topic name fot auditlog"
 }
 
 variable "push_http_endpoint" {
   type        = string
   description = "HTTP endpoint to push the events to"
+  default     = ""
 }
 
 variable "subscription_project_id" {

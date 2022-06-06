@@ -65,6 +65,7 @@ resource "google_pubsub_subscription" "gcr_subscription" {
 }
 
 resource "google_pubsub_subscription" "subscription" {
+  count = var.pubsub_topic_name != "" ? 1 : 0
   name  = var.name
   topic = var.pubsub_topic_name
 
