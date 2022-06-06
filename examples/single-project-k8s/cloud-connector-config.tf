@@ -11,7 +11,7 @@ locals {
       },
       {
         gcp-gcr-pubsub = {
-          project = data.google_client_config.current.project
+          project      = data.google_client_config.current.project
           subscription = module.pubsub_http_subscription.gcr_pubsub_subscription_name
         }
       }
