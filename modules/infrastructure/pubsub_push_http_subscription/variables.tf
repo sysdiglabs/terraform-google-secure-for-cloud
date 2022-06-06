@@ -1,12 +1,12 @@
 variable "gcr_topic_name" {
   type        = string
   description = "Topic to create a subscription"
-  default     = ""
 }
 
 variable "pubsub_topic_name" {
   type        = string
   description = "PubSub topic name fot auditlog"
+  default     = ""
 }
 
 variable "push_http_endpoint" {

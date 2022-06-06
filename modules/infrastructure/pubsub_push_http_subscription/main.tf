@@ -11,12 +11,12 @@ resource "google_pubsub_topic" "topic" {
   count   = local.create_topic ? 1 : 0
   name    = var.gcr_topic_name
   project = var.topic_project_id
-  labels  = {
+  labels = {
     sysdig-managed = "true"
   }
 }
 
-resource "google_pubsub_subscription" "subscription" {
+resource "google_pubsub_subscription" "cloud_run_gcr_subscription" {
   count   = var.push_http_endpoint != "" ? 1 : 0
   name    = "${var.name}-${var.topic_project_id}"
   topic   = "projects/${var.topic_project_id}/topics/${var.gcr_topic_name}"
@@ -37,7 +37,7 @@ resource "google_pubsub_subscription" "subscription" {
   }
 }
 
-resource "google_pubsub_subscription" "gcr_subscription" {
+resource "google_pubsub_subscription" "k8s_gcr_subscription" {
   count   = var.push_http_endpoint == "" ? 1 : 0
   name    = "${var.name}-${var.topic_project_id}"
   topic   = "projects/${var.topic_project_id}/topics/${var.topic_project_id}"

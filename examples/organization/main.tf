@@ -94,7 +94,7 @@ module "pubsub_http_subscription" {
 
   topic_project_id        = each.key
   subscription_project_id = data.google_client_config.current.project
-  gcr_topic_name              = "gcr"
+  gcr_topic_name          = "gcr"
   name                    = "${var.name}-gcr"
   service_account_email   = google_service_account.connector_sa.email
 
