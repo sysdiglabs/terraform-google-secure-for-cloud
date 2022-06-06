@@ -19,6 +19,8 @@ For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-a
 * [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available)
 * All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameter of each example.<br/>
 * This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
+* For **free subscription** users, beware that organizational examples may not deploy properly due to the [1 cloud-account limitation](https://docs.sysdig.com/en/docs/administration/administration-settings/subscription/#cloud-billing-free-tier). Open an Issue so we can help you here!
+<br/>
 
 ## Prerequisites
 
