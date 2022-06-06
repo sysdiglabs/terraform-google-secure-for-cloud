@@ -30,18 +30,8 @@ resource "helm_release" "cloud_connector" {
   }
 
   set {
-    name  = "image.pullPolicy"
-    value = "Always"
-  }
-
-  set {
     name  = "image.repository"
-    value = "ghcr.io/sysdiglabs/cloud-connector"
-  }
-
-  set {
-    name  = "image.tag"
-    value = "pr-714"
+    value = var.cloud_connector_image
   }
 
   values = [

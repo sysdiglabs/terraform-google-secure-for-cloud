@@ -30,18 +30,3 @@ resource "google_project_iam_member" "token_creator" {
   member  = "serviceAccount:${google_service_account.connector_sa.email}"
   role    = "roles/iam.serviceAccountTokenCreator"
 }
-
-# Required to execute cloud build runs with this same service account
-resource "google_project_iam_member" "service_account_user_itself" {
-  count   = var.deploy_scanning ? 1 : 0
-  project = data.google_client_config.current.project
-  role    = "roles/iam.serviceAccountUser"
-  member  = "serviceAccount:${google_service_account.connector_sa.email}"
-}
-
-resource "google_project_iam_member" "builder" {
-  count   = var.deploy_scanning ? 1 : 0
-  project = data.google_client_config.current.project
-  role    = "roles/cloudbuild.builds.builder"
-  member  = "serviceAccount:${google_service_account.connector_sa.email}"
-}

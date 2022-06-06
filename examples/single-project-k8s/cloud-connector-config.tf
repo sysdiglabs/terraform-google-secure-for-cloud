@@ -1,6 +1,6 @@
 locals {
   connector_config = {
-    logging        = "debug"
+    logging        = "info"
     rules          = []
     ingestors      = [
       {
