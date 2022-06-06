@@ -1,6 +1,12 @@
-variable "topic_name" {
+variable "gcr_topic_name" {
   type        = string
   description = "Topic to create a subscription"
+}
+
+
+variable "pubsub_topic_name" {
+  type = string
+  description = "PubSub topic name fot auditlog"
 }
 
 variable "push_http_endpoint" {
