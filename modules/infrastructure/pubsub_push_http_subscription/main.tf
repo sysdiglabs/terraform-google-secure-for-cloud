@@ -88,3 +88,17 @@ resource "google_pubsub_subscription" "subscription" {
 
   enable_message_ordering = false
 }
+
+resource "google_pubsub_subscription_iam_member" "pull" {
+  count = var.pubsub_topic_name != "" ? 1 : 0
+  subscription = google_pubsub_subscription.subscription.name
+  role         = "roles/pubsub.subscriber"
+  member       = "serviceAccount:${var.service_account_email}"
+}
+
+resource "google_pubsub_subscription_iam_member" "pull_gcr" {
+  count = var.push_http_endpoint == "" ? 1 : 0
+  subscription = google_pubsub_subscription.k8s_gcr_subscription.name
+  role         = "roles/pubsub.subscriber"
+  member       = "serviceAccount:${var.service_account_email}"
+}
