@@ -6,13 +6,13 @@ locals {
       {
         gcp-auditlog-pubsub = {
           project      = data.google_client_config.current.project
-          subscription = google_pubsub_subscription.subscription.name
+          subscription = module.pubsub_http_subscription.auditlog_pubsub_subscription_name
         },
       },
       {
         gcp-gcr-pubsub = {
           subscription = google_pubsub_subscription.gcr_subscription.name
-          project      = data.google_client_config.current.project
+          project      = module.pubsub_http_subscription.gcr_pubsub_subscription_name
         }
       }
     ]
