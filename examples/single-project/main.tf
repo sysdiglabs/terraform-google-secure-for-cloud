@@ -47,6 +47,15 @@ module "cloud_connector" {
 #######################
 #      SCANNER       #
 #######################
+module "cloud_build_permission" {
+  count = var.deploy_scanning ? 1 : 0
+  source = "../../modules/infrastructure/cloud_build_permission"
+
+
+  cloud_connector_sa_email = google_service_account.connector_sa.email
+  project_id               = data.google_client_config.current.project
+}
+
 module "pubsub_http_subscription" {
   count  = var.deploy_scanning ? 1 : 0
   source = "../../modules/infrastructure/pubsub_push_http_subscription"
