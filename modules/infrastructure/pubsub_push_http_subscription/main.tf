@@ -11,46 +11,31 @@ resource "google_pubsub_topic" "topic" {
   count   = local.create_topic ? 1 : 0
   name    = var.gcr_topic_name
   project = var.topic_project_id
-  labels = {
+  labels  = {
     sysdig-managed = "true"
   }
 }
 
-resource "google_pubsub_subscription" "cloud_run_gcr_subscription" {
-  count   = var.push_http_endpoint != "" ? 1 : 0
+resource "google_pubsub_subscription" "gcr_subscription" {
   name    = "${var.name}-${var.topic_project_id}"
   topic   = "projects/${var.topic_project_id}/topics/${var.gcr_topic_name}"
   project = var.subscription_project_id
 
-  ack_deadline_seconds = 10
 
-  push_config {
-    push_endpoint = var.push_http_endpoint
-    oidc_token {
-      service_account_email = var.service_account_email
+  dynamic "push_config" {
+    for_each = var.push_http_endpoint != "" ? [1] : []
+    content {
+      push_endpoint = var.push_http_endpoint
+      oidc_token {
+        service_account_email = var.service_account_email
+      }
     }
-  }
-
-  retry_policy {
-    minimum_backoff = "10s"
-    maximum_backoff = "300s"
-  }
-}
-
-resource "google_pubsub_subscription" "k8s_gcr_subscription" {
-  count   = var.push_http_endpoint == "" ? 1 : 0
-  name    = "${var.name}-${var.topic_project_id}"
-  topic   = "projects/${var.topic_project_id}/topics/${var.topic_project_id}"
-  project = var.topic_project_id
-
-  labels = {
-    product = "sysdig-secure-for-cloud"
   }
 
   # 20 minutes
   message_retention_duration = "1200s"
   retain_acked_messages      = false
-  ack_deadline_seconds       = 20
+  ack_deadline_seconds       = 10
 
   expiration_policy {
     ttl = "300000.5s"
@@ -64,7 +49,7 @@ resource "google_pubsub_subscription" "k8s_gcr_subscription" {
   enable_message_ordering = false
 }
 
-resource "google_pubsub_subscription" "subscription" {
+resource "google_pubsub_subscription" "k8s_auditlog_subscription" {
   count = var.pubsub_topic_name != "" ? 1 : 0
   name  = var.name
   topic = var.pubsub_topic_name
@@ -91,14 +76,14 @@ resource "google_pubsub_subscription" "subscription" {
 
 resource "google_pubsub_subscription_iam_member" "pull" {
   count        = var.pubsub_topic_name != "" ? 1 : 0
-  subscription = google_pubsub_subscription.subscription.name
+  subscription = google_pubsub_subscription.k8s_auditlog_subscription[0].name
   role         = "roles/pubsub.subscriber"
   member       = "serviceAccount:${var.service_account_email}"
 }
 
 resource "google_pubsub_subscription_iam_member" "pull_gcr" {
   count        = var.push_http_endpoint == "" ? 1 : 0
-  subscription = google_pubsub_subscription.k8s_gcr_subscription.name
+  subscription = google_pubsub_subscription.gcr_subscription.name
   role         = "roles/pubsub.subscriber"
   member       = "serviceAccount:${var.service_account_email}"
 }
