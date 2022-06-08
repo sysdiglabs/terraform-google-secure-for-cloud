@@ -16,9 +16,9 @@ resource "google_pubsub_topic" "topic" {
   }
 }
 
-// Subscription for GCR events
-// In case of CloudRun it will be a Push subscription
-// In case of K8s it will be a simple subscription
+## Subscription for GCR events
+## In case of CloudRun it will be a Push subscription
+## In case of K8s it will be a simple subscription
 resource "google_pubsub_subscription" "gcr_subscription" {
   count   = var.deploy_scanning ? 1 : 0
   name    = "${var.name}-${var.topic_project_id}"
@@ -53,7 +53,7 @@ resource "google_pubsub_subscription" "gcr_subscription" {
   enable_message_ordering = false
 }
 
-// Subscription to auditlog events for K8s
+# Subscription to auditlog events for K8s
 resource "google_pubsub_subscription" "k8s_auditlog_subscription" {
   count = var.push_to_cloudrun ? 0 : 1
   name  = var.name
