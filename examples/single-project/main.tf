@@ -57,8 +57,7 @@ module "cloud_build_permission" {
 }
 
 module "pubsub_http_subscription" {
-  count  = var.deploy_scanning ? 1 : 0
-  source = "../../modules/infrastructure/pubsub_push_http_subscription"
+  source = "../../modules/infrastructure/pubsub_subscription"
 
   topic_project_id        = data.google_client_config.current.project
   subscription_project_id = data.google_client_config.current.project
@@ -67,4 +66,6 @@ module "pubsub_http_subscription" {
   service_account_email   = google_service_account.connector_sa.email
 
   push_http_endpoint = "${module.cloud_connector.cloud_run_service_url}/gcr_scanning"
+  push_to_cloudrun   = "true"
+  deploy_scanning    = var.deploy_scanning
 }

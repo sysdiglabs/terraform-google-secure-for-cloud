@@ -53,7 +53,7 @@ module "sfc_example_organization" {
 
   organization_domain    = var.organization_domain
   name                   = "sfc${random_string.random.result}"
-  repository_project_ids = [var.project_id]
+  repository_project_ids = []
   deploy_scanning        = true
   deploy_benchmark       = false
 }

@@ -1,3 +1,14 @@
+variable "push_to_cloudrun" {
+  type        = bool
+  description = "true/false whether GCR subscription should push events to Cloud run or not"
+}
+
+variable "deploy_scanning" {
+  type        = bool
+  description = "true/false whether scanning module is to be deployed"
+  default     = false
+}
+
 variable "gcr_topic_name" {
   type        = string
   description = "Topic to create a subscription"
