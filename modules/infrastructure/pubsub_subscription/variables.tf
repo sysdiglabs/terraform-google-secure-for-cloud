@@ -1,3 +1,4 @@
+# this var is necessary for the pubsub permission workaround when we need to push events to cloudrun
 variable "push_to_cloudrun" {
   type        = bool
   description = "true/false whether GCR subscription should push events to Cloud run or not"
