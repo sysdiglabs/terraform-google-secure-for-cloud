@@ -1,11 +1,30 @@
-variable "topic_name" {
+# this var is necessary for the pubsub permission workaround when we need to push events to cloudrun
+variable "push_to_cloudrun" {
+  type        = bool
+  description = "true/false whether GCR subscription should push events to Cloud run or not"
+}
+
+variable "deploy_scanning" {
+  type        = bool
+  description = "true/false whether scanning module is to be deployed"
+  default     = false
+}
+
+variable "gcr_topic_name" {
   type        = string
   description = "Topic to create a subscription"
+}
+
+variable "pubsub_topic_name" {
+  type        = string
+  description = "PubSub topic name fot auditlog"
+  default     = ""
 }
 
 variable "push_http_endpoint" {
   type        = string
   description = "HTTP endpoint to push the events to"
+  default     = ""
 }
 
 variable "subscription_project_id" {

@@ -16,7 +16,6 @@ terraform {
 }
 
 
-
 provider "sysdig" {
   sysdig_secure_url       = var.sysdig_secure_endpoint
   sysdig_secure_api_token = var.sysdig_secure_api_token
@@ -48,5 +47,6 @@ module "sfc_example_single_project" {
   source = "../../../examples/single-project-k8s"
 
   name             = "sfck8s${random_string.random.result}"
+  deploy_scanning  = true
   deploy_benchmark = false
 }

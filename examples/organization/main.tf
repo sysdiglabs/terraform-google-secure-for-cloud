@@ -83,22 +83,32 @@ module "cloud_connector" {
   deploy_scanning = var.deploy_scanning
 }
 
-
 #--------------------
 # scanning
 #--------------------
 
+module "cloud_build_permission" {
+  count  = var.deploy_scanning ? 1 : 0
+  source = "../../modules/infrastructure/cloud_build_permission"
+
+  cloud_connector_sa_email = google_service_account.connector_sa.email
+  project_id               = data.google_client_config.current.project
+}
+
+
 module "pubsub_http_subscription" {
   for_each = toset(local.repository_project_ids)
-  source   = "../../modules/infrastructure/pubsub_push_http_subscription"
+  source   = "../../modules/infrastructure/pubsub_subscription"
 
   topic_project_id        = each.key
   subscription_project_id = data.google_client_config.current.project
-  topic_name              = "gcr"
+  gcr_topic_name          = "gcr"
   name                    = "${var.name}-gcr"
   service_account_email   = google_service_account.connector_sa.email
 
   push_http_endpoint = "${module.cloud_connector.cloud_run_service_url}/gcr_scanning"
+  push_to_cloudrun   = true
+  deploy_scanning    = var.deploy_scanning
 }
 
 

@@ -3,6 +3,12 @@
 # optionals, with defaults
 # -------------------------
 
+variable "deploy_scanning" {
+  type        = bool
+  description = "true/false whether scanning module is to be deployed"
+  default     = false
+}
+
 # benchmark
 variable "deploy_benchmark" {
   type        = bool
