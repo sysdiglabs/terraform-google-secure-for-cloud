@@ -103,7 +103,7 @@ module "secure-for-cloud_example_organization" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.22.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.24.0 |
 | <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | 0.5.37 |
 
 ## Modules
