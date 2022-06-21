@@ -39,7 +39,7 @@ resource "random_string" "random" {
 module "sfc_example_single_project" {
   source = "../../../examples/single-project"
 
-  name             = "sfc${random_string.random.result}"
+  name               = "sfc${random_string.random.result}"
   deploy_scanning    = true
   use_inline_scanner = false
   deploy_benchmark   = false

@@ -49,7 +49,7 @@ module "sfc_example_organization" {
     google.multiproject      = google.multiproject
     google-beta.multiproject = google-beta.multiproject
   }
-  source    = "../../../examples/organization"
+  source = "../../../examples/organization"
 
   organization_domain    = var.organization_domain
   name                   = "sfc${random_string.random.result}"

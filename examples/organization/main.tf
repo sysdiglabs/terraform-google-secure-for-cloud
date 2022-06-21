@@ -4,7 +4,7 @@ locals {
   logName=~"/logs/cloudaudit.googleapis.com%2Factivity$" AND -resource.type="k8s_cluster"
 EOT
   repository_project_ids = var.deploy_scanning ? length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids : []
-  deploy_scanning_infra = var.deploy_scanning && !var.use_inline_scanner
+  deploy_scanning_infra  = var.deploy_scanning && !var.use_inline_scanner
 }
 
 data "google_organization" "org" {

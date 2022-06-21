@@ -17,9 +17,9 @@ locals {
         }
       }
     ]
-    scanners  = [
+    scanners = [
       var.use_inline_scanner ? {
-        gcp-gcr-inline      = {},
+        gcp-gcr-inline       = {},
         gcp-cloud-run-inline = {}
       } : {},
       var.use_inline_scanner ? {} : {

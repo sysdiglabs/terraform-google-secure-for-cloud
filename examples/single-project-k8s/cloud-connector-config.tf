@@ -1,8 +1,8 @@
 locals {
   connector_config = {
-    logging        = "info"
-    rules          = []
-    ingestors      = [
+    logging = "info"
+    rules   = []
+    ingestors = [
       {
         gcp-auditlog-pubsub = {
           project      = data.google_client_config.current.project
@@ -19,31 +19,31 @@ locals {
     ]
     notifiers      = []
     gcpCredentials = jsonencode(jsondecode(base64decode(google_service_account_key.connector_sa_key.private_key)))
-    scanners       = var.deploy_scanning ? concat(
-    [
-      var.use_inline_scanner ? {} : {
-        gcp-gcr = {
-          project                  = data.google_client_config.current.project
-          secureAPITokenSecretName = module.secure_secrets.secure_api_token_secret_name
-          serviceAccount           = google_service_account.connector_sa.email
+    scanners = var.deploy_scanning ? concat(
+      [
+        var.use_inline_scanner ? {} : {
+          gcp-gcr = {
+            project                  = data.google_client_config.current.project
+            secureAPITokenSecretName = module.secure_secrets.secure_api_token_secret_name
+            serviceAccount           = google_service_account.connector_sa.email
+          }
         }
-      }
-    ],
-    [
-      var.use_inline_scanner ? {} : {
-        gcp-cloud-run = {
-          project                  = data.google_client_config.current.project
-          secureAPITokenSecretName = module.secure_secrets.secure_api_token_secret_name
-          serviceAccount           = google_service_account.connector_sa.email
+      ],
+      [
+        var.use_inline_scanner ? {} : {
+          gcp-cloud-run = {
+            project                  = data.google_client_config.current.project
+            secureAPITokenSecretName = module.secure_secrets.secure_api_token_secret_name
+            serviceAccount           = google_service_account.connector_sa.email
+          }
         }
-      }
-    ],
-    [
-      var.use_inline_scanner ? {
-        gcp-gcr-inline      = {},
-        gcp-cloud-run-inline = {},
-      } : {}
-    ]
+      ],
+      [
+        var.use_inline_scanner ? {
+          gcp-gcr-inline       = {},
+          gcp-cloud-run-inline = {},
+        } : {}
+      ]
     ) : []
   }
 }

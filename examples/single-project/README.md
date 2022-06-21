@@ -82,7 +82,7 @@ module "secure-for-cloud_example_single-project" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.24.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.25.0 |
 | <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | 0.5.37 |
 
 ## Modules
@@ -113,6 +113,7 @@ module "secure-for-cloud_example_single-project" {
 | <a name="input_deploy_benchmark"></a> [deploy\_benchmark](#input\_deploy\_benchmark) | whether benchmark module is to be deployed | `bool` | `true` | no |
 | <a name="input_deploy_scanning"></a> [deploy\_scanning](#input\_deploy\_scanning) | true/false whether scanning module is to be deployed | `bool` | `false` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc"` | no |
+| <a name="input_use_inline_scanner"></a> [use\_inline\_scanner](#input\_use\_inline\_scanner) | true/false whether use inline scanner or not | `bool` | `false` | no |
 
 ## Outputs
 
