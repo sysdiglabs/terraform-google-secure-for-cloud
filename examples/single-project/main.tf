@@ -43,7 +43,7 @@ module "cloud_connector" {
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
 
   deploy_scanning    = var.deploy_scanning
-  use_inline_scanner = false
+  use_inline_scanner = var.use_inline_scanner
 }
 
 #######################

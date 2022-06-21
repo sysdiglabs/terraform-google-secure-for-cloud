@@ -41,7 +41,7 @@ locals {
     [
       var.use_inline_scanner ? {
         gcp-gcr-inline      = {},
-        gcp-cloudrun-inline = {},
+        gcp-cloud-run-inline = {},
       } : {}
     ]
     ) : []
