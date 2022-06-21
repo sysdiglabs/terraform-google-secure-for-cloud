@@ -9,6 +9,12 @@ variable "deploy_scanning" {
   default     = false
 }
 
+variable "use_inline_scanner" {
+  type        = bool
+  description = "true/false whether use inline scanner or not"
+  default     = false
+}
+
 # benchmark
 variable "deploy_benchmark" {
   type        = bool

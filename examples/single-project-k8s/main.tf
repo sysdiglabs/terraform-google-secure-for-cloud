@@ -3,6 +3,7 @@ locals {
   connector_filter = <<EOT
   logName=~"^projects/${data.google_client_config.current.project}/logs/cloudaudit.googleapis.com" AND -resource.type="k8s_cluster"
 EOT
+  deploy_scanning_infra = var.deploy_scanning && !var.use_inline_scanner
 }
 
 module "connector_project_sink" {
@@ -24,7 +25,7 @@ module "secure_secrets" {
 #      SCANNER       #
 #######################
 module "cloud_build_permission" {
-  count  = var.deploy_scanning ? 1 : 0
+  count  = local.deploy_scanning_infra ? 1 : 0
   source = "../../modules/infrastructure/cloud_build_permission"
 
 

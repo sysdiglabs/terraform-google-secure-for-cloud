@@ -4,6 +4,7 @@ locals {
   logName=~"/logs/cloudaudit.googleapis.com%2Factivity$" AND -resource.type="k8s_cluster"
 EOT
   repository_project_ids = var.deploy_scanning ? length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids : []
+  deploy_scanning_infra = var.deploy_scanning && !var.use_inline_scanner
 }
 
 data "google_organization" "org" {
@@ -80,7 +81,8 @@ module "cloud_connector" {
   verify_ssl        = local.verify_ssl
   is_organizational = true
 
-  deploy_scanning = var.deploy_scanning
+  deploy_scanning    = var.deploy_scanning
+  use_inline_scanner = var.use_inline_scanner
 }
 
 #--------------------
@@ -88,7 +90,7 @@ module "cloud_connector" {
 #--------------------
 
 module "cloud_build_permission" {
-  count  = var.deploy_scanning ? 1 : 0
+  count  = local.deploy_scanning_infra ? 1 : 0
   source = "../../modules/infrastructure/cloud_build_permission"
 
   cloud_connector_sa_email = google_service_account.connector_sa.email

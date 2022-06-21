@@ -49,11 +49,12 @@ module "sfc_example_organization" {
     google.multiproject      = google.multiproject
     google-beta.multiproject = google-beta.multiproject
   }
-  source = "../../../examples/organization"
+  source    = "../../../examples/organization"
 
   organization_domain    = var.organization_domain
   name                   = "sfc${random_string.random.result}"
   repository_project_ids = [var.project_id]
   deploy_scanning        = true
+  use_inline_scanner     = false
   deploy_benchmark       = false
 }

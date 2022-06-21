@@ -40,6 +40,7 @@ module "sfc_example_single_project" {
   source = "../../../examples/single-project"
 
   name             = "sfc${random_string.random.result}"
-  deploy_scanning  = true
-  deploy_benchmark = false
+  deploy_scanning    = true
+  use_inline_scanner = false
+  deploy_benchmark   = false
 }

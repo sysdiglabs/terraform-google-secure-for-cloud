@@ -40,6 +40,12 @@ variable "deploy_scanning" {
   default     = false
 }
 
+variable "use_inline_scanner" {
+  type        = bool
+  description = "true/false whether use inline scanner or not"
+  default     = false
+}
+
 variable "verify_ssl" {
   type        = bool
   description = "Verify the SSL certificate of the Secure endpoint"
@@ -78,7 +84,7 @@ variable "cpu" {
 
 variable "memory" {
   type        = string
-  default     = "500Mi"
+  default     = "2000Mi"
   description = "Amount of memory to reserve for cloud-connector cloud run service"
 }
 

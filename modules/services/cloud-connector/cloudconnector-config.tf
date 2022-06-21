@@ -1,5 +1,6 @@
 locals {
   default_config = yamlencode({
+    logging   = "info"
     rules     = []
     notifiers = []
     ingestors = [
@@ -16,15 +17,12 @@ locals {
         }
       }
     ]
-    scanners = [
-      {
-        gcp-gcr = {
-          project                  = var.project_id
-          secureAPITokenSecretName = var.secure_api_token_secret_id
-          serviceAccount           = var.cloud_connector_sa_email
-        }
-      },
-      {
+    scanners  = [
+      var.use_inline_scanner ? {
+        gcp-gcr-inline      = {},
+        gcp-cloudrun-inline = {}
+      } : {},
+      var.use_inline_scanner ? {} : {
         gcp-cloud-run = {
           project                  = var.project_id
           secureAPITokenSecretName = var.secure_api_token_secret_id
@@ -35,6 +33,7 @@ locals {
   })
 
   default_config_without_scanning = yamlencode({
+    logging   = "info"
     rules     = []
     notifiers = []
     ingestors = [
