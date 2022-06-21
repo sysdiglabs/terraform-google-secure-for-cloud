@@ -48,6 +48,6 @@ module "sfc_example_single_project" {
 
   name               = "sfck8s${random_string.random.result}"
   deploy_scanning    = true
-  use_inline_scanner = false
+  use_standalone_scanner = false
   deploy_benchmark   = false
 }

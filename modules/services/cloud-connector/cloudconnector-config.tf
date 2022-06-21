@@ -1,4 +1,5 @@
 locals {
+  scanning_with_standalone_scanner = var.deploy_scanning && var.use_standalone_scanner
   default_config = yamlencode({
     logging   = "info"
     rules     = []
@@ -18,11 +19,11 @@ locals {
       }
     ]
     scanners = [
-      var.use_inline_scanner ? {
+      local.scanning_with_standalone_scanner ? {
         gcp-gcr-inline       = {},
         gcp-cloud-run-inline = {}
       } : {},
-      var.use_inline_scanner ? {} : {
+      local.scanning_with_standalone_scanner ? {} : {
         gcp-cloud-run = {
           project                  = var.project_id
           secureAPITokenSecretName = var.secure_api_token_secret_id
