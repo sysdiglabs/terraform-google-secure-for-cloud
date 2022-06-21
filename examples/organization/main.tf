@@ -81,7 +81,7 @@ module "cloud_connector" {
   verify_ssl        = local.verify_ssl
   is_organizational = true
 
-  deploy_scanning    = var.deploy_scanning
+  deploy_scanning        = var.deploy_scanning
   use_standalone_scanner = var.use_standalone_scanner
 }
 

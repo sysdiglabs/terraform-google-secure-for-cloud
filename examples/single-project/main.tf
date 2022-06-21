@@ -42,7 +42,7 @@ module "cloud_connector" {
   connector_pubsub_topic_id  = module.connector_project_sink.pubsub_topic_id
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
 
-  deploy_scanning    = var.deploy_scanning
+  deploy_scanning        = var.deploy_scanning
   use_standalone_scanner = var.use_standalone_scanner
 }
 
