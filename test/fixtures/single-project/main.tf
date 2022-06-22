@@ -41,6 +41,6 @@ module "sfc_example_single_project" {
 
   name             = "sfc${random_string.random.result}"
   deploy_scanning  = true
-  use_scanning_v2  = true
+  use_scanning_v2  = false
   deploy_benchmark = false
 }
