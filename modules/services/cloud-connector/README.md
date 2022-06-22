@@ -32,7 +32,7 @@ module "cloud_connector_gcp" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.25.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.26.0 |
 
 ## Modules
 
@@ -69,7 +69,7 @@ No modules.
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the Cloud Connector | `number` | `1` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | Amount of memory to reserve for cloud-connector cloud run service | `string` | `"2000Mi"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc-cloudconnector"` | no |
-| <a name="input_use_standalone_scanner"></a> [use\_standalone\_scanner](#input\_use\_standalone\_scanner) | true/false whether use inline scanner or not | `bool` | `false` | no |
+| <a name="input_use_scanning_v2"></a> [use\_scanning\_v2](#input\_use\_scanning\_v2) | true/false whether use inline scanner or not | `bool` | `false` | no |
 | <a name="input_verify_ssl"></a> [verify\_ssl](#input\_verify\_ssl) | Verify the SSL certificate of the Secure endpoint | `bool` | `true` | no |
 
 ## Outputs

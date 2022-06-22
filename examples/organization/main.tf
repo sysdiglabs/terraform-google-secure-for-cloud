@@ -4,7 +4,7 @@ locals {
   logName=~"/logs/cloudaudit.googleapis.com%2Factivity$" AND -resource.type="k8s_cluster"
 EOT
   repository_project_ids = var.deploy_scanning ? length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids : []
-  deploy_scanning_infra  = var.deploy_scanning && !var.use_standalone_scanner
+  deploy_scanning_infra  = var.deploy_scanning && !var.use_scanning_v2
 }
 
 data "google_organization" "org" {
@@ -81,8 +81,8 @@ module "cloud_connector" {
   verify_ssl        = local.verify_ssl
   is_organizational = true
 
-  deploy_scanning        = var.deploy_scanning
-  use_standalone_scanner = var.use_standalone_scanner
+  deploy_scanning = var.deploy_scanning
+  use_scanning_v2 = var.use_scanning_v2
 }
 
 #--------------------

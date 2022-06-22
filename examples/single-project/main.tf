@@ -3,7 +3,7 @@ locals {
   connector_filter      = <<EOT
   logName=~"^projects/${data.google_client_config.current.project}/logs/cloudaudit.googleapis.com" AND -resource.type="k8s_cluster"
 EOT
-  deploy_scanning_infra = var.deploy_scanning && !var.use_standalone_scanner
+  deploy_scanning_infra = var.deploy_scanning && !var.use_scanning_v2
 }
 
 #######################
@@ -42,8 +42,8 @@ module "cloud_connector" {
   connector_pubsub_topic_id  = module.connector_project_sink.pubsub_topic_id
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
 
-  deploy_scanning        = var.deploy_scanning
-  use_standalone_scanner = var.use_standalone_scanner
+  deploy_scanning = var.deploy_scanning
+  use_scanning_v2 = var.use_scanning_v2
 }
 
 #######################

@@ -103,7 +103,7 @@ module "secure-for-cloud_example_organization" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.25.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.26.0 |
 | <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | 0.5.37 |
 
 ## Modules
@@ -142,7 +142,7 @@ module "secure-for-cloud_example_organization" {
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the workloads | `number` | `1` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc"` | no |
 | <a name="input_repository_project_ids"></a> [repository\_project\_ids](#input\_repository\_project\_ids) | Projects were a `gcr`-named topic will be to subscribe to its repository events. If empty, all organization projects will be defaulted. | `list(string)` | `[]` | no |
-| <a name="input_use_standalone_scanner"></a> [use\_standalone\_scanner](#input\_use\_standalone\_scanner) | true/false whether use inline scanner or not | `bool` | `false` | no |
+| <a name="input_use_scanning_v2"></a> [use\_scanning\_v2](#input\_use\_scanning\_v2) | true/false whether use inline scanner or not | `bool` | `false` | no |
 
 ## Outputs
 

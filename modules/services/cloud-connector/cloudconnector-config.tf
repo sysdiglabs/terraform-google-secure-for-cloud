@@ -1,5 +1,5 @@
 locals {
-  scanning_with_standalone_scanner = var.deploy_scanning && var.use_standalone_scanner
+  scanning_with_standalone_scanner = var.deploy_scanning && var.use_scanning_v2
   default_config = yamlencode({
     logging   = "info"
     rules     = []

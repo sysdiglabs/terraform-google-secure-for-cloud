@@ -46,8 +46,8 @@ resource "random_string" "random" {
 module "sfc_example_single_project" {
   source = "../../../examples/single-project-k8s"
 
-  name                   = "sfck8s${random_string.random.result}"
-  deploy_scanning        = true
-  use_standalone_scanner = false
-  deploy_benchmark       = false
+  name             = "sfck8s${random_string.random.result}"
+  deploy_scanning  = true
+  use_scanning_v2  = false
+  deploy_benchmark = false
 }

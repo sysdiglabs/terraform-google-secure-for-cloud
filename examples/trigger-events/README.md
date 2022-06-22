@@ -38,7 +38,7 @@ module "secure-for-cloud_trigger_events" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.25.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.26.0 |
 
 ## Modules
 
