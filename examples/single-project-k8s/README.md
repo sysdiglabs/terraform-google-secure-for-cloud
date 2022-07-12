@@ -6,6 +6,7 @@ Deploy Sysdig Secure for Cloud in a provided existing Kubernetes Cluster.
   <br/>Because these charts require specific GCP credentials to be passed by parameter, a new service account + key will be created
   within the project. See [`credentials.tf`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project-k8s/credentials.tf)
 - Used architecture is similar to [single-project](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/single-project) but changing Cloud Run <---> with an existing K8s
+- Contrary to non-k8s compute deployment for GCP where events are pushed to an exposed HTTP endpoint of the cloudrun task vía event-arc trigger, on k8s events are pulled from a queue configured with a pubsub model.
 
 ### Notice
 * All the required resources and workloads will be run **under the same GCP project**.
