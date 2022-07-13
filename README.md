@@ -148,6 +148,19 @@ And a CloudBuild being launched successfully.
 
 ## Troubleshooting
 
+### Q: Getting "Error creating Service: googleapi: got HTTP response code 404" "The requested URL /serving.knative.dev/v1/namespaces/xxx/services was not found on this server"
+
+```
+"module.secure-for-cloud_example_organization.module.cloud_connector.goo
+gle_cloud_run_service.cloud_connector" error: Error creating Service: googleapi: got HTTP response code 404 with
+…
+  <p><b>404.</b> <ins>That’s an error.</ins>
+  <p>The requested URL <code>/apis/serving.knative.dev/v1/namespaces/prj-c-sysdig-aeee/services</code> was not found on this server.  <ins>That’s all we know.</ins>
+```
+A: This error is given by the Terraform GCP provider when an invalid region is used.
+<br/>S: Use one of the available regions https://cloud.google.com/compute/docs/regions-zones/#available
+
+
 ### Q: Why do we need `google-beta` provider?
 
 A: Some resources we use, such as the [`google_iam_workload_identity_pool_provider`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iam_workload_identity_pool_provider) are only available in the beta version.<br/>
