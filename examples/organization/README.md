@@ -43,7 +43,17 @@ This example deploys Secure for Cloud into a GCP organizational account.
 
 ## Usage
 
-For quick testing, use this snippet on your terraform files
+For quick testing, use this snippet on your terraform files and provide following parameters
+- `SYSDIG_SECURE_URL / SYSDIG_SECURE_API_TOKEN` Sysdig Authentication
+- `ORG_DOMAIN` GCP organization identification
+- `PROJECT_ID` GCP project where workload will be deployed
+- `REGION_ID` for the workload to be deployed
+- 
+
+  repository_project_ids    = ["<PROJECT_SCAN_ID1>", "<PROJECT_SCAN_ID2>"]
+  organization_domain       = "<ORG_DOMAIN>"
+  
+  
 
 ```terraform
 terraform {
@@ -82,9 +92,7 @@ module "secure-for-cloud_example_organization" {
     google-beta.multiproject = google-beta.multiproject
   }
 
-  source = "sysdiglabs/secure-for-cloud/google//examples/organization"
-
-  repository_project_ids    = ["<PROJECT_SCAN_ID1>", "<PROJECT_SCAN_ID2>"]
+  source = "sysdiglabs/secure-for-cloud/google//examples/organization"  
   organization_domain       = "<ORG_DOMAIN>"
 }
 ```
