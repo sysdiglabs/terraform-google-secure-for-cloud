@@ -48,12 +48,7 @@ For quick testing, use this snippet on your terraform files and provide followin
 - `ORG_DOMAIN` GCP organization identification
 - `PROJECT_ID` GCP project where workload will be deployed
 - `REGION_ID` for the workload to be deployed
-- 
-
-  repository_project_ids    = ["<PROJECT_SCAN_ID1>", "<PROJECT_SCAN_ID2>"]
-  organization_domain       = "<ORG_DOMAIN>"
-  
-  
+ 
 
 ```terraform
 terraform {
