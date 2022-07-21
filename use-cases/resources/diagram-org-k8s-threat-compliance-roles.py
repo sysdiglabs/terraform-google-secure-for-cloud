@@ -12,7 +12,7 @@ color_permission = "red"
 color_non_important = "gray"
 color_sysdig = "lightblue"
 
-with Diagram("Roles", graph_attr=diagram_attr, filename="diagram-k8s-only-roles", show=True, direction="TB"):
+with Diagram("Roles", graph_attr=diagram_attr, filename="diagram-org-k8s-threat-compliance-roles", show=True, direction="TB"):
 
     with Cluster("Role", graph_attr={"bgcolor": "lightblue"}):
         serviceAccount = Iam("Service Account")

@@ -16,7 +16,7 @@ color_permission = "red"
 color_non_important = "gray"
 color_sysdig = "lightblue"
 
-with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr, filename="diagram-k8s-only", show=True, direction="TB"):
+with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr, filename="diagram-org-k8s-threat-compliance", show=True, direction="TB"):
 
     with Cluster("GCP account (sysdig)", graph_attr={"bgcolor": "lightblue"}):
         sds = Custom("Sysdig Secure", "../resources/diag-sysdig-icon.png")
