@@ -1,4 +1,5 @@
 locals {
+  scanning_with_standalone_scanner = var.deploy_scanning && var.use_scanning_v2
   connector_config = {
     logging = "info"
     rules   = []
@@ -21,7 +22,7 @@ locals {
     gcpCredentials = jsonencode(jsondecode(base64decode(google_service_account_key.connector_sa_key.private_key)))
     scanners = var.deploy_scanning ? concat(
       [
-        {
+        local.scanning_with_standalone_scanner ? {} : {
           gcp-gcr = {
             project                  = data.google_client_config.current.project
             secureAPITokenSecretName = module.secure_secrets.secure_api_token_secret_name
@@ -30,13 +31,19 @@ locals {
         }
       ],
       [
-        {
+        local.scanning_with_standalone_scanner ? {} : {
           gcp-cloud-run = {
             project                  = data.google_client_config.current.project
             secureAPITokenSecretName = module.secure_secrets.secure_api_token_secret_name
             serviceAccount           = google_service_account.connector_sa.email
           }
         }
+      ],
+      [
+        local.scanning_with_standalone_scanner ? {
+          gcp-gcr-inline       = {},
+          gcp-cloud-run-inline = {},
+        } : {}
       ]
     ) : []
   }

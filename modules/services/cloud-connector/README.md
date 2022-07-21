@@ -32,7 +32,7 @@ module "cloud_connector_gcp" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.24.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.26.0 |
 
 ## Modules
 
@@ -67,8 +67,9 @@ No modules.
 | <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Sysdig Owned Cloud Connector public image. GCP only allows the deployment of images that are registered in gcr.io | `string` | `"gcr.io/mateo-burillo-ns/cloud-connector:latest"` | no |
 | <a name="input_is_organizational"></a> [is\_organizational](#input\_is\_organizational) | whether secure-for-cloud should be deployed in an organizational setup | `bool` | `false` | no |
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the Cloud Connector | `number` | `1` | no |
-| <a name="input_memory"></a> [memory](#input\_memory) | Amount of memory to reserve for cloud-connector cloud run service | `string` | `"500Mi"` | no |
+| <a name="input_memory"></a> [memory](#input\_memory) | Amount of memory to reserve for cloud-connector cloud run service | `string` | `"2000Mi"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc-cloudconnector"` | no |
+| <a name="input_use_scanning_v2"></a> [use\_scanning\_v2](#input\_use\_scanning\_v2) | true/false whether use inline scanner or not | `bool` | `false` | no |
 | <a name="input_verify_ssl"></a> [verify\_ssl](#input\_verify\_ssl) | Verify the SSL certificate of the Secure endpoint | `bool` | `true` | no |
 
 ## Outputs
