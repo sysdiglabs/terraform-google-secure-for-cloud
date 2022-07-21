@@ -23,19 +23,21 @@ with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr,
         bench = General("Cloud Bench")
         sds >> Edge(label="schedule on rand rand * * *") >> bench
 
-    with Cluster("GCP organization project", graph_attr={"bgcolor": "pink"}):
+    with Cluster("GCP organization", graph_attr={"bgcolor": "pink"}):
         ccProjectSink = Custom("\nLog Router \n Sink", "../resources/sink.png")
-        orgBenchRole = Iam("Cloud Bench Role")
 
-    with Cluster("Secure for Cloud (children project)"):
-        ccBenchRole = Iam("Cloud Bench Role")
-        ccPubSub = PubSub("CC PubSub Topic")
-        ccOnK8s = GKE("CC on k8s")
+        with Cluster("Secure for Cloud (children project)"):
+            ccBenchRole = Iam("Cloud Bench Role")
+            ccPubSub = PubSub("CC PubSub Topic")
+            ccOnK8s = GKE("CC on k8s")
 
-        ccProjectSink >> ccPubSub
-        ccOnK8s >> ccPubSub
+            ccProjectSink >> ccPubSub
+            ccOnK8s >> ccPubSub
 
-    ccOnK8s >> sds
+            ccOnK8s >> sds
 
-    ccBenchRole <<  Edge(color=color_non_important) <<  bench
-    orgBenchRole <<  Edge(color=color_non_important) <<  bench
+            ccBenchRole <<  Edge(color=color_non_important) <<  bench
+
+        with Cluster("Rest of the projects"):
+            ccBenchRoleOnEachProject = Iam("Cloud Bench Role")
+            bench >> ccBenchRoleOnEachProject
