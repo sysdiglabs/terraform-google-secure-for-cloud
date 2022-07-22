@@ -35,8 +35,8 @@ We suggest to
 
 ##### Cloud-Connector wiring: Log Router Sink + PubSub Topic
 
-0. From your organization, **choose a member project** as `SYSDIG_PROJECT`
-1. In `SYSDIG_PROJECT`, create a **Pub/Sub** topic (with default configuration is enough)
+0. From your organization, **choose a member project** as `SYSDIG_PROJECT_ID`
+1. In `SYSDIG_PROJECT_ID`, create a **Pub/Sub** topic (with default configuration is enough)
    - Save `SYSDIG_PUBSUB_NAME` for later <!-- iru note: is this the topic name or just the id? -->
 2. In the organizational domain level, create **Logging Logs Router** Sink
    - Add as destination the Pub/Sub from previous point.
@@ -94,7 +94,7 @@ telemetryDeploymentMethod: "helm_gcp_k8s_org"
 ingestors:
   # Receives GCP GCR from a PubSub topic
   - gcp-auditlog-pubsub:
-      project: <SYSDIG_PROJECT>
+      project: <SYSDIG_PROJECT_ID>
       subscription: <SYSDIG_PUBSUB_NAME>
 
 gcpCredentials: |
@@ -142,14 +142,14 @@ Register on **Sysdig Secure** backend information about customer's organization 
     }'
     ```
 3. Get **Sysdig Federation TrustedIdentity**
-   - For later usage, fetch from `<TRUSTED_IDENTITY>`, the 12-digit number from the response is the AWS account ID you need to provide
+   - For later usage, fetch from `TRUSTED_IDENTITY`. This value is composed by the parts `SYSDIG_AWS_ACCOUNT_ID` and `SYSDIG_AWS_ROLE_NAME`
     ```shell
     $ curl -s 'https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/aws/trustedIdentity' \
     --header 'Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>'
     ```
    <br/><br/>
 4. Get **Sysdig ExternalId**
-    - For later usage, fetch `<EXTERNAL_ID>` from one of the previously registered GCP projects. All accounts will have same id.
+    - For later usage, fetch `SYSDIG_AWS_EXTERNAL_ID` from one of the previously registered GCP projects. All accounts will have same id.
     ```shell
     $ curl -s "https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts/<GCP_PROJECT_ID>}?includeExternalId=true" \
     --header "Authorization: Bearer $SYSDIG_API_TOKEN" | jq ".externalId")
@@ -175,22 +175,17 @@ We'll need, **for each project**
    - Give it GCP builtin `roles/viewer` **Viewer Role**
    - And previously created Custom Role <!-- tip: in UI: IAM & Admin -> IAM (Edit)-->
 
-
--- sysdigs arn:aws:iam::273107874544:role/us-east-1-production-secure-assume-role
-
 3. Create a **Workload Identity Federation Provider and Pool**
-   - Provider must be created for `aws` provider, using the `AWS_ACCOUNT_ID` fetched previously from the `TRUSTED_IDENTITY`
-   - For pool, ID must be 'sysdigcloud'
+   - Provider must be created for `aws` provider, using the `SYSDIG_AWS_ACCOUNT_ID` fetched previously from the `TRUSTED_IDENTITY`
+   - Create a pool as with name 'sysdigcloud' `<IDENTITY_POOL_ID>`
    - Provider must be AWS:
      - Provider name: "Sysdig Secure for Cloud"
      - Attribute mapping, set both `"google.subject" : "assertion.arn"` and `"attribute.aws_role" : "assertion.arn"`
 
-   - Set Pool Binding the role `roles/iam.workloadIdentityUser` with the member value
-     > principalSet://iam.googleapis.com/projects/<GOOGLE_PROJECT_NUMBER>/locations/global/workloadIdentityPools/<IDENTITY_POOL_ID>/attribute.aws_role/arn:aws:sts::<AWS_ACCOUNT_ID>:assumed-role/<AWS_ROLE_NAME>/<AWS_EXTERNAL_ID>"`
-      - GOOGLE_PROJECT_NUMBER Google Cloud -> Project number_
-      - IDENTITY_POOL_ID _Identity from the pool created in the previous step_
-      - AWS_ACCOUNT_ID, AWS_ROLE_NAME, AWS_EXTERNAL_ID
-
+4. In the previously created 'sysdigcloudbench' SA, we need to create a **Service Account Pool Binding**
+   - Set Pool Binding the role `roles/iam.workloadIdentityUser`
+   - For the members value, we will add the following
+     > principalSet://iam.googleapis.com/projects/<SYSDIG_PROJECT_ID>/locations/global/workloadIdentityPools/<IDENTITY_POOL_ID>/attribute.aws_role/arn:aws:sts::<SYSDIG_AWS_ACCOUNT_ID>:assumed-role/<SYSDIG_AWS_ROLE_NAME>/<SYSDIG_AWS_EXTERNAL_ID>
 
 ## Confirm services are working
 
