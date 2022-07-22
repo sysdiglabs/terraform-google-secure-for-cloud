@@ -81,7 +81,7 @@ sysdig:
   secureAPIToken: ""
 
 # not required but would help product
-telemetryDeploymentMethod: "helm_aws_k8s_org"
+telemetryDeploymentMethod: "helm_gcp_k8s_org"
 
 ingestors:
   # Receives GCP GCR from a PubSub topic
@@ -90,47 +90,97 @@ ingestors:
       subscription: <SYSDIG_PUBSUB_NAME>
 ```
 
-##### Compliance, CloudBench Role
+##### Compliance - Sysdig Side
 
-We'll need, **for each project**
+Register on **Sysdig Secure** backend information about customer's organization projects
+  - Locate your `<SYSDIG_SECURE_ENDPOINT>` and `<SYSDIG_SECURE_API_TOKEN>`. [Howto fetch ApiToken](https://docs.sysdig.com/en/docs/administration/administration-settings/user-profile-and-password/retrieve-the-sysdig-api-token/)  
+  - For Sysdig Secure backend API communication [Howto use development tools](https://docs.sysdig.com/en/docs/developer-tools/), we have this [AWS provisioning script](https://github.com/sysdiglabs/aws-templates-secure-for-cloud/blob/main/utils/sysdig_cloud_compliance_provisioning.sh) too as reference, but we will explain it here too.
 
-- A **Service Account** (SA) with `IAM Workload Identity Federation` on Sysdigs AWS Cloud infrastructure, to be able to assess your infrastructure Compliance
-  - currently, federation is only available through AWS, but we will enable other Clouds in the near-future
-- **Permissions** set to the SA to be able to read customer's infrastructure
-
-![compliance role](resources/diagram-org-k8s-threat-compliance-roles.png)
-
-<!--
-for the moment, maybe just skip this and just say to use this script as reference?
-https://github.com/sysdiglabs/aws-templates-secure-for-cloud/blob/main/utils/sysdig_cloud_compliance_provisioning.sh
--->
-
-1. Get **Federation data from Sysdig**
-   - This step can be done once
-   - Fetch `<EXTERNAL_ID>`
-   - Fetch `<TRUSTED_IDENTITY>`, the 12-digit number from the response is the AWS account ID you need to provide
+1. **Register Organization Projects** on Sysdig
+    - For each project you want to provision for the Compliance features, we need to register them on Sysdig Secure
+    ```shell
+    curl "https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts?includeExternalID=true\&upsert=true" \
+    --header "Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>" \
+    -X POST \
+    -H 'Accept: application/json' \
+    -H 'Content-Type: application/json' \
+    -d '{
+          "accountId": "<GCP_PROJECT_ID>",
+          "alias": "<GCP_PROJECT_ALIAS>",
+          "provider": "gcp",
+          "roleAvailable": true,
+          "roleName": "sysdigcloudbench"
+       }'
+    ```
+   <br/><br/>
+2. Register **Benchmark Task**
+    - Create a single task to scope the organization group ids to be assessed.
+    - This script does not cover it, but specific regions can be scoped too. Check `Benchmarks-V2` REST-API for more detail
+   ```shell
+   $ curl -s "https://<SYSDIG_SECURE_ENDPOINT>/api/benchmarks/v2/tasks" \
+--header "Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>" \
+-X POST \
+-H 'Accept: application/json' \
+-H 'Content-Type: application/json' \
+-d '{
+"name": "Sysdig Secure for Cloud (GCP) - Organization",
+"schedule": "0 3 * * *",
+"schema": "gcp_foundations_bench-1.2.0",
+"scope": "gcp.projectId in ('<ORG_PROJECT_ID1',...,'<ORG_PROJECT_IDN')'",
+"enabled": true
+}'
+    ```
+3. Get **Sysdig Federation TrustedIdentity**
+   - For later usage, fetch from `<TRUSTED_IDENTITY>`, the 12-digit number from the response is the AWS account ID you need to provide
     ```shell
     $ curl -s 'https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/aws/trustedIdentity' \
     --header 'Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>'
     ```
-   - replacing SYSDIG_SECURE_API_TOKEN by the API key you can find at `Sysdig Secure > Your profile > Sysdig API Tokens > Sysdig Secure API`
-   <!-- nota iru: yo suelo mirar en docs para esto.. pero solo encuentro el api token de monitor... https://docs.sysdig.com/en/docs/administration/administration-settings/user-profile-and-password/retrieve-the-sysdig-api-token/ --> <br/>
+   <br/><br/>
+4. Get **Sysdig ExternalId**
+    - For later usage, fetch `<EXTERNAL_ID>` from one of the previously registered GCP projects. All accounts will have same id.
+    ```shell
+    $ curl -s "https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts/<GCP_PROJECT_ID>}?includeExternalId=true" \
+    --header "Authorization: Bearer $SYSDIG_API_TOKEN" | jq ".externalId")
+    ```
+   <br/><br/>
 
-2. Create a **Custom Role** (ex.: 'Sysdig Cloud Benchmark Role') and assign to it following permissions
+##### Compliance - Customer's Side
+
+We'll need, **for each project**
+
+- A **Service Account** (SA) with `IAM Workload Identity Federation` on Sysdigs AWS Cloud infrastructure, to be able to assess your infrastructure Compliance
+    - currently, federation is only available through AWS, but we will enable other clouds in the near-future
+- **Permissions** set to the SA to be able to read customer's infrastructure
+
+![compliance role](resources/diagram-org-k8s-threat-compliance-roles.png)
+
+
+1. Create a **Custom Role** (ex.: 'Sysdig Cloud Benchmark Role') and assign to it following permissions
    - `storage.buckets.getIamPolicy`
    - `bigquery.tables.list`
    - this is required to add some more permissions that are not available in GCP builtin viewer role
-3. Create a **Service Account** with the name 'sysdigcloudbench'
+2. Create a **Service Account** with the name 'sysdigcloudbench'
    - Give it GCP builtin `roles/viewer` **Viewer Role**
    - And previously created Custom Role <!-- tip: in UI: IAM & Admin -> IAM (Edit)-->
-4. Create a **Workload Identity Federation Pool**
-     - Identity pool ID must be 'sysdigcloud'
-     - Provider must be AWS:
-       - Provider name: "Sysdig Secure for Cloud"
-       - Attribute mapping, set both `"google.subject" : "assertion.arn"` and `"attribute.aws_role" : "assertion.arn"`
 
-   - Set Pool Binding the role `roles/iam.workloadIdentityUser` with the member value "principalSet://iam.googleapis.com/projects/<GOOGLE_PROJECT_NUMBER>/locations/global/workloadIdentityPools/<IDENTITY_POOL_ID>/attribute.aws_role/arn:aws:sts::<AWS_ACCOUNT_ID>:assumed-role/<AWS_ROLE_NAME>/<AWS_EXTERNAL_ID>"`
-     - GOOGLE_PROJECT_NUMBER _Google Cloud -> Project number_
-     - IDENTITY_POOL_ID _Identity from the pool created in the previous step_
-     - AWS_ACCOUNT_ID, AWS_ROLE_NAME, AWS_EXTERNAL_ID
 
+-- sysdigs arn:aws:iam::273107874544:role/us-east-1-production-secure-assume-role
+
+3. Create a **Workload Identity Federation Provider and Pool**
+   - Provider must be created for `aws` provider, using the `AWS_ACCOUNT_ID` fetched previously from the `TRUSTED_IDENTITY`
+   - For pool, ID must be 'sysdigcloud'
+   - Provider must be AWS:
+     - Provider name: "Sysdig Secure for Cloud"
+     - Attribute mapping, set both `"google.subject" : "assertion.arn"` and `"attribute.aws_role" : "assertion.arn"`
+
+   - Set Pool Binding the role `roles/iam.workloadIdentityUser` with the member value 
+     > principalSet://iam.googleapis.com/projects/<GOOGLE_PROJECT_NUMBER>/locations/global/workloadIdentityPools/<IDENTITY_POOL_ID>/attribute.aws_role/arn:aws:sts::<AWS_ACCOUNT_ID>:assumed-role/<AWS_ROLE_NAME>/<AWS_EXTERNAL_ID>"`
+      - GOOGLE_PROJECT_NUMBER Google Cloud -> Project number_
+      - IDENTITY_POOL_ID _Identity from the pool created in the previous step_
+      - AWS_ACCOUNT_ID, AWS_ROLE_NAME, AWS_EXTERNAL_ID
+
+
+## Confirm services are working
+
+- [Official Docs Check Guide](https://docs.sysdig.com/en/docs/installation/sysdig-secure-for-cloud/deploy-sysdig-secure-for-cloud-on-gcp/#confirm-the-services-are-working) 
