@@ -2,43 +2,39 @@
 
 ## Use-Case explanation
 
-### Requirements
-
 - Organizational setup
   - Dynamic environments with projects created and destroyed on-demand
 - Sysdig features: Threat-detection, Compliance (no image scanning)
 - Due to dynamic nature of customer's environment, a heavy programmatically ops tooling are used (not including Terraform) .
 - A summary of the required resources/permissions will be done, so they're provisioned for the Secure for Cloud feature sto work.
 
-## Suggested Solution
-
-### Overall Infrastructure
+## Infrastructure Solution
 
 As a quick summary we'll need
 
 - Organization
   - Log Router Sink
   - CloudBench Role for compliance
-- Member account (sysdig compute workload)
+- Member project (Sysdig resources, existing project or new one)
   - PubSub to wire events from the log router into cloud-connector compute module
   - CloudBench Role for compliance
-- Rest of member accounts
+  - K8s cluster for cloud-connector (Sysdig compute workload for threat detection)
+- Rest of member projects
   - CloudBench Role for compliance
 
 ![overall infrastructure](resources/diagram-org-k8s-threat-compliance.png)
 
-### Requirements
 
 We suggest to
 - start with secure for cloud, cloud-connector module required infrastructure wiring and deployment (this will cover threat-detection side)
 - then move on to Compliance role setup
 <br/><br/>
 
-##### Cloud-Connector wiring: Log Router Sink + PubSub Topic
+### Cloud-Connector wiring: Log Router Sink + PubSub Topic
 
 0. From your organization, **choose a member project** as `SYSDIG_PROJECT_ID`
 1. In `SYSDIG_PROJECT_ID`, create a **Pub/Sub** topic (with default configuration is enough)
-   - Save `SYSDIG_PUBSUB_NAME` for later <!-- iru note: is this the topic name or just the id? -->
+   - Save `SYSDIG_PUBSUB_SUBSCRIPTION_NAME` for later
 2. In the organizational domain level, create **Logging Logs Router** Sink
    - Add as destination the Pub/Sub from previous point.
    - Choose to ingest organization and child resources
@@ -48,17 +44,10 @@ We suggest to
     ```
 3. Give Sink **Permissions** to write on PubSub
    - Grab the `Writer Identity` user from the just created Sink
-   - In the PubSub resource, grant `Pub/Sub Publisher` role to the Sink writer identity
+   - In the PubSub resource, grant `Pub/Sub Publisher` role to the Sink `Writer Identity`
 
 <br/><br/>
-#### Secure for Cloud Compute Deployment
-
-<!--
-##### k8s/CloudConnector(Threat) (to be hidden)
-
-User should provide a k8s cluster to install CloudConnector on it.
-Both self installed and GKE are valid.
--->
+### Secure for Cloud Compute Deployment
 
 <!--
 -- TODO. authentication howto.
@@ -71,7 +60,7 @@ and code reference here https://github.com/sysdiglabs/terraform-google-secure-fo
 -->
 
 - Create Service Account with the `pubsub/subscriber` role.
-- Get the JSON credentials file for the created Service Account <JSON_CONTENT_FROM_THE_CREDENTIALS_FILE> (this would be an example of the content).
+- Get the JSON credentials file for the created Service Account `<JSON_CONTENT_FROM_THE_CREDENTIALS_FILE>` (this would be an example of the content).
     ```
       {
         "type": "service_account",
@@ -80,14 +69,16 @@ and code reference here https://github.com/sysdiglabs/terraform-google-secure-fo
         ...
       }
     ```
-Sysdig **Helm** [cloud-connector chart](https://charts.sysdig.com/charts/cloud-connector/) will be used with following parametrization
+<br/>
+
+- Sysdig **Helm** [cloud-connector chart](https://charts.sysdig.com/charts/cloud-connector/) will be used with following parametrization
 
   - Locate your `<SYSDIG_SECURE_ENDPOINT>` and `<SYSDIG_SECURE_API_TOKEN>`. [Howto fetch ApiToken](https://docs.sysdig.com/en/docs/administration/administration-settings/user-profile-and-password/retrieve-the-sysdig-api-token/)
 
 
 ```yaml
-rules:
-scanners:
+rules: []
+scanners: []
 sysdig:
   url: <SYSDIG_SECURE_ENDPOINT>
   secureAPIToken: <SYSDIG_SECURE_API_TOKEN>
@@ -99,19 +90,21 @@ ingestors:
   # receives GCP auditlog from a PubSub topic
   - gcp-auditlog-pubsub:
       project: <SYSDIG_PROJECT_ID>
-      subscription: <SYSDIG_PUBSUB_NAME>
+      subscription: <SYSDIG_PUBSUB_SUBSCRIPTION_NAME>
 
 gcpCredentials: |
   <JSON_CONTENT_FROM_THE_CREDENTIALS_FILE> (beware of the tabulation)
 ```
 
 Check that deployment logs throw no errors and can go to [confirm services are working](#confirm-services-are-working) for threat detection functionality checkup.
+<br/>
+<br/>
 
-##### Compliance - Sysdig Side
+### Compliance - Sysdig Side
 
-1. **Register Organization Projects** on Sysdig
-    - For Sysdig Secure backend API communication [Howto use development tools](https://docs.sysdig.com/en/docs/developer-tools/), we have this [AWS provisioning script](https://github.com/sysdiglabs/aws-templates-secure-for-cloud/blob/main/utils/sysdig_cloud_compliance_provisioning.sh) too as reference, but we will explain it here too.
-    - For each project you want to provision for the Compliance features, we need to register them on Sysdig Secure
+1. **Register Customer Organization Projects** on Sysdig
+    - For each project you want to provision for the Compliance feature, we need to register them on Sysdig Secure
+    - For Sysdig Secure backend API communication [Howto use development tools](https://docs.sysdig.com/en/docs/developer-tools/). Also we have this [AWS provisioning script](https://github.com/sysdiglabs/aws-templates-secure-for-cloud/blob/main/utils/sysdig_cloud_compliance_provisioning.sh) as reference, but we will explain it here too.
     ```shell
     curl "https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts?includeExternalID=true\&upsert=true" \
     --header "Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>" \
@@ -119,14 +112,17 @@ Check that deployment logs throw no errors and can go to [confirm services are w
     -H 'Accept: application/json' \
     -H 'Content-Type: application/json' \
     -d '{
-          "accountId": "<GCP_PROJECT_ID>",
-          "alias": "<GCP_PROJECT_ALIAS>",
-          "provider": "gcp",
-          "roleAvailable": true,
-          "roleName": "sysdigcloudbench"
-       }'
+       "accountId": "<GCP_PROJECT_ID>",
+       "alias": "<GCP_PROJECT_ALIAS>",
+       "provider": "gcp",
+       "roleAvailable": true,
+       "roleName": "sysdigcloudbench"
+    }'
     ```
-   <br/><br/>
+
+<br/>
+<br/>
+
 2. Register **Benchmark Task**
     - Create a single task to scope the organization group ids to be assessed.
     - This script does not cover it, but specific regions can be scoped too. Check `Benchmarks-V2` REST-API for more detail
@@ -140,26 +136,36 @@ Check that deployment logs throw no errors and can go to [confirm services are w
     "name": "Sysdig Secure for Cloud (GCP) - Organization",
     "schedule": "0 3 * * *",
     "schema": "gcp_foundations_bench-1.2.0",
-    "scope": "gcp.projectId in ('<ORG_PROJECT_ID1',...,'<ORG_PROJECT_IDN')'",
+    "scope": "gcp.projectId in ('<GCP_PROJECT_ID1>',...,'<GCP_PROJECT_IDN>')'",
     "enabled": true
     }'
     ```
-3. Get **Sysdig Federation TrustedIdentity**
-   - For later usage, fetch from `TRUSTED_IDENTITY`. This value is composed by the parts `SYSDIG_AWS_ACCOUNT_ID` and `SYSDIG_AWS_ROLE_NAME`
+
+<br/>
+<br/>
+
+3. Get **Sysdig Federation Trusted Identity**
+   - For later usage, fetch the Trusted Identity, which is composed by the parts `SYSDIG_AWS_ACCOUNT_ID` and `SYSDIG_AWS_ROLE_NAME`
     ```shell
     $ curl -s 'https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/aws/trustedIdentity' \
     --header 'Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>'
     ```
-   <br/><br/>
-4. Get **Sysdig ExternalId**
-    - For later usage, fetch `SYSDIG_AWS_EXTERNAL_ID` from one of the previously registered GCP projects. All accounts will have same id.
+    Response pattern:
     ```shell
-    $ curl -s "https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts/<GCP_PROJECT_ID>}?includeExternalId=true" \
-    --header "Authorization: Bearer $SYSDIG_API_TOKEN" | jq ".externalId")
+    arn:aws:iam::SYSDIG_AWS_ACCOUNT_ID:role/SYSDIG_AWS_ROLE_NAME
     ```
    <br/><br/>
+4. Get **Sysdig ExternalId**
+    - For later usage, fetch `SYSDIG_AWS_EXTERNAL_ID` from one of the previously registered GCP projects. All accounts will have same id (you only need to run it once).
+    ```shell
+    $ curl -s "https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts/<GCP_PROJECT_ID>?includeExternalId=true" \
+    --header "Authorization: Bearer $SYSDIG_API_TOKEN"
+    ```
+    From the resulting payload get the `externalId` attribute value.
 
-##### Compliance - Customer's Side
+   <br/><br/>
+
+### Compliance - Customer's Side
 
 We'll need, **for each project**
 
@@ -179,7 +185,7 @@ We'll need, **for each project**
    - And previously created Custom Role <!-- tip: in UI: IAM & Admin -> IAM (Edit)-->
 
 3. Create a **Workload Identity Federation Provider and Pool**
-   - Provider must be created for `aws` provider, using the `SYSDIG_AWS_ACCOUNT_ID` fetched previously from the `TRUSTED_IDENTITY`
+   - Provider must be created for `aws` provider, using the `SYSDIG_AWS_ACCOUNT_ID`
    - Create a pool as with name 'sysdigcloud' `<IDENTITY_POOL_ID>`
    - Provider must be AWS:
      - Provider name: "Sysdig Secure for Cloud"
@@ -194,6 +200,11 @@ We'll need, **for each project**
    - For the members value, we will add the following
      > principalSet://iam.googleapis.com/projects/<SYSDIG_PROJECT_ID>/locations/global/workloadIdentityPools/<IDENTITY_POOL_ID>/attribute.aws_role/arn:aws:sts::<SYSDIG_AWS_ACCOUNT_ID>:assumed-role/<SYSDIG_AWS_ROLE_NAME>/<SYSDIG_AWS_EXTERNAL_ID>
 
+5. You can check the communication between Sysdig and your infrastructure by querying this API endpoint for each of the projects you have registered:
+    ```shell
+    curl -v https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts/<GCP_PROJECT_ID>/validateRole \
+    --header 'Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>'
+    ```
 ## Confirm services are working
 
 - [Official Docs Check Guide](https://docs.sysdig.com/en/docs/installation/sysdig-secure-for-cloud/deploy-sysdig-secure-for-cloud-on-gcp/#confirm-the-services-are-working)
