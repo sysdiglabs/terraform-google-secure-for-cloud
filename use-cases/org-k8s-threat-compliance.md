@@ -32,6 +32,7 @@ As a quick summary we'll need
 We suggest to
 - start with secure for cloud, cloud-connector module required infrastructure wiring and deployment (this will cover threat-detection side)
 - then move on to Compliance role setup
+<br/><br/>
 
 ##### Cloud-Connector wiring: Log Router Sink + PubSub Topic
 
@@ -42,12 +43,14 @@ We suggest to
    - Add as destination the Pub/Sub from previous point.
    - Choose to ingest organization and child resources
    - Set the following filter
-     > logName=~"/logs/cloudaudit.googleapis.com%2Factivity$" AND -resource.type="k8s_cluster"
+    ```text
+    logName=~"/logs/cloudaudit.googleapis.com%2Factivity$" AND -resource.type="k8s_cluster"
+    ```
 3. Give Sink **Permissions** to write on PubSub
    - Grab the `Writer Identity` user from the just created Sink
    - In the PubSub resource, grant `Pub/Sub Publisher` role to the Sink writer identity
 
-
+<br/><br/>
 #### Secure for Cloud Compute Deployment
 
 <!--
@@ -79,20 +82,21 @@ and code reference here https://github.com/sysdiglabs/terraform-google-secure-fo
     ```
 Sysdig **Helm** [cloud-connector chart](https://charts.sysdig.com/charts/cloud-connector/) will be used with following parametrization
 
-```json
-rules: []
-scanners: []
+  - Locate your `<SYSDIG_SECURE_ENDPOINT>` and `<SYSDIG_SECURE_API_TOKEN>`. [Howto fetch ApiToken](https://docs.sysdig.com/en/docs/administration/administration-settings/user-profile-and-password/retrieve-the-sysdig-api-token/)
+
+
+```yaml
+rules:
+scanners:
 sysdig:
-  # Sysdig Secure URL
-  url: "https://secure.sysdig.com"
-  # API Token to access Sysdig Secure
-  secureAPIToken: ""
+  url: <SYSDIG_SECURE_ENDPOINT>
+  secureAPIToken: <SYSDIG_SECURE_API_TOKEN>
 
 # not required but would help product
 telemetryDeploymentMethod: "helm_gcp_k8s_org"
 
 ingestors:
-  # Receives GCP GCR from a PubSub topic
+  # receives GCP auditlog from a PubSub topic
   - gcp-auditlog-pubsub:
       project: <SYSDIG_PROJECT_ID>
       subscription: <SYSDIG_PUBSUB_NAME>
@@ -101,13 +105,12 @@ gcpCredentials: |
   <JSON_CONTENT_FROM_THE_CREDENTIALS_FILE> (beware of the tabulation)
 ```
 
+Check that deployment logs throw no errors and can go to [confirm services are working](#confirm-services-are-working) for threat detection functionality checkup.
+
 ##### Compliance - Sysdig Side
 
-Register on **Sysdig Secure** backend information about customer's organization projects
-  - Locate your `<SYSDIG_SECURE_ENDPOINT>` and `<SYSDIG_SECURE_API_TOKEN>`. [Howto fetch ApiToken](https://docs.sysdig.com/en/docs/administration/administration-settings/user-profile-and-password/retrieve-the-sysdig-api-token/)
-  - For Sysdig Secure backend API communication [Howto use development tools](https://docs.sysdig.com/en/docs/developer-tools/), we have this [AWS provisioning script](https://github.com/sysdiglabs/aws-templates-secure-for-cloud/blob/main/utils/sysdig_cloud_compliance_provisioning.sh) too as reference, but we will explain it here too.
-
 1. **Register Organization Projects** on Sysdig
+    - For Sysdig Secure backend API communication [Howto use development tools](https://docs.sysdig.com/en/docs/developer-tools/), we have this [AWS provisioning script](https://github.com/sysdiglabs/aws-templates-secure-for-cloud/blob/main/utils/sysdig_cloud_compliance_provisioning.sh) too as reference, but we will explain it here too.
     - For each project you want to provision for the Compliance features, we need to register them on Sysdig Secure
     ```shell
     curl "https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts?includeExternalID=true\&upsert=true" \
@@ -180,7 +183,11 @@ We'll need, **for each project**
    - Create a pool as with name 'sysdigcloud' `<IDENTITY_POOL_ID>`
    - Provider must be AWS:
      - Provider name: "Sysdig Secure for Cloud"
-     - Attribute mapping, set both `"google.subject" : "assertion.arn"` and `"attribute.aws_role" : "assertion.arn"`
+     - Attribute mapping, set both
+     ```text
+     google.subject: assertion.arn
+     attribute.aws_role: assertion.arn
+     ```
 
 4. In the previously created 'sysdigcloudbench' SA, we need to create a **Service Account Pool Binding**
    - Set Pool Binding the role `roles/iam.workloadIdentityUser`
