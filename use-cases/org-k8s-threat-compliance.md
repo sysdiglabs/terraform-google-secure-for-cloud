@@ -67,11 +67,19 @@ and code reference here https://github.com/sysdiglabs/terraform-google-secure-fo
 - 2/more elegant approach to use the serviceAccount from the chart. talk with @javi
 -->
 
+- Create Service Account with the `pubsub/subscriber` role.
+- Get the JSON credentials file for the created Service Account <JSON_CONTENT_FROM_THE_CREDENTIALS_FILE> (this would be an example of the content).
+    ```
+      {
+        "type": "service_account",
+        "project_id": ...
+        "private_key_id": ...
+        ...
+      }
+    ```
 Sysdig **Helm** [cloud-connector chart](https://charts.sysdig.com/charts/cloud-connector/) will be used with following parametrization
 
 ```json
--- values.yaml
-logging: info
 rules: []
 scanners: []
 sysdig:
@@ -85,15 +93,18 @@ telemetryDeploymentMethod: "helm_gcp_k8s_org"
 
 ingestors:
   # Receives GCP GCR from a PubSub topic
-  - gcp-gcr-pubsub:
+  - gcp-auditlog-pubsub:
       project: <SYSDIG_PROJECT>
       subscription: <SYSDIG_PUBSUB_NAME>
+
+gcpCredentials: |
+  <JSON_CONTENT_FROM_THE_CREDENTIALS_FILE> (beware of the tabulation)
 ```
 
 ##### Compliance - Sysdig Side
 
 Register on **Sysdig Secure** backend information about customer's organization projects
-  - Locate your `<SYSDIG_SECURE_ENDPOINT>` and `<SYSDIG_SECURE_API_TOKEN>`. [Howto fetch ApiToken](https://docs.sysdig.com/en/docs/administration/administration-settings/user-profile-and-password/retrieve-the-sysdig-api-token/)  
+  - Locate your `<SYSDIG_SECURE_ENDPOINT>` and `<SYSDIG_SECURE_API_TOKEN>`. [Howto fetch ApiToken](https://docs.sysdig.com/en/docs/administration/administration-settings/user-profile-and-password/retrieve-the-sysdig-api-token/)
   - For Sysdig Secure backend API communication [Howto use development tools](https://docs.sysdig.com/en/docs/developer-tools/), we have this [AWS provisioning script](https://github.com/sysdiglabs/aws-templates-secure-for-cloud/blob/main/utils/sysdig_cloud_compliance_provisioning.sh) too as reference, but we will explain it here too.
 
 1. **Register Organization Projects** on Sysdig
@@ -117,18 +128,18 @@ Register on **Sysdig Secure** backend information about customer's organization 
     - Create a single task to scope the organization group ids to be assessed.
     - This script does not cover it, but specific regions can be scoped too. Check `Benchmarks-V2` REST-API for more detail
    ```shell
-   $ curl -s "https://<SYSDIG_SECURE_ENDPOINT>/api/benchmarks/v2/tasks" \
---header "Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>" \
--X POST \
--H 'Accept: application/json' \
--H 'Content-Type: application/json' \
--d '{
-"name": "Sysdig Secure for Cloud (GCP) - Organization",
-"schedule": "0 3 * * *",
-"schema": "gcp_foundations_bench-1.2.0",
-"scope": "gcp.projectId in ('<ORG_PROJECT_ID1',...,'<ORG_PROJECT_IDN')'",
-"enabled": true
-}'
+    $ curl -s "https://<SYSDIG_SECURE_ENDPOINT>/api/benchmarks/v2/tasks" \
+    --header "Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>" \
+    -X POST \
+    -H 'Accept: application/json' \
+    -H 'Content-Type: application/json' \
+    -d '{
+    "name": "Sysdig Secure for Cloud (GCP) - Organization",
+    "schedule": "0 3 * * *",
+    "schema": "gcp_foundations_bench-1.2.0",
+    "scope": "gcp.projectId in ('<ORG_PROJECT_ID1',...,'<ORG_PROJECT_IDN')'",
+    "enabled": true
+    }'
     ```
 3. Get **Sysdig Federation TrustedIdentity**
    - For later usage, fetch from `<TRUSTED_IDENTITY>`, the 12-digit number from the response is the AWS account ID you need to provide
@@ -174,7 +185,7 @@ We'll need, **for each project**
      - Provider name: "Sysdig Secure for Cloud"
      - Attribute mapping, set both `"google.subject" : "assertion.arn"` and `"attribute.aws_role" : "assertion.arn"`
 
-   - Set Pool Binding the role `roles/iam.workloadIdentityUser` with the member value 
+   - Set Pool Binding the role `roles/iam.workloadIdentityUser` with the member value
      > principalSet://iam.googleapis.com/projects/<GOOGLE_PROJECT_NUMBER>/locations/global/workloadIdentityPools/<IDENTITY_POOL_ID>/attribute.aws_role/arn:aws:sts::<AWS_ACCOUNT_ID>:assumed-role/<AWS_ROLE_NAME>/<AWS_EXTERNAL_ID>"`
       - GOOGLE_PROJECT_NUMBER Google Cloud -> Project number_
       - IDENTITY_POOL_ID _Identity from the pool created in the previous step_
@@ -183,4 +194,5 @@ We'll need, **for each project**
 
 ## Confirm services are working
 
-- [Official Docs Check Guide](https://docs.sysdig.com/en/docs/installation/sysdig-secure-for-cloud/deploy-sysdig-secure-for-cloud-on-gcp/#confirm-the-services-are-working) 
+- [Official Docs Check Guide](https://docs.sysdig.com/en/docs/installation/sysdig-secure-for-cloud/deploy-sysdig-secure-for-cloud-on-gcp/#confirm-the-services-are-working)
+- [Forcing events](https://github.com/sysdiglabs/terraform-google-secure-for-cloud#forcing-events)
