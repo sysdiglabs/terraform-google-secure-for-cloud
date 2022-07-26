@@ -104,16 +104,16 @@ Check that deployment logs throw no errors and can go to [confirm services are w
 
 1. **Register Customer Organization Projects** on Sysdig
     - For each project you want to provision for the Compliance feature, we need to register them on Sysdig Secure
-    - For Sysdig Secure backend API communication [Howto use development tools](https://docs.sysdig.com/en/docs/developer-tools/). Also we have this [AWS provisioning script](https://github.com/sysdiglabs/aws-templates-secure-for-cloud/blob/main/utils/sysdig_cloud_compliance_provisioning.sh) as reference, but we will explain it here too.
+    - For Sysdig Secure backend API communication [How to use development tools](https://docs.sysdig.com/en/docs/developer-tools/). Also we have this [AWS provisioning script](https://github.com/sysdiglabs/aws-templates-secure-for-cloud/blob/main/utils/sysdig_cloud_compliance_provisioning.sh) as reference, but we will explain it here too.
     ```shell
-    curl "https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts?includeExternalID=true\&upsert=true" \
+    curl "https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts?upsert=true" \
     --header "Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>" \
     -X POST \
     -H 'Accept: application/json' \
     -H 'Content-Type: application/json' \
     -d '{
-       "accountId": "<GCP_PROJECT_ID>",
-       "alias": "<GCP_PROJECT_ALIAS>",
+       "accountId": "<GCP_PROJECT_NUMBER>",
+       "alias": "<GCP_PROJECT_ID>",
        "provider": "gcp",
        "roleAvailable": true,
        "roleName": "sysdigcloudbench"
