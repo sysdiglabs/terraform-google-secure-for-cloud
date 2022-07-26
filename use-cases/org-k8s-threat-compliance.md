@@ -167,7 +167,7 @@ Check that deployment logs throw no errors and can go to [confirm services are w
 
 ### Compliance - Customer's Side
 
-We'll need, **for each project**
+We'll need, **for each project** (`GCP_PROJECT_ID`)
 
 - A **Service Account** (SA) with `IAM Workload Identity Federation` on Sysdigs AWS Cloud infrastructure, to be able to assess your infrastructure Compliance
     - currently, federation is only available through AWS, but we will enable other clouds in the near-future
@@ -198,7 +198,7 @@ We'll need, **for each project**
 4. In the previously created 'sysdigcloudbench' SA, we need to create a **Service Account Pool Binding**
    - Set Pool Binding the role `roles/iam.workloadIdentityUser`
    - For the members value, we will add the following
-     > principalSet://iam.googleapis.com/projects/<SYSDIG_PROJECT_ID>/locations/global/workloadIdentityPools/<IDENTITY_POOL_ID>/attribute.aws_role/arn:aws:sts::<SYSDIG_AWS_ACCOUNT_ID>:assumed-role/<SYSDIG_AWS_ROLE_NAME>/<SYSDIG_AWS_EXTERNAL_ID>
+     > principalSet://iam.googleapis.com/projects/<GCP_PROJECT_ID>/locations/global/workloadIdentityPools/<IDENTITY_POOL_ID>/attribute.aws_role/arn:aws:sts::<SYSDIG_AWS_ACCOUNT_ID>:assumed-role/<SYSDIG_AWS_ROLE_NAME>/<SYSDIG_AWS_EXTERNAL_ID>
 
 5. You can check the communication between Sysdig and your infrastructure by querying this API endpoint for each of the projects you have registered:
     ```shell
