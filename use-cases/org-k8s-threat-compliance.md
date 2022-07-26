@@ -147,7 +147,7 @@ Check that deployment logs throw no errors and can go to [confirm services are w
 3. Get **Sysdig Federation Trusted Identity**
    - For later usage, fetch the Trusted Identity, which is composed by the parts `SYSDIG_AWS_ACCOUNT_ID` and `SYSDIG_AWS_ROLE_NAME`
     ```shell
-    $ curl -s 'https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/aws/trustedIdentity' \
+    $ curl -s 'https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/gcp/trustedIdentity' \
     --header 'Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>'
     ```
     Response pattern:
