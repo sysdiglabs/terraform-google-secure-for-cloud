@@ -104,16 +104,16 @@ Check that deployment logs throw no errors and can go to [confirm services are w
 
 1. **Register Customer Organization Projects** on Sysdig
     - For each project you want to provision for the Compliance feature, we need to register them on Sysdig Secure
-    - For Sysdig Secure backend API communication [Howto use development tools](https://docs.sysdig.com/en/docs/developer-tools/). Also we have this [AWS provisioning script](https://github.com/sysdiglabs/aws-templates-secure-for-cloud/blob/main/utils/sysdig_cloud_compliance_provisioning.sh) as reference, but we will explain it here too.
+    - For Sysdig Secure backend API communication [How to use development tools](https://docs.sysdig.com/en/docs/developer-tools/). Also we have this [AWS provisioning script](https://github.com/sysdiglabs/aws-templates-secure-for-cloud/blob/main/utils/sysdig_cloud_compliance_provisioning.sh) as reference, but we will explain it here too.
     ```shell
-    curl "https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts?includeExternalID=true\&upsert=true" \
+    curl "https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts?upsert=true" \
     --header "Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>" \
     -X POST \
     -H 'Accept: application/json' \
     -H 'Content-Type: application/json' \
     -d '{
-       "accountId": "<GCP_PROJECT_ID>",
-       "alias": "<GCP_PROJECT_ALIAS>",
+       "accountId": "<GCP_PROJECT_NUMBER>",
+       "alias": "<GCP_PROJECT_ID>",
        "provider": "gcp",
        "roleAvailable": true,
        "roleName": "sysdigcloudbench"
@@ -167,9 +167,9 @@ Check that deployment logs throw no errors and can go to [confirm services are w
 
 ### Compliance - Customer's Side
 
-We'll need, **for each project** (`GCP_PROJECT_ID`)
+We'll need, **for each project** (`GCP_PROJECT_NUMBER`)
 
-- A **Service Account** (SA) with `IAM Workload Identity Federation` on Sysdigs AWS Cloud infrastructure, to be able to assess your infrastructure Compliance
+- A **Service Account** (SA) with `IAM Workload Identity Federation` that provides access to Sysdig's AWS Cloud infrastructure, to be able to assess your infrastructure Compliance
     - currently, federation is only available through AWS, but we will enable other clouds in the near-future
 - **Permissions** set to the SA to be able to read customer's infrastructure
 
@@ -181,6 +181,7 @@ We'll need, **for each project** (`GCP_PROJECT_ID`)
    - `bigquery.tables.list`
    - this is required to add some more permissions that are not available in GCP builtin viewer role
 2. Create a **Service Account** with the name 'sysdigcloudbench'
+   - This role must match the `roleName` set when the project was registered with Sydig in step 1 of Compliance - Sysdig Side
    - Give it GCP builtin `roles/viewer` **Viewer Role**
    - And previously created Custom Role <!-- tip: in UI: IAM & Admin -> IAM (Edit)-->
 
@@ -198,13 +199,8 @@ We'll need, **for each project** (`GCP_PROJECT_ID`)
 4. In the previously created 'sysdigcloudbench' SA, we need to create a **Service Account Pool Binding**
    - Set Pool Binding the role `roles/iam.workloadIdentityUser`
    - For the members value, we will add the following
-     > principalSet://iam.googleapis.com/projects/<GCP_PROJECT_ID>/locations/global/workloadIdentityPools/<IDENTITY_POOL_ID>/attribute.aws_role/arn:aws:sts::<SYSDIG_AWS_ACCOUNT_ID>:assumed-role/<SYSDIG_AWS_ROLE_NAME>/<SYSDIG_AWS_EXTERNAL_ID>
+     > principalSet://iam.googleapis.com/projects/<GCP_PROJECT_NUMBER>/locations/global/workloadIdentityPools/<IDENTITY_POOL_ID>/attribute.aws_role/arn:aws:sts::<SYSDIG_AWS_ACCOUNT_ID>:assumed-role/<SYSDIG_AWS_ROLE_NAME>/<SYSDIG_AWS_EXTERNAL_ID>
 
-5. You can check the communication between Sysdig and your infrastructure by querying this API endpoint for each of the projects you have registered:
-    ```shell
-    curl -v https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts/<GCP_PROJECT_ID>/validateRole \
-    --header 'Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>'
-    ```
 ## Confirm services are working
 
 - [Official Docs Check Guide](https://docs.sysdig.com/en/docs/installation/sysdig-secure-for-cloud/deploy-sysdig-secure-for-cloud-on-gcp/#confirm-the-services-are-working)
