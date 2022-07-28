@@ -48,7 +48,7 @@ For quick testing, use this snippet on your terraform files and provide followin
 - `ORG_DOMAIN` GCP organization identification
 - `PROJECT_ID` GCP project where workload will be deployed
 - `REGION_ID` for the workload to be deployed
- 
+
 
 ```terraform
 terraform {
@@ -87,7 +87,7 @@ module "secure-for-cloud_example_organization" {
     google-beta.multiproject = google-beta.multiproject
   }
 
-  source = "sysdiglabs/secure-for-cloud/google//examples/organization"  
+  source = "sysdiglabs/secure-for-cloud/google//examples/organization"
   organization_domain       = "<ORG_DOMAIN>"
 }
 ```
@@ -106,8 +106,8 @@ module "secure-for-cloud_example_organization" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.24.0 |
-| <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | 0.5.37 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.30.0 |
+| <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | 0.5.39 |
 
 ## Modules
 
