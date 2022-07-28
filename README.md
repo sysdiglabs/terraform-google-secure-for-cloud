@@ -24,10 +24,21 @@ For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-a
 
 ## Prerequisites
 
-You **must** have following **roles** in your GCP credentials
+Your user **must** have following **roles** in your GCP credentials
 * _Owner_
 * _Organization Admin_ (organizational usage only)
 
+### Use a Service Account
+
+Instead of using a user, you can also deploy the module using a Service Account (SA). In order to create a SA for the organization, you need to go
+to one of your organization projects and create a SA. 
+This SA must have been granted with _Organization Admin_ role. Additionally, you should allow your user to be able to use this SA.
+
+| SA role         | SA user permissions     | 
+|--------------|-----------|
+| ![Service Account Role](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/resources/sa-role.jpeg) | ![Service Accouynt User](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/resources/sa-user.jpeg)    | 
+
+### APIs
 Besides, the following GCP **APIs must be enabled** to deploy resources correctly for:
 
 ##### Cloud Connector
