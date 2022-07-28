@@ -15,7 +15,7 @@ already exists in the project. It will create the topic if it doesn't exist.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.24.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.30.0 |
 
 ## Modules
 
