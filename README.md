@@ -65,6 +65,12 @@ Besides, the following GCP **APIs must be enabled** to deploy resources correctl
 
 If you're unsure about what/how to use this module, please fill the [questionnaire](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/blob/master/use-cases/_questionnaire.md) report as an issue and let us know your context, we will be happy to help and improve our module.
 
+  - There are several ways to deploy this in you AWS infrastructure, gathered under **[`/examples`](./examples)**
+    - [Single Project](#--single-project)
+    - [Single Project with a pre-existing Kubernetes Cluster](#--single-project-with-a-pre-existing-kubernetes-cluster)
+    - [Organizational](#--organization)
+  - Find some real self-baked **use-case scenarios** under [`/use-cases`](./use-cases)
+
 
 ### - Single-Project
 
