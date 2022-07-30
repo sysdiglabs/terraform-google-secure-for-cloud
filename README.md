@@ -165,14 +165,14 @@ And a CloudBuild being launched successfully.
 
 ## Troubleshooting
 
-### Q: Getting "Error creating Service: googleapi: got HTTP response code 404" "The requested URL /serving.knative.dev/v1/namespaces/xxx/services was not found on this server"
+### Q: Getting "Error creating Service: googleapi: got HTTP response code 404" "The requested URL /serving.knative.dev/v1/namespaces/***/services was not found on this server"
 
 ```
 "module.secure-for-cloud_example_organization.module.cloud_connector.goo
 gle_cloud_run_service.cloud_connector" error: Error creating Service: googleapi: got HTTP response code 404 with
 …
   <p><b>404.</b> <ins>That’s an error.</ins>
-  <p>The requested URL <code>/apis/serving.knative.dev/v1/namespaces/prj-c-sysdig-aeee/services</code> was not found on this server.  <ins>That’s all we know.</ins>
+  <p>The requested URL <code>/apis/serving.knative.dev/v1/namespaces/****/services</code> was not found on this server.  <ins>That’s all we know.</ins>
 ```
 A: This error is given by the Terraform GCP provider when an invalid region is used.
 <br/>S: Use one of the available regions https://cloud.google.com/compute/docs/regions-zones/#available
@@ -224,7 +224,7 @@ Contact us to develop a workaround for this, where the topic name is to be reuse
 
 ### Q: Getting "Cloud Run error: Container failed to start. Failed to start and then listen on the port defined by the PORT environment variable."
 A: If cloud-connector cloud run module cannot start it will give this error. The error is given by the health-check system, it's not specific to its PORT per-se
-S: Verify possible logs before the deployment crashes. Could be limitations due to Sysdig license (expired trial subscription or free-tier usage where cloud-account limit has been surpassed)
+<br/>S: Verify possible logs before the deployment crashes. Could be limitations due to Sysdig license (expired trial subscription or free-tier usage where cloud-account limit has been surpassed)
 
 ### Q: Scanning does not seem to work<br/>
 A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is omitted and won't be deployed. For more info see GCR PubSub topic.
