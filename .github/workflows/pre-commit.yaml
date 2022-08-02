@@ -2,9 +2,13 @@ name: Pre-Commit
 
 on:
   pull_request:
+
+  # only direct-push to master for small tasks such as markdown modifications and such
   push:
     branches:
       - master
+    paths:
+      - '**.tf'
 
 env:
   GO_VERSION: "^1.17"
