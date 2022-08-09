@@ -66,69 +66,12 @@ Besides, the following GCP **APIs must be enabled** to deploy resources correctl
 If you're unsure about what/how to use this module, please fill the [questionnaire](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/blob/master/use-cases/_questionnaire.md) report as an issue and let us know your context, we will be happy to help and improve our module.
 
   - There are several ways to deploy this in you AWS infrastructure, gathered under **[`/examples`](./examples)**
-    - [Single Project](#--single-project)
-    - [Single Project with a pre-existing Kubernetes Cluster](#--single-project-with-a-pre-existing-kubernetes-cluster)
-    - [Organizational](#--organization)
-  - Find some real self-baked **use-case scenarios** under [`/use-cases`](./use-cases)
-
-
-### - Single-Project
-
-Sysdig workload will be deployed in the same account where user's resources will be watched.<br/>
-More info in [`./examples/single-project`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project)
-
-![single-project diagram](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/examples/single-project/diagram-single.png)
-
-### - Single-Project with a pre-existing Kubernetes Cluster
-
-If you already own a Kubernetes Cluster on GCP, you can use it to deploy Sysdig Secure for Cloud, instead of default CloudRun.<br/>
-More info in [`./examples/single-project-k8s`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project-k8s)
-
-
-### - Organization
-
-Using an organization to collect all the AuditLogs.
-More info in [`./examples/organization`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/organization)
-
-![organization diagram](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/examples/organization/diagram-org.png)
-
-### - Self-Baked
-
-If no [examples](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples) fit your use-case, be free to call desired modules directly.
-
-In this use-case we will ONLY deploy cloud-bench, into the target account, calling modules directly
-
-```terraform
-provider "google" {
-  project = "PROJECT-ID"
-  region = "REGION"
-}
-
-provider "google-beta" {
-  project = "PROJECT-ID"
-  region = "REGION"
-}
-
-provider "sysdig" {
-  sysdig_secure_url         = "<SYSDIG_SECURE_URL>"
-  sysdig_secure_endpoint    = "<SYSDIG_SECURE_API_TOKEN>"
-}
-
-module "cloud_bench" {
-  source      = "sysdiglabs/secure-for-cloud/google//modules/services/cloud-bench"
-}
-
-```
-See [inputs summary](#inputs) or main [module `variables.tf`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/variables.tf) file for more optional configuration.
-
-To run this example you need have your google cloud profile configured:
-```terraform
-$ terraform init
-$ terraform plan
-$ terraform apply
-```
-
-<br/><br/>
+    - [Single Project](./examples/single-project/README.md)
+    - [Single Project with a pre-existing Kubernetes Cluster](./examples/single-project-k8s/README.md)
+    - [Organizational](./examples/organization/README.md)
+    - Many module,examples and use-cases, we provide ways to **re-use existing resources (as optionals)** in your
+      infrastructure. Check input summary on each example/module.
+    - Find some real self-baked **use-case scenarios** under [`/use-cases`](./use-cases)
 
 
 ## Forcing Events
