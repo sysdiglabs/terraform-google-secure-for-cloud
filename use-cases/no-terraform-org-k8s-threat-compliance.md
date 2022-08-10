@@ -180,6 +180,8 @@ We'll need, **for each project** (`GCP_PROJECT_NUMBER`)
 1. Create a **Custom Role** (ex.: 'Sysdig Cloud Benchmark Role') and assign to it following permissions
    - `storage.buckets.getIamPolicy`
    - `bigquery.tables.list`
+   - `cloudasset.assets.listIamPolicy`
+   - `cloudasset.assets.listResource`
    - this is required to add some more permissions that are not available in GCP builtin viewer role
 2. Create a **Service Account** with the name 'sysdigcloudbench'
    - This role must match the `roleName` set when the project was registered with Sydig in step 1 of Compliance - Sysdig Side
