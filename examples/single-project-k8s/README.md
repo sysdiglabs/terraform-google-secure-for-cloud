@@ -81,7 +81,7 @@ See [inputs summary](#inputs) or module module [`variables.tf`](./variables.tf) 
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.30.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.31.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.6.0 |
 | <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | 0.5.39 |
 
