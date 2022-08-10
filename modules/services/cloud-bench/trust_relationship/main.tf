@@ -44,6 +44,13 @@ resource "google_project_iam_member" "viewer" {
   member = "serviceAccount:${google_service_account.sa.email}"
 }
 
+resource "google_project_iam_member" "cloud_asset_viewer" {
+  project = var.project_id
+
+  role   = "roles/cloudasset.viewer"
+  member = "serviceAccount:${google_service_account.sa.email}"
+}
+
 resource "google_project_iam_member" "custom" {
   project = var.project_id
 

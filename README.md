@@ -59,6 +59,7 @@ Besides, the following GCP **APIs must be enabled** to deploy resources correctl
 * [IAM Service Account Credentials API](https://console.cloud.google.com/marketplace/product/google/iamcredentials.googleapis.com)
 * [Cloud Resource Manager API](https://console.cloud.google.com/marketplace/product/google/cloudresourcemanager.googleapis.com)
 * [Security Token Service API](https://console.cloud.google.com/marketplace/product/google/sts.googleapis.com)
+* [Cloud Asset API](https://console.cloud.google.com/marketplace/product/google/cloudasset.googleapis.com)
 
 
 ## Usage
