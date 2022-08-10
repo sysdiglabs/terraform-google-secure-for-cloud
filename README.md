@@ -116,7 +116,7 @@ A: On your GCP infrastructure, per-project where Comliance has been setup, check
 2. the pool should have a connected service account with the name `sfcsysdigcloudbench`, with the email `sfcsysdigcloudbench@PROJECTID.iam.gserviceaccount.com`
 3. this serviceaccount should allow access to the following format `principalset: principalSet://iam.googleapis.com/projects/<PROJECTID>/locations/global/workloadIdentityPools/sysdigcloud/attribute.aws_role/arn:aws:sts::***:assumed-role/***`
 4. the serviceaccount should have the `viewer role` on the target project, as well as a custom role containing the "storage.buckets.getIamPolicy", "bigquery.tables.list", "cloudasset.assets.listIamPolicy" and "cloudasset.assets.listResource" permissions
-5. the pool provider should allow access to Sysdig's  trusted identity, retrieved through 
+5. the pool provider should allow access to Sysdig's  trusted identity, retrieved through
   ```
   $ curl https://<SYSDIG_SECURE_URL>/api/cloud/v2/gcp/trustedIdentity \
   --header 'Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>'

@@ -17,7 +17,7 @@ with Diagram("Role", graph_attr=diagram_attr, filename="diagram-org-k8s-threat-c
 
     with Cluster("", graph_attr={"bgcolor": "lightblue"}):
         serviceAccount = Iam("Service Account")
-        sysdigCloudBenchmarkRole = Iam("Sysdig Cloud \n Benchmark Role \n [storage.buckets.getIamPolicy, \n bigquery.tables.list, \n cloudasset.assets.listIamPolicy, \n cloudasset.assets.listResource]")
+        sysdigCloudBenchmarkRole = Iam("Sysdig Cloud \n Benchmark Role \n [storage.buckets.getIamPolicy, \n bigquery.tables.list]")
         roleViewer = Iam("roles/viewer")
 
         serviceAccount << sysdigCloudBenchmarkRole
