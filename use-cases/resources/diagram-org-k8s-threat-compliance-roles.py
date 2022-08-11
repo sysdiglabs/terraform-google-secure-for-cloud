@@ -4,7 +4,7 @@ from diagrams.gcp.security import Iam
 from diagrams.custom import Custom
 
 diagram_attr = {
-    "pad": "0.25",
+    "pad": "0.7",
 }
 
 color_event = "firebrick"
@@ -17,7 +17,7 @@ with Diagram("Role", graph_attr=diagram_attr, filename="diagram-org-k8s-threat-c
 
     with Cluster("", graph_attr={"bgcolor": "lightblue"}):
         serviceAccount = Iam("Service Account")
-        sysdigCloudBenchmarkRole = Iam("Sysdig Cloud \n Benchmark Role \n [storage.buckets.getIamPolicy, \n bigquery.tables.list]")
+        sysdigCloudBenchmarkRole = Iam("Sysdig Cloud\nBenchmark Role\n[storage.buckets.getIamPolicy,\nbigquery.tables.list\ncloudasset.assets.listIamPolicy,\ncloudasset.assets.listResource]")
         roleViewer = Iam("roles/viewer")
 
         serviceAccount << sysdigCloudBenchmarkRole
