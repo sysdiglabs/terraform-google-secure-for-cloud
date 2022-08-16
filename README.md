@@ -75,9 +75,12 @@ If you're unsure about what/how to use this module, please fill the [questionnai
     - Find some real self-baked **use-case scenarios** under [`/use-cases`](./use-cases)
 
 
-## Forcing Events
 
-**Threat Detection**
+## Confirm the Services are Working
+
+Check official documentation on [Secure for cloud - GCP, Confirm the Services are working](https://docs.sysdig.com/en/docs/installation/sysdig-secure-for-cloud/deploy-sysdig-secure-for-cloud-on-gcp/#confirm-the-services-are-working)
+
+### Forcing Events - Threat Detection
 
 Terraform example module to trigger **GCP Update, Disable or Delete Sink** event can be found on [examples/trigger-events ](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/trigger-events)
 
@@ -89,7 +92,7 @@ Remember that in case you add new rules to the policy you need to give it time t
 In the `cloud-connector` logs you should see similar logs to these
 > An alert has been deleted (requesting user=..., requesting IP=..., resource name=projects/test/alertPolicies/3771445340801051512)
 
-**Image Scanning**
+### Forcing Events - Image Scanning
 
 - For Repository image scanning, upload an image to a new Repository in a Artifact Registry. Follow repository `Setup Instructions` provided by GCP
     ```bash
