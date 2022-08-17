@@ -137,6 +137,8 @@ gle_cloud_run_service.cloud_connector" error: Error creating Service: googleapi:
 A: This error is given by the Terraform GCP provider when an invalid region is used.
 <br/>S: Use one of the available regions https://cloud.google.com/compute/docs/regions-zones/#available
 
+### Q: Error  because it cannot resolve the address below, "https://-run.googleapis.com/apis/serving.knative.dev"
+A: GCP region was not provided in the provider block
 
 ### Q: Why do we need `google-beta` provider?
 
@@ -186,13 +188,11 @@ Contact us to develop a workaround for this, where the topic name is to be reuse
 A: If cloud-connector cloud run module cannot start it will give this error. The error is given by the health-check system, it's not specific to its PORT per-se
 <br/>S: Verify possible logs before the deployment crashes. Could be limitations due to Sysdig license (expired trial subscription or free-tier usage where cloud-account limit has been surpassed)
 
-### Q: Scanning does not seem to work<br/>
-A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is omitted and won't be deployed. For more info see GCR PubSub topic.
-<br/><br/>
-
 ### Q: Getting "message: Cloud Run error: Container failed to start. Failed to start and then listen on the port defined by the PORT environment variable"
 A: Contrary to AWS, Terraform Google deployment requires just-started workload to start in a healthy status. If this does not happen it will fail.
 <br/>S: Check your workload services (cloud run) logs to see what really failed. One common cause is a wrong Sysdig Secure API Token
+
+
 
 ### Q: Scanning, I get an error saying:
 ```
@@ -202,6 +202,11 @@ Enable it by visiting https://console.developers.google.com/apis/api/cloudbuild.
 If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry
 ```
 A: Do as the error says and activate CloudBuild API. Check the list of all the required APIs that need to be activated per feature module.
+<br/><br/>
+
+
+### Q-Scanning: Scanning does not seem to work<br/>
+A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is omitted and won't be deployed. For more info see GCR PubSub topic.
 <br/><br/>
 
 
