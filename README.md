@@ -82,15 +82,17 @@ Check official documentation on [Secure for cloud - GCP, Confirm the Services ar
 
 ### Forcing Events - Threat Detection
 
-Terraform example module to trigger **GCP Update, Disable or Delete Sink** event can be found on [examples/trigger-events ](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/trigger-events)
-
-In another case, you can do it manually. Choose one of the rules contained in the `GCP Best Practices` policy and execute it in your GCP account.
+Choose one of the rules contained in an activated Runtime Policies for GCP, such as `Sysdig GCP Activity Logs` policy and execute it in your GCP account.
 ex.: Create an alert (Monitoring > Alerting > Create policy). Delete it to prompt the event.
 
 Remember that in case you add new rules to the policy you need to give it time to propagate the changes.
 
 In the `cloud-connector` logs you should see similar logs to these
 > An alert has been deleted (requesting user=..., requesting IP=..., resource name=projects/test/alertPolicies/3771445340801051512)
+
+In `Secure > Events` you should see the event coming through, but beware you may need to activate specific levels such as `Info` depending on the rule you're firing.
+
+Alternatively, use Terraform example module to trigger **GCP Update, Disable or Delete Sink** event can be found on [examples/trigger-events ](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/trigger-events)
 
 ### Forcing Events - Image Scanning
 
