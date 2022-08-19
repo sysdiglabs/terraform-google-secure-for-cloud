@@ -39,7 +39,8 @@ This SA must have been granted with _Organization Admin_ role. Additionally, you
 | ![Service Account Role](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/resources/sa-role.jpeg) | ![Service Account User](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/resources/sa-user.jpeg)    |
 
 ### APIs
-Besides, the following GCP **APIs must be enabled** to deploy resources correctly for:
+
+Besides, the following GCP **APIs must be enabled** ([how do I check it?](#q-how-can-i-check-enabled-api-services)) depending on the desired feature:
 
 ##### Cloud Connector
 * [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
@@ -113,6 +114,12 @@ And a CloudBuild being launched successfully.
 
 
 ## Troubleshooting
+
+### Q: How can I check enabled API Services?
+A: On your Google Cloud account, search for "APIs & Services > Enabled APIs & Services" or run following command
+```bash
+$ gcloud services list --enabled
+```
 
 ### Q: Compliance is not working. How can I check everything is properly setup
 
