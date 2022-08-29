@@ -17,6 +17,7 @@ For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-a
 
 ## Notice
 * [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available)
+  * Do not confuse required `region` with GCP location or zone. [Identifying a region or zone](https://cloud.google.com/compute/docs/regions-zones/#identifying_a_region_or_zone)
 * All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameter of each example.<br/>
 * This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
 * For **free subscription** users, beware that organizational examples may not deploy properly due to the [1 cloud-account limitation](https://docs.sysdig.com/en/docs/administration/administration-settings/subscription/#cloud-billing-free-tier). Open an Issue so we can help you here!
@@ -106,7 +107,7 @@ Alternatively, use Terraform example module to trigger **GCP Update, Disable or 
 - For CloudRun image scanning, deploy a runner.
 
 It may take some time, but you should see logs detecting the new image in the `cloud-connector` logs, similar to these
-> An image has been pushed to GCR registry (project=..., tag=europe-west2-docker.pkg.dev/test-repo/alpine/alpine:latest, digest=europe-west2-docker.pkg.dev/test-repo/alpine/alpine@sha256:be9bdc0ef8e96dbc428dc189b31e2e3b05523d96d12ed627c37aa2936653258c)
+> An image has been pushed to GCR registry (project=..., tag=europe-west2-docker.pregionkg.dev/test-repo/alpine/alpine:latest, digest=europe-west2-docker.pkg.dev/test-repo/alpine/alpine@sha256:be9bdc0ef8e96dbc428dc189b31e2e3b05523d96d12ed627c37aa2936653258c)
 > Starting GCR scanning for 'europe-west2-docker.pkg.dev/test-repo/alpine/alpine:latest
 
 And a CloudBuild being launched successfully.
@@ -144,7 +145,7 @@ gle_cloud_run_service.cloud_connector" error: Error creating Service: googleapi:
   <p>The requested URL <code>/apis/serving.knative.dev/v1/namespaces/****/services</code> was not found on this server.  <ins>That’s all we know.</ins>
 ```
 A: This error is given by the Terraform GCP provider when an invalid region is used.
-<br/>S: Use one of the available regions https://cloud.google.com/compute/docs/regions-zones/#available
+<br/>S: Use one of the available [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available. Do not confuse required `region` with GCP location or zone. [Identifying a region or zone](https://cloud.google.com/compute/docs/regions-zones/#identifying_a_region_or_zone)
 
 ### Q: Error  because it cannot resolve the address below, "https://-run.googleapis.com/apis/serving.knative.dev"
 A: GCP region was not provided in the provider block
