@@ -79,6 +79,12 @@ Implemented vía **Terraform Kitchen** | https://newcontext-oss.github.io/kitche
   ```
 - AWS_PROFILE configuration is required to access the [TF s3 state backend](#terraform-backend)
 
+### e2e manual tests
+
+WIP. currently on Jenkins
+
+- [Threat detection single-account](https://sysdig-jenkins.internal.sysdig.com/view/QA-internal/job/QA-secure/view/secure%20for%20cloud/job/gcp-single-project-threat-detection/)
+
 ### Terraform Backend
 
 Because CI/CD sometimes fail, we setup the Terraform state to be handled in backend (s3+dynamo) within the Sysdig AWS backend (sysdig-test-account).
