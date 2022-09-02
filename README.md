@@ -29,7 +29,10 @@ Your user **must** have following **roles** in your GCP credentials
 * _Owner_
 * _Organization Admin_ (organizational usage only)
 
-### Use a Service Account
+### Google Cloud CLI Authentication
+To authorize the cloud CLI to be used by Terraform check the following [Google docs.](https://cloud.google.com/sdk/docs/authorizing)
+
+#### Use a Service Account
 
 Instead of using a user, you can also deploy the module using a Service Account (SA). In order to create a SA for the organization, you need to go
 to one of your organization projects and create a SA.
