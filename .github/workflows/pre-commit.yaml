@@ -60,10 +60,10 @@ jobs:
         run: |
           pip install pre-commit
           go install github.com/hashicorp/terraform-config-inspect@latest
-      - name: Execute generate-terraform-providers for organizational
+      - name: Initialize terraform modules
         if: ${{ matrix.directory !=  '.' }}
         run: |
-          pre-commit run generate-terraform-providers
+          make terraform-init
       - name: Execute pre-commit
         # Run only validate pre-commit check on min version supported
         if: ${{ matrix.directory !=  '.' }}
