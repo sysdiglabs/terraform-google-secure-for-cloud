@@ -145,7 +145,7 @@ gle_cloud_run_service.cloud_connector" error: Error creating Service: googleapi:
   <p>The requested URL <code>/apis/serving.knative.dev/v1/namespaces/****/services</code> was not found on this server.  <ins>That’s all we know.</ins>
 ```
 A: This error is given by the Terraform GCP provider when an invalid region is used.
-<br/>S: Use one of the available [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available. Do not confuse required `region` with GCP location or zone. [Identifying a region or zone](https://cloud.google.com/compute/docs/regions-zones/#identifying_a_region_or_zone)
+<br/>S: Use one of the available [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available). Do not confuse required `region` with GCP location or zone. [Identifying a region or zone](https://cloud.google.com/compute/docs/regions-zones/#identifying_a_region_or_zone)
 
 ### Q: Error  because it cannot resolve the address below, "https://-run.googleapis.com/apis/serving.knative.dev"
 A: GCP region was not provided in the provider block
