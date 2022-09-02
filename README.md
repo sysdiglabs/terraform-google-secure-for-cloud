@@ -29,7 +29,10 @@ Your user **must** have following **roles** in your GCP credentials
 * _Owner_
 * _Organization Admin_ (organizational usage only)
 
-### Use a Service Account
+### Google Cloud CLI Authentication
+To authorize the cloud CLI to be used by Terraform check the following [Google docs.](https://cloud.google.com/sdk/docs/authorizing)
+
+#### Use a Service Account
 
 Instead of using a user, you can also deploy the module using a Service Account (SA). In order to create a SA for the organization, you need to go
 to one of your organization projects and create a SA.
@@ -145,7 +148,7 @@ gle_cloud_run_service.cloud_connector" error: Error creating Service: googleapi:
   <p>The requested URL <code>/apis/serving.knative.dev/v1/namespaces/****/services</code> was not found on this server.  <ins>That’s all we know.</ins>
 ```
 A: This error is given by the Terraform GCP provider when an invalid region is used.
-<br/>S: Use one of the available [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available. Do not confuse required `region` with GCP location or zone. [Identifying a region or zone](https://cloud.google.com/compute/docs/regions-zones/#identifying_a_region_or_zone)
+<br/>S: Use one of the available [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available). Do not confuse required `region` with GCP location or zone. [Identifying a region or zone](https://cloud.google.com/compute/docs/regions-zones/#identifying_a_region_or_zone)
 
 ### Q: Error  because it cannot resolve the address below, "https://-run.googleapis.com/apis/serving.knative.dev"
 A: GCP region was not provided in the provider block
@@ -219,6 +222,25 @@ A: Do as the error says and activate CloudBuild API. Check the list of all the r
 A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is omitted and won't be deployed. For more info see GCR PubSub topic.
 <br/><br/>
 
+
+## Upgrading
+
+- Uninstall previous deployment resources before upgrading
+```
+$ terraform destroy
+```
+
+- Upgrade the full terraform example with
+
+```
+$ terraform init -upgrade
+$ terraform plan
+$ terraform apply
+```
+
+- If required, you can upgrade cloud-connector component by restarting the task (stop task). Because it's not pinned to an specific version, it will download the latest one.
+
+<br/><br/>
 
 ## Authors
 
