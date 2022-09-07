@@ -135,6 +135,10 @@ A: On your Google Cloud account, search for "APIs & Services > Enabled APIs & Se
 $ gcloud services list --enabled
 ```
 
+### Q: In organizaitonal setup, Compliance trust-relationship is not being deployed on our projects
+A: If your organizational uses folders we currently don't support that.
+<br/>S: A workaround would be to use the `benchmark_project_ids` parameter so you can define the projects where compliance role is to be deployed explicitly. Let us know if this workaround won't be enough and we will work on implementing a solution.
+
 ### Q: Compliance is not working. How can I check everything is properly setup
 
 A: On your GCP infrastructure, per-project where Comliance has been setup, check following points<br/>
