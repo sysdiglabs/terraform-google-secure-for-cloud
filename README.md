@@ -18,7 +18,7 @@ For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-a
 
 ## Usage
 
-There are several ways to deploy Secure for Cloud in you GCP infrastructure, 
+There are several ways to deploy Secure for Cloud in you GCP infrastructure,
 
 - **[`/examples`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples)** for the most common scenarios
   - [Single Project](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project/)
