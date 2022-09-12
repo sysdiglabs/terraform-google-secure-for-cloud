@@ -2,15 +2,11 @@ name: CI - Integration Tests
 
 on:
   pull_request:
-    paths:
-      - '**.tf'
-      - '.github/workflows/**'
+    branches:
+    - master
   push:
     branches:
       - master
-    paths:
-      - '**.tf'
-      - '.github/workflows/**'
   workflow_dispatch:
 
 concurrency: terraform
