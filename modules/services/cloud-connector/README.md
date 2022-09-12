@@ -64,7 +64,7 @@ No modules.
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | Amount of CPU to reserve for cloud-connector cloud run service | `string` | `"1"` | no |
 | <a name="input_deploy_scanning"></a> [deploy\_scanning](#input\_deploy\_scanning) | true/false whether scanning module is to be deployed | `bool` | `false` | no |
 | <a name="input_extra_envs"></a> [extra\_envs](#input\_extra\_envs) | Extra environment variables for the Cloud Connector instance | `map(string)` | `{}` | no |
-| <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Sysdig Owned Cloud Connector public image. GCP only allows the deployment of images that are registered in gcr.io | `string` | `"gcr.io/mateo-burillo-ns/cloud-connector:latest"` | no |
+| <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Sysdig Owned Cloud Connector public image. GCP only allows the deployment of images that are registered in gcr.io | `string` | `"us-docker.pkg.dev/sysdig-public-registry/secure-for-cloud/cloud-connector:latest"` | no |
 | <a name="input_is_organizational"></a> [is\_organizational](#input\_is\_organizational) | whether secure-for-cloud should be deployed in an organizational setup | `bool` | `false` | no |
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the Cloud Connector | `number` | `1` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | Amount of memory to reserve for cloud-connector cloud run service | `string` | `"500Mi"` | no |
