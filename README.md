@@ -14,13 +14,35 @@ Provides unified threat-detection, compliance, forensics and analysis through th
 
 For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud), [Azure](https://github.com/sysdiglabs/terraform-azurerm-secure-for-cloud)
 
+<br/>
 
-## Notice
+## Usage
+
+There are several ways to deploy Secure for Cloud in you GCP infrastructure, 
+
+- **[`/examples`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples)** for the most common scenarios
+  - [Single Project](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project/)
+  - [Single Project with a pre-existing Kubernetes Cluster](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project-k8s/README.md)
+  - [Organizational](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/organization/README.md)
+  - Many module,examples and use-cases, we provide ways to **re-use existing resources (as optionals)** in your
+infrastructure. Check input summary on each example/module.
+- **[`/use-cases`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/use-cases)** with self-baked customer-specific alternative scenarios.
+
+Find specific overall service arquitecture diagrams attached to each example/use-case.
+
+In the long-term our purpose is to evaluate those use-cases and if they're common enough, convert them into examples to make their usage easier.
+
+If you're unsure about what/how to use this module, please fill the [questionnaire](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/blob/master/use-cases/_questionnaire.md) report as an issue and let us know your context, we will be happy to help.
+
+
+### Notice
 * [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available)
   * Do not confuse required `region` with GCP location or zone. [Identifying a region or zone](https://cloud.google.com/compute/docs/regions-zones/#identifying_a_region_or_zone)
 * All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameter of each example.<br/>
 * This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
 * For **free subscription** users, beware that organizational examples may not deploy properly due to the [1 cloud-account limitation](https://docs.sysdig.com/en/docs/administration/administration-settings/subscription/#cloud-billing-free-tier). Open an Issue so we can help you here!
+
+
 <br/>
 
 ## Prerequisites
@@ -67,19 +89,7 @@ Besides, the following GCP **APIs must be enabled** ([how do I check it?](#q-how
 * [Cloud Asset API](https://console.cloud.google.com/marketplace/product/google/cloudasset.googleapis.com)
 
 
-## Usage
-
-If you're unsure about what/how to use this module, please fill the [questionnaire](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/blob/master/use-cases/_questionnaire.md) report as an issue and let us know your context, we will be happy to help and improve our module.
-
-  - There are several ways to deploy this in you AWS infrastructure, gathered under **[`/examples`](./examples)**
-    - [Single Project](./examples/single-project/README.md)
-    - [Single Project with a pre-existing Kubernetes Cluster](./examples/single-project-k8s/README.md)
-    - [Organizational](./examples/organization/README.md)
-    - Many module,examples and use-cases, we provide ways to **re-use existing resources (as optionals)** in your
-      infrastructure. Check input summary on each example/module.
-    - Find some real self-baked **use-case scenarios** under [`/use-cases`](./use-cases)
-
-
+<br/>
 
 ## Confirm the Services are Working
 
@@ -115,7 +125,7 @@ It may take some time, but you should see logs detecting the new image in the `c
 
 And a CloudBuild being launched successfully.
 
-
+<br/>
 
 ## Troubleshooting
 
@@ -124,6 +134,10 @@ A: On your Google Cloud account, search for "APIs & Services > Enabled APIs & Se
 ```bash
 $ gcloud services list --enabled
 ```
+
+### Q: In organizaitonal setup, Compliance trust-relationship is not being deployed on our projects
+A: If your organizational uses folders we currently don't support that.
+<br/>S: A workaround would be to use the `benchmark_project_ids` parameter so you can define the projects where compliance role is to be deployed explicitly. Let us know if this workaround won't be enough and we will work on implementing a solution.
 
 ### Q: Compliance is not working. How can I check everything is properly setup
 
@@ -226,21 +240,20 @@ A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gc
 ## Upgrading
 
 - Uninstall previous deployment resources before upgrading
-```
-$ terraform destroy
-```
+  ```
+  $ terraform destroy
+  ```
 
 - Upgrade the full terraform example with
-
-```
-$ terraform init -upgrade
-$ terraform plan
-$ terraform apply
-```
+  ```
+  $ terraform init -upgrade
+  $ terraform plan
+  $ terraform apply
+  ```
 
 - If required, you can upgrade cloud-connector component by restarting the task (stop task). Because it's not pinned to an specific version, it will download the latest one.
 
-<br/><br/>
+<br/>
 
 ## Authors
 
