@@ -24,6 +24,9 @@ lint: terraform-init
 	pre-commit run -a terraform_validate
 	pre-commit run -a terraform_tflint
 
+docs: clean generate-terraform-providers
+	pre-commit run -a terraform_docs
+
 fmt:
 	find -name "*.tf" | xargs dirname | uniq | xargs -I% -P0 sh -c 'cd %; terraform fmt'
 	pre-commit run -a terraform_fmt

@@ -52,7 +52,7 @@ Your user **must** have following **roles** in your GCP credentials
 * _Organization Admin_ (organizational usage only)
 
 ### Google Cloud CLI Authentication
-To authorize the cloud CLI to be used by Terraform check the following [Google docs.](https://cloud.google.com/sdk/docs/authorizing)
+To authorize the cloud CLI to be used by Terraform check the following [Terraform Google Provider docs](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#configuring-the-provider)
 
 #### Use a Service Account
 
@@ -133,6 +133,20 @@ And a CloudBuild being launched successfully.
 A: On your Google Cloud account, search for "APIs & Services > Enabled APIs & Services" or run following command
 ```bash
 $ gcloud services list --enabled
+```
+
+### Q: Getting  "googleapi: 403 Permission *** denied for resource"
+A: This may happen because permissions are not enough, API services were not correctly enabled, or you're not correctly authenticated for terraform google prolvider.
+<br/>S: Verify [permissions](#prerequisites), [api-services](apis), and that the [Terraform Google Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#configuring-the-provider) authentication has been correctly setup.
+You can also launch the following terraform manifest to check whether you're authenticated with what you expect
+
+```
+data "google_client_openid_userinfo" "me" {
+}
+
+output "me" {
+  value = data.google_client_openid_userinfo.me.*
+}
 ```
 
 ### Q: In organizaitonal setup, Compliance trust-relationship is not being deployed on our projects
