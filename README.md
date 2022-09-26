@@ -135,7 +135,7 @@ A: On your Google Cloud account, search for "APIs & Services > Enabled APIs & Se
 $ gcloud services list --enabled
 ```
 
-### Q: Getting  "googleapi: 403 Permission ***"
+### Q: Getting  "googleapi: 403 ***"
 A: This may happen because permissions are not enough, API services were not correctly enabled, or you're not correctly authenticated for terraform google prolvider.
 <br/>S: Verify [permissions](#prerequisites), [api-services](apis), and that the [Terraform Google Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#configuring-the-provider) authentication has been correctly setup.
 You can also launch the following terraform manifest to check whether you're authenticated with what you expect
