@@ -207,6 +207,8 @@ $ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_
 $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool.pool' sysdigcloud
 $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
  ```
+ 
+ Note: if you're using terragrunt, run `terragrunt import`
 
 ### Q: Getting "Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=gcr)"
 ```text
@@ -224,6 +226,7 @@ $ terraform import 'module.sfc_example_single_project.module.pubsub_http_subscri
 ```
 Contact us to develop a workaround for this, where the topic name is to be reused.
 
+Note: if you're using terragrunt, run `terragrunt import`
 
 ### Q: Getting "Cloud Run error: Container failed to start. Failed to start and then listen on the port defined by the PORT environment variable."
 A: If cloud-connector cloud run module cannot start it will give this error. The error is given by the health-check system, it's not specific to its PORT per-se
