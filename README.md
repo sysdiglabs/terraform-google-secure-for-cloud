@@ -14,12 +14,35 @@ Provides unified threat-detection, compliance, forensics and analysis through th
 
 For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud), [Azure](https://github.com/sysdiglabs/terraform-azurerm-secure-for-cloud)
 
+<br/>
 
-## Notice
+## Usage
+
+There are several ways to deploy Secure for Cloud in you GCP infrastructure,
+
+- **[`/examples`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples)** for the most common scenarios
+  - [Single Project](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project/)
+  - [Single Project with a pre-existing Kubernetes Cluster](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project-k8s/README.md)
+  - [Organizational](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/organization/README.md)
+  - Many module,examples and use-cases, we provide ways to **re-use existing resources (as optionals)** in your
+infrastructure. Check input summary on each example/module.
+- **[`/use-cases`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/use-cases)** with self-baked customer-specific alternative scenarios.
+
+Find specific overall service arquitecture diagrams attached to each example/use-case.
+
+In the long-term our purpose is to evaluate those use-cases and if they're common enough, convert them into examples to make their usage easier.
+
+If you're unsure about what/how to use this module, please fill the [questionnaire](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/blob/master/use-cases/_questionnaire.md) report as an issue and let us know your context, we will be happy to help.
+
+
+### Notice
 * [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available)
+  * Do not confuse required `region` with GCP location or zone. [Identifying a region or zone](https://cloud.google.com/compute/docs/regions-zones/#identifying_a_region_or_zone)
 * All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameter of each example.<br/>
 * This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
 * For **free subscription** users, beware that organizational examples may not deploy properly due to the [1 cloud-account limitation](https://docs.sysdig.com/en/docs/administration/administration-settings/subscription/#cloud-billing-free-tier). Open an Issue so we can help you here!
+
+
 <br/>
 
 ## Prerequisites
@@ -28,7 +51,10 @@ Your user **must** have following **roles** in your GCP credentials
 * _Owner_
 * _Organization Admin_ (organizational usage only)
 
-### Use a Service Account
+### Google Cloud CLI Authentication
+To authorize the cloud CLI to be used by Terraform check the following [Terraform Google Provider docs](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#configuring-the-provider)
+
+#### Use a Service Account
 
 Instead of using a user, you can also deploy the module using a Service Account (SA). In order to create a SA for the organization, you need to go
 to one of your organization projects and create a SA.
@@ -39,7 +65,8 @@ This SA must have been granted with _Organization Admin_ role. Additionally, you
 | ![Service Account Role](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/resources/sa-role.jpeg) | ![Service Account User](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/resources/sa-user.jpeg)    |
 
 ### APIs
-Besides, the following GCP **APIs must be enabled** to deploy resources correctly for:
+
+Besides, the following GCP **APIs must be enabled** ([how do I check it?](#q-how-can-i-check-enabled-api-services)) depending on the desired feature:
 
 ##### Cloud Connector
 * [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
@@ -50,7 +77,7 @@ Besides, the following GCP **APIs must be enabled** to deploy resources correctl
 * [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
 * [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
 * [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
-* [Secret Manger API](https://console.cloud.google.com/marketplace/product/google/secretmanager.googleapis.com)
+* [Secret Manager API](https://console.cloud.google.com/marketplace/product/google/secretmanager.googleapis.com)
 * [Cloud Build API](https://console.cloud.google.com/marketplace/product/google/cloudbuild.googleapis.com)
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 
@@ -59,79 +86,18 @@ Besides, the following GCP **APIs must be enabled** to deploy resources correctl
 * [IAM Service Account Credentials API](https://console.cloud.google.com/marketplace/product/google/iamcredentials.googleapis.com)
 * [Cloud Resource Manager API](https://console.cloud.google.com/marketplace/product/google/cloudresourcemanager.googleapis.com)
 * [Security Token Service API](https://console.cloud.google.com/marketplace/product/google/sts.googleapis.com)
+* [Cloud Asset API](https://console.cloud.google.com/marketplace/product/google/cloudasset.googleapis.com)
 
 
-## Usage
+<br/>
 
-If you're unsure about what/how to use this module, please fill the [questionnaire](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/blob/master/use-cases/_questionnaire.md) report as an issue and let us know your context, we will be happy to help and improve our module.
+## Confirm the Services are Working
 
+Check official documentation on [Secure for cloud - GCP, Confirm the Services are working](https://docs.sysdig.com/en/docs/installation/sysdig-secure-for-cloud/deploy-sysdig-secure-for-cloud-on-gcp/#confirm-the-services-are-working)
 
-### - Single-Project
+### Forcing Events - Threat Detection
 
-Sysdig workload will be deployed in the same account where user's resources will be watched.<br/>
-More info in [`./examples/single-project`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project)
-
-![single-project diagram](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/examples/single-project/diagram-single.png)
-
-### - Single-Project with a pre-existing Kubernetes Cluster
-
-If you already own a Kubernetes Cluster on GCP, you can use it to deploy Sysdig Secure for Cloud, instead of default CloudRun.<br/>
-More info in [`./examples/single-project-k8s`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project-k8s)
-
-
-### - Organization
-
-Using an organization to collect all the AuditLogs.
-More info in [`./examples/organization`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/organization)
-
-![organization diagram](https://raw.githubusercontent.com/sysdiglabs/terraform-google-secure-for-cloud/master/examples/organization/diagram-org.png)
-
-### - Self-Baked
-
-If no [examples](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples) fit your use-case, be free to call desired modules directly.
-
-In this use-case we will ONLY deploy cloud-bench, into the target account, calling modules directly
-
-```terraform
-provider "google" {
-  project = "PROJECT-ID"
-  region = "REGION"
-}
-
-provider "google-beta" {
-  project = "PROJECT-ID"
-  region = "REGION"
-}
-
-provider "sysdig" {
-  sysdig_secure_url         = "<SYSDIG_SECURE_URL>"
-  sysdig_secure_endpoint    = "<SYSDIG_SECURE_API_TOKEN>"
-}
-
-module "cloud_bench" {
-  source      = "sysdiglabs/secure-for-cloud/google//modules/services/cloud-bench"
-}
-
-```
-See [inputs summary](#inputs) or main [module `variables.tf`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/variables.tf) file for more optional configuration.
-
-To run this example you need have your google cloud profile configured:
-```terraform
-$ terraform init
-$ terraform plan
-$ terraform apply
-```
-
-<br/><br/>
-
-
-## Forcing Events
-
-**Threat Detection**
-
-Terraform example module to trigger **GCP Update, Disable or Delete Sink** event can be found on [examples/trigger-events ](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/trigger-events)
-
-In another case, you can do it manually. Choose one of the rules contained in the `GCP Best Practices` policy and execute it in your GCP account.
+Choose one of the rules contained in an activated Runtime Policies for GCP, such as `Sysdig GCP Activity Logs` policy and execute it in your GCP account.
 ex.: Create an alert (Monitoring > Alerting > Create policy). Delete it to prompt the event.
 
 Remember that in case you add new rules to the policy you need to give it time to propagate the changes.
@@ -139,7 +105,11 @@ Remember that in case you add new rules to the policy you need to give it time t
 In the `cloud-connector` logs you should see similar logs to these
 > An alert has been deleted (requesting user=..., requesting IP=..., resource name=projects/test/alertPolicies/3771445340801051512)
 
-**Image Scanning**
+In `Secure > Events` you should see the event coming through, but beware you may need to activate specific levels such as `Info` depending on the rule you're firing.
+
+Alternatively, use Terraform example module to trigger **GCP Update, Disable or Delete Sink** event can be found on [examples/trigger-events ](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/trigger-events)
+
+### Forcing Events - Image Scanning
 
 - For Repository image scanning, upload an image to a new Repository in a Artifact Registry. Follow repository `Setup Instructions` provided by GCP
     ```bash
@@ -150,27 +120,66 @@ In the `cloud-connector` logs you should see similar logs to these
 - For CloudRun image scanning, deploy a runner.
 
 It may take some time, but you should see logs detecting the new image in the `cloud-connector` logs, similar to these
-> An image has been pushed to GCR registry (project=..., tag=europe-west2-docker.pkg.dev/test-repo/alpine/alpine:latest, digest=europe-west2-docker.pkg.dev/test-repo/alpine/alpine@sha256:be9bdc0ef8e96dbc428dc189b31e2e3b05523d96d12ed627c37aa2936653258c)
+> An image has been pushed to GCR registry (project=..., tag=europe-west2-docker.pregionkg.dev/test-repo/alpine/alpine:latest, digest=europe-west2-docker.pkg.dev/test-repo/alpine/alpine@sha256:be9bdc0ef8e96dbc428dc189b31e2e3b05523d96d12ed627c37aa2936653258c)
 > Starting GCR scanning for 'europe-west2-docker.pkg.dev/test-repo/alpine/alpine:latest
 
 And a CloudBuild being launched successfully.
 
-
+<br/>
 
 ## Troubleshooting
 
-### Q: Getting "Error creating Service: googleapi: got HTTP response code 404" "The requested URL /serving.knative.dev/v1/namespaces/xxx/services was not found on this server"
+### Q: How can I check enabled API Services?
+A: On your Google Cloud account, search for "APIs & Services > Enabled APIs & Services" or run following command
+```bash
+$ gcloud services list --enabled
+```
+
+### Q: Getting  "googleapi: 403 ***"
+A: This may happen because permissions are not enough, API services were not correctly enabled, or you're not correctly authenticated for terraform google prolvider.
+<br/>S: Verify [permissions](#prerequisites), [api-services](apis), and that the [Terraform Google Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#configuring-the-provider) authentication has been correctly setup.
+You can also launch the following terraform manifest to check whether you're authenticated with what you expect
+
+```
+data "google_client_openid_userinfo" "me" {
+}
+
+output "me" {
+  value = data.google_client_openid_userinfo.me.*
+}
+```
+
+### Q: In organizaitonal setup, Compliance trust-relationship is not being deployed on our projects
+A: If your organizational uses folders we currently don't support that.
+<br/>S: A workaround would be to use the `benchmark_project_ids` parameter so you can define the projects where compliance role is to be deployed explicitly. Let us know if this workaround won't be enough and we will work on implementing a solution.
+
+### Q: Compliance is not working. How can I check everything is properly setup
+
+A: On your GCP infrastructure, per-project where Comliance has been setup, check following points<br/>
+1. there is a Workload Identity Pool and associated Workload Identity Pool Provider configured, which must have an ID of `sysdigcloud` (display name doesn't matter)
+2. the pool should have a connected service account with the name `sfcsysdigcloudbench`, with the email `sfcsysdigcloudbench@PROJECTID.iam.gserviceaccount.com`
+3. this serviceaccount should allow access to the following format `principalset: principalSet://iam.googleapis.com/projects/<PROJECTID>/locations/global/workloadIdentityPools/sysdigcloud/attribute.aws_role/arn:aws:sts::***:assumed-role/***`
+4. the serviceaccount should have the `viewer role` on the target project, as well as a custom role containing the "storage.buckets.getIamPolicy", "bigquery.tables.list", "cloudasset.assets.listIamPolicy" and "cloudasset.assets.listResource" permissions
+5. the pool provider should allow access to Sysdig's  trusted identity, retrieved through
+  ```
+  $ curl https://<SYSDIG_SECURE_URL>/api/cloud/v2/gcp/trustedIdentity \
+  --header 'Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>'
+  ```
+
+### Q: Getting "Error creating Service: googleapi: got HTTP response code 404" "The requested URL /serving.knative.dev/v1/namespaces/***/services was not found on this server"
 
 ```
 "module.secure-for-cloud_example_organization.module.cloud_connector.goo
 gle_cloud_run_service.cloud_connector" error: Error creating Service: googleapi: got HTTP response code 404 with
 …
   <p><b>404.</b> <ins>That’s an error.</ins>
-  <p>The requested URL <code>/apis/serving.knative.dev/v1/namespaces/prj-c-sysdig-aeee/services</code> was not found on this server.  <ins>That’s all we know.</ins>
+  <p>The requested URL <code>/apis/serving.knative.dev/v1/namespaces/****/services</code> was not found on this server.  <ins>That’s all we know.</ins>
 ```
 A: This error is given by the Terraform GCP provider when an invalid region is used.
-<br/>S: Use one of the available regions https://cloud.google.com/compute/docs/regions-zones/#available
+<br/>S: Use one of the available [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available). Do not confuse required `region` with GCP location or zone. [Identifying a region or zone](https://cloud.google.com/compute/docs/regions-zones/#identifying_a_region_or_zone)
 
+### Q: Error  because it cannot resolve the address below, "https://-run.googleapis.com/apis/serving.knative.dev"
+A: GCP region was not provided in the provider block
 
 ### Q: Why do we need `google-beta` provider?
 
@@ -198,6 +207,8 @@ $ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_
 $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool.pool' sysdigcloud
 $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
  ```
+ 
+ Note: if you're using terragrunt, run `terragrunt import`
 
 ### Q: Getting "Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=gcr)"
 ```text
@@ -215,18 +226,17 @@ $ terraform import 'module.sfc_example_single_project.module.pubsub_http_subscri
 ```
 Contact us to develop a workaround for this, where the topic name is to be reused.
 
+Note: if you're using terragrunt, run `terragrunt import`
 
 ### Q: Getting "Cloud Run error: Container failed to start. Failed to start and then listen on the port defined by the PORT environment variable."
 A: If cloud-connector cloud run module cannot start it will give this error. The error is given by the health-check system, it's not specific to its PORT per-se
-S: Verify possible logs before the deployment crashes. Could be limitations due to Sysdig license (expired trial subscription or free-tier usage where cloud-account limit has been surpassed)
-
-### Q: Scanning does not seem to work<br/>
-A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is omitted and won't be deployed. For more info see GCR PubSub topic.
-<br/><br/>
+<br/>S: Verify possible logs before the deployment crashes. Could be limitations due to Sysdig license (expired trial subscription or free-tier usage where cloud-account limit has been surpassed)
 
 ### Q: Getting "message: Cloud Run error: Container failed to start. Failed to start and then listen on the port defined by the PORT environment variable"
 A: Contrary to AWS, Terraform Google deployment requires just-started workload to start in a healthy status. If this does not happen it will fail.
 <br/>S: Check your workload services (cloud run) logs to see what really failed. One common cause is a wrong Sysdig Secure API Token
+
+
 
 ### Q: Scanning, I get an error saying:
 ```
@@ -238,6 +248,29 @@ If you enabled this API recently, wait a few minutes for the action to propagate
 A: Do as the error says and activate CloudBuild API. Check the list of all the required APIs that need to be activated per feature module.
 <br/><br/>
 
+
+### Q-Scanning: Scanning does not seem to work<br/>
+A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gcr` topic is not found, the GCR scanning is omitted and won't be deployed. For more info see GCR PubSub topic.
+<br/><br/>
+
+
+## Upgrading
+
+- Uninstall previous deployment resources before upgrading
+  ```
+  $ terraform destroy
+  ```
+
+- Upgrade the full terraform example with
+  ```
+  $ terraform init -upgrade
+  $ terraform plan
+  $ terraform apply
+  ```
+
+- If required, you can upgrade cloud-connector component by restarting the task (stop task). Because it's not pinned to an specific version, it will download the latest one.
+
+<br/>
 
 ## Authors
 

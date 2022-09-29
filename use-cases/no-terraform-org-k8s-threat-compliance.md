@@ -4,7 +4,7 @@
 
 - Organizational setup
   - Dynamic environments with projects created and destroyed on-demand
-- Sysdig features: Threat-detection, Compliance (no image scanning)
+- Sysdig features: Threat-detection and Compliance for all org accounts. No image scanning
 - Due to dynamic nature of customer's environment, a heavy programmatically ops tooling are used (not including Terraform) .
 - A summary of the required resources/permissions will be done, so they're provisioned for the Secure for Cloud feature sto work.
 
@@ -59,21 +59,22 @@ and code reference here https://github.com/sysdiglabs/terraform-google-secure-fo
 - 2/more elegant approach to use the serviceAccount from the chart. talk with @javi
 -->
 
-- Create Service Account with the `pubsub/subscriber` role.
-- Get the JSON credentials file for the created Service Account `<JSON_CONTENT_FROM_THE_CREDENTIALS_FILE>` (this would be an example of the content).
-    ```
-      {
-        "type": "service_account",
-        "project_id": ...
-        "private_key_id": ...
-        ...
-      }
-    ```
+1. Credentials Creation
+   - This step is not really required if Kubernetes role binding is properly binded with a cloud IAM role with required permissions bellow.
+   - Create Service Account with the `pubsub/subscriber` role.
+   - Get the JSON credentials file for the created Service Account `<JSON_CONTENT_FROM_THE_CREDENTIALS_FILE>` (this would be an example of the content).
+       ```
+         {
+           "type": "service_account",
+           "project_id": ...
+           "private_key_id": ...
+           ...
+         }
+       ```
 <br/>
 
-- Sysdig **Helm** [cloud-connector chart](https://charts.sysdig.com/charts/cloud-connector/) will be used with following parametrization
-
-  - Locate your `<SYSDIG_SECURE_ENDPOINT>` and `<SYSDIG_SECURE_API_TOKEN>`. [Howto fetch ApiToken](https://docs.sysdig.com/en/docs/administration/administration-settings/user-profile-and-password/retrieve-the-sysdig-api-token/)
+2. Sysdig **Helm** [cloud-connector chart](https://charts.sysdig.com/charts/cloud-connector/) will be used with following parametrization
+   - Locate your `<SYSDIG_SECURE_ENDPOINT>` and `<SYSDIG_SECURE_API_TOKEN>`. [Howto fetch ApiToken](https://docs.sysdig.com/en/docs/administration/administration-settings/user-profile-and-password/retrieve-the-sysdig-api-token/)
 
 
 ```yaml
@@ -179,6 +180,8 @@ We'll need, **for each project** (`GCP_PROJECT_NUMBER`)
 1. Create a **Custom Role** (ex.: 'Sysdig Cloud Benchmark Role') and assign to it following permissions
    - `storage.buckets.getIamPolicy`
    - `bigquery.tables.list`
+   - `cloudasset.assets.listIamPolicy`
+   - `cloudasset.assets.listResource`
    - this is required to add some more permissions that are not available in GCP builtin viewer role
 2. Create a **Service Account** with the name 'sysdigcloudbench'
    - This role must match the `roleName` set when the project was registered with Sydig in step 1 of Compliance - Sysdig Side

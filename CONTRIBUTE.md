@@ -32,7 +32,7 @@
 
 -  [ ] **modules** (infra or services) have been modified?
   - [ ] a `README.md` file has been added to the folder
-  - [ ] if modules are relevant to usage-case understanding `diagram.py/png` have been updated accodingly
+  - [ ] if modules are relevant to usage-case understanding `diagram.py/png` have been updated accordingly. To re-generate diagrams yo need to run `python diagram.py` and need diagram installed `pip install diagrams`.
   - [ ] if pre-requirements have been modified, update accordingly on
     - [ ] README's
     - [ ] Sysdig docs
@@ -79,18 +79,36 @@ Implemented vía **Terraform Kitchen** | https://newcontext-oss.github.io/kitche
   ```
 - AWS_PROFILE configuration is required to access the [TF s3 state backend](#terraform-backend)
 
+### e2e manual tests
+
+WIP. currently on Jenkins
+
+- [Threat detection single-account](https://sysdig-jenkins.internal.sysdig.com/view/QA-internal/job/QA-secure/view/secure%20for%20cloud/job/gcp-single-project-threat-detection/)
+
 ### Terraform Backend
 
 Because CI/CD sometimes fail, we setup the Terraform state to be handled in backend (s3+dynamo) within the Sysdig AWS backend (sysdig-test-account).
 
-### Remote state cleanup from local
+#### Remote state cleanup from local
 
 In case you need to handle terraform backend state from failing kitchen tests, some guidance for using the `backend.tf` remote state manifest, present on each test
-- Configure same parameters as the github action, that is `AWS_PROFILE`, and leave default `name` and `region` values
-- Kitchen works with `terraform workspaces` so, in case you want to fix a specific test, switch to that workspace after the `terraform init` with `terraform workspace select WORKSPACE`
-- Perform the desired terraform task
+ - Configure same parameters as the github action, that is `AWS_PROFILE`, and leave default `name` and `region` values
+ - Kitchen works with `terraform workspaces` so, in case you want to fix a specific test, switch to that workspace after the `terraform init` with `terraform workspace select WORKSPACE`
+ - Perform the desired terraform task
 
 You can also use `kitchen destroy` instead of `terraform` but the requirements are the same, except that the workspace will be managed through kitchen
+
+#### State unlock
+```
+# go to the specific test ex.:
+cd test/fixtures/single-subscription
+
+# unlock kitchetn state
+terraform init
+terraform workspace list
+terraform workspace select kitchen-terraform-WORKSPACE_NAME
+terraform force-unlock LOCK_ID
+```
 
 
 ### Running Kitchen tests locally

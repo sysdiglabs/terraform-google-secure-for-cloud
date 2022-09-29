@@ -2,9 +2,13 @@ name: Pre-Commit
 
 on:
   pull_request:
+
+  # only direct-push to master for small tasks such as markdown modifications and such
   push:
     branches:
       - master
+    paths:
+      - '**.tf'
 
 env:
   GO_VERSION: "^1.17"
@@ -56,10 +60,10 @@ jobs:
         run: |
           pip install pre-commit
           go install github.com/hashicorp/terraform-config-inspect@latest
-      - name: Execute generate-terraform-providers for organizational
+      - name: Initialize terraform modules
         if: ${{ matrix.directory !=  '.' }}
         run: |
-          pre-commit run generate-terraform-providers
+          make terraform-init
       - name: Execute pre-commit
         # Run only validate pre-commit check on min version supported
         if: ${{ matrix.directory !=  '.' }}
