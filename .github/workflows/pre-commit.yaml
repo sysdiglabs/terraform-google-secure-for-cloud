@@ -60,6 +60,7 @@ jobs:
         run: |
           pip install pre-commit
           go install github.com/hashicorp/terraform-config-inspect@latest
+          make deps
       - name: Initialize terraform modules
         if: ${{ matrix.directory !=  '.' }}
         run: |
