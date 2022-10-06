@@ -5,6 +5,11 @@ deps:
 		unzip tflint.zip && \
 		rm tflint.zip && \
 		mv tflint "`go env GOPATH`/bin"
+	curl -L "`curl -s https://api.github.com/repos/tenable/terrascan/releases/latest | grep -o -E "https://.+?_Linux_x86_64.tar.gz"`" -o terrascan.tar.gz && \
+		tar -xf terrascan.tar.gz terrascan && \
+		rm terrascan.tar.gz && \
+		install terrascan "`go env GOPATH`/bin" && \
+		rm terrascan
 
 clean:
 	find -name ".terraform" -type d | xargs rm -rf
