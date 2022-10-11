@@ -38,6 +38,7 @@ repos:
           - '--args=--only=terraform_required_providers'
           - '--args=--only=terraform_standard_module_structure'
           - '--args=--only=terraform_workspace_remote'
+      - id: terrascan
   - repo: local
     hooks:
       - id: terraform_init
