@@ -50,7 +50,7 @@ variable "benchmark_regions" {
 variable "benchmark_project_ids" {
   default     = []
   type        = list(string)
-  description = "Google cloud project IDs to run Benchmarks on. If empty, all organization projects will be defaulted."
+  description = "Google cloud project IDs to run Benchmarks on. It will create a trust-relationship on each, to allow Sysdig usage. If empty, all organization projects will be defaulted."
 }
 
 variable "benchmark_role_name" {

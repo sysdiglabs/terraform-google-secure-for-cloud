@@ -13,14 +13,14 @@ variable "role_name" {
 #For single project
 variable "project_id" {
   type        = string
-  description = "ID of project to run the benchmark on"
+  description = "Google cloud project ID to run Benchmarks on. It will create a trust-relationship, to allow Sysdig usage."
   default     = ""
 }
 
 # For organizational
 variable "project_ids" {
   type        = list(string)
-  description = "IDs of projects to run the benchmark on. If empty, all organization projects will be defaulted."
+  description = "Google cloud project IDs to run Benchmarks on. It will create a trust-relationship on each, to allow Sysdig usage. If empty, all organization projects will be defaulted."
   default     = []
 }
 
