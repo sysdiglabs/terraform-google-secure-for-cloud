@@ -48,7 +48,7 @@ variable "verify_ssl" {
 
 variable "image_name" {
   type        = string
-  default     = "gcr.io/mateo-burillo-ns/cloud-connector:latest"
+  default     = "us-docker.pkg.dev/sysdig-public-registry/secure-for-cloud/cloud-connector:latest"
   description = "Sysdig Owned Cloud Connector public image. GCP only allows the deployment of images that are registered in gcr.io"
 }
 

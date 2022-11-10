@@ -135,9 +135,9 @@ A: On your Google Cloud account, search for "APIs & Services > Enabled APIs & Se
 $ gcloud services list --enabled
 ```
 
-### Q: Getting  "googleapi: 403 Permission *** denied for resource"
+### Q: Getting  "googleapi: 403 ***"
 A: This may happen because permissions are not enough, API services were not correctly enabled, or you're not correctly authenticated for terraform google prolvider.
-<br/>S: Verify [permissions](#prerequisites), [api-services](apis), and that the [Terraform Google Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#configuring-the-provider) authentication has been correctly setup.
+<br/>S: Verify [permissions](#prerequisites), [api-services](#apis), and that the [Terraform Google Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#configuring-the-provider) authentication has been correctly setup.
 You can also launch the following terraform manifest to check whether you're authenticated with what you expect
 
 ```
@@ -208,6 +208,8 @@ $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_be
 $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
  ```
 
+ Note: if you're using terragrunt, run `terragrunt import`
+
 ### Q: Getting "Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=gcr)"
 ```text
 │ Error: Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=gcr).
@@ -224,6 +226,7 @@ $ terraform import 'module.sfc_example_single_project.module.pubsub_http_subscri
 ```
 Contact us to develop a workaround for this, where the topic name is to be reused.
 
+Note: if you're using terragrunt, run `terragrunt import`
 
 ### Q: Getting "Cloud Run error: Container failed to start. Failed to start and then listen on the port defined by the PORT environment variable."
 A: If cloud-connector cloud run module cannot start it will give this error. The error is given by the health-check system, it's not specific to its PORT per-se
@@ -253,19 +256,21 @@ A: Verify that `gcr` topic exists. If `create_gcr_topic` is set to false and `gc
 
 ## Upgrading
 
-- Uninstall previous deployment resources before upgrading
+1. Uninstall previous deployment resources before upgrading
   ```
   $ terraform destroy
   ```
 
-- Upgrade the full terraform example with
+2. Upgrade the full terraform example with
   ```
   $ terraform init -upgrade
   $ terraform plan
   $ terraform apply
   ```
 
-- If required, you can upgrade cloud-connector component by restarting the task (stop task). Because it's not pinned to an specific version, it will download the latest one.
+- If the event-source is created throuh SFC, some events may get lost while upgrading with this approach. however, if the cloudtrail is re-used (normal production setup) events will be recovered once the ingestion resumes.
+
+- If required, you can upgrade cloud-connector component by restarting the task (stop task). Because it's not pinned to an specific version, it will download the `latest` one.
 
 <br/>
 
