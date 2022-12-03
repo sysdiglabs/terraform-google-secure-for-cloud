@@ -35,3 +35,8 @@ variable "organization_domain" {
   description = "Organization domain. e.g. sysdig.com"
   default     = ""
 }
+
+variable "org_id" {
+  type        = string
+  description = "Numeric ID of the organization to be exported to the sink"
+}

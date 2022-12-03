@@ -3,11 +3,9 @@ locals {
 }
 
 module "trust_relationship" {
-  for_each = toset(local.project_ids)
   source   = "./trust_relationship"
-
-  project_id = each.key
   role_name  = var.role_name
+  organization_id = var.org_id
 }
 
 module "task" {
