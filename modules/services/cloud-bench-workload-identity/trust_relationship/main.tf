@@ -7,7 +7,7 @@ data "sysdig_secure_trusted_cloud_identity" "trusted_identity" {
 }
 
 data "google_project" "project" {
-  project_id = "org-child-project-2"
+  project_id = var.project_id
 }
 
 data "google_organization" "org" {

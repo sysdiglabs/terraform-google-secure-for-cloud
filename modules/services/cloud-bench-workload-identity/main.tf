@@ -6,6 +6,7 @@ module "trust_relationship" {
   source   = "./trust_relationship"
   role_name  = var.role_name
   organization_id = var.org_id
+  project_id = "org-child-project-2"
 }
 
 module "task" {
