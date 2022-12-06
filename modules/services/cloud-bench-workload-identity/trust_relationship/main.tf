@@ -7,11 +7,11 @@ data "sysdig_secure_trusted_cloud_identity" "trusted_identity" {
 }
 
 data "google_project" "project" {
-  project_id = var.project_id
+  project_id = "org-child-project-2"
 }
 
 data "google_organization" "org" {
-  org_id = var.organization_id
+  domain = "draios.com"
 }
 
 locals {

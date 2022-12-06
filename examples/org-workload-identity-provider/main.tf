@@ -134,5 +134,5 @@ module "cloud_bench_workload_identity" {
   role_name           = var.benchmark_role_name
   regions             = var.benchmark_regions
   project_ids         = local.benchmark_projects_ids
-  organization_id = data.google_organization.org.org_id
+  org_id              = data.google_organization.org.org_id
 }
