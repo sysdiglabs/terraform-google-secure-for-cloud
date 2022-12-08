@@ -15,3 +15,8 @@ variable "organization_id" {
   description = "Numeric ID of the organization to be exported to the sink"
 }
 
+variable "projects" {
+  type        = list(string)
+  description = "List of all gcp projects in org"
+}
+

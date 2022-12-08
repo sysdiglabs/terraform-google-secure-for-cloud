@@ -23,11 +23,12 @@ locals {
 ###################################################
 
 resource "sysdig_secure_cloud_account" "cloud_account" {
-  account_id     = data.google_project.project.number
-  alias          = data.google_project.project.project_id
-  cloud_provider = "gcp"
-  role_enabled   = "true"
-  role_name      = var.role_name
+  account_id                   = data.google_project.project.number
+  alias                        = data.google_project.project.project_id
+  cloud_provider               = "gcp"
+  role_enabled                 = "true"
+  role_name                    = var.role_name
+//  workLoad_identity_account_id = data.google_organization.org.org_id
 }
 
 ###################################################
@@ -35,24 +36,26 @@ resource "sysdig_secure_cloud_account" "cloud_account" {
 ###################################################
 
 resource "google_service_account" "sa" {
-  project = var.project_id
+  for_each = toset(var.projects)
+  project  = each.key
 
   account_id   = var.role_name
   display_name = "Service account for cloud-bench"
 }
 
 resource "google_organization_iam_member" "viewer" {
-  org_id = data.google_organization.org.org_id
-
-  role   = "roles/viewer"
-  member = "serviceAccount:${google_service_account.sa.email}"
+  for_each = toset(var.projects)
+  org_id   = data.google_organization.org.org_id
+  role     = "roles/viewer"
+  member   = "serviceAccount:${google_service_account.sa[each.key].email}"
 }
 
 resource "google_organization_iam_member" "custom" {
-  org_id = data.google_organization.org.org_id
+  for_each = toset(var.projects)
+  org_id   = data.google_organization.org.org_id
 
   role   = google_organization_iam_custom_role.custom.id
-  member = "serviceAccount:${google_service_account.sa.email}"
+  member = "serviceAccount:${google_service_account.sa[each.key].email}"
 }
 
 resource "google_organization_iam_custom_role" "custom" {
@@ -66,7 +69,7 @@ resource "google_organization_iam_custom_role" "custom" {
 
 resource "google_organization_iam_binding" "sa_pool_binding" {
   org_id = data.google_organization.org.org_id
-  role               = "roles/iam.workloadIdentityUser"
+  role   = "roles/iam.workloadIdentityUser"
 
   members = [
     "principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.pool.workload_identity_pool_id}/attribute.aws_role/arn:aws:sts::${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id}:assumed-role/${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_role_name}/${local.external_id}",
