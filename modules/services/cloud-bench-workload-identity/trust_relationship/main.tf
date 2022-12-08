@@ -2,16 +2,20 @@
 # Fetch & compute required data
 ###################################################
 
+locals {
+  project_ids = var.project_ids
+}
+
 data "sysdig_secure_trusted_cloud_identity" "trusted_identity" {
   cloud_provider = "gcp"
 }
 
 data "google_project" "project" {
-  project_id = var.project_id
+  project_id = local.project_ids[0]
 }
 
 data "google_organization" "org" {
-  domain = "draios.com"
+  domain = var.organization_domain
 }
 
 locals {
@@ -23,12 +27,12 @@ locals {
 ###################################################
 
 resource "sysdig_secure_cloud_account" "cloud_account" {
-  account_id                   = data.google_project.project.number
-  alias                        = data.google_project.project.project_id
-  cloud_provider               = "gcp"
-  role_enabled                 = "true"
-  role_name                    = var.role_name
-//  workLoad_identity_account_id = data.google_organization.org.org_id
+  account_id     = data.google_project.project.number
+  alias          = data.google_project.project.project_id
+  cloud_provider = "gcp"
+  role_enabled   = "true"
+  role_name      = var.role_name
+  //  workLoad_identity_account_id = data.google_organization.org.org_id
 }
 
 ###################################################
@@ -36,26 +40,22 @@ resource "sysdig_secure_cloud_account" "cloud_account" {
 ###################################################
 
 resource "google_service_account" "sa" {
-  for_each = toset(var.projects)
-  project  = each.key
-
+  project      = var.project_id
   account_id   = var.role_name
   display_name = "Service account for cloud-bench"
 }
 
 resource "google_organization_iam_member" "viewer" {
-  for_each = toset(var.projects)
-  org_id   = data.google_organization.org.org_id
-  role     = "roles/viewer"
-  member   = "serviceAccount:${google_service_account.sa[each.key].email}"
+  org_id = data.google_organization.org.org_id
+  role   = "roles/viewer"
+  member = "serviceAccount:${google_service_account.sa.email}"
 }
 
 resource "google_organization_iam_member" "custom" {
-  for_each = toset(var.projects)
-  org_id   = data.google_organization.org.org_id
+  org_id = data.google_organization.org.org_id
 
   role   = google_organization_iam_custom_role.custom.id
-  member = "serviceAccount:${google_service_account.sa[each.key].email}"
+  member = "serviceAccount:${google_service_account.sa.email}"
 }
 
 resource "google_organization_iam_custom_role" "custom" {

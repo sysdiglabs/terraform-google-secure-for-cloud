@@ -15,8 +15,15 @@ variable "organization_id" {
   description = "Numeric ID of the organization to be exported to the sink"
 }
 
-variable "projects" {
+variable "project_ids" {
   type        = list(string)
   description = "List of all gcp projects in org"
+  default     = []
+}
+
+variable "organization_domain" {
+  type        = string
+  description = "Organization domain. e.g. sysdig.com"
+  default     = ""
 }
 
