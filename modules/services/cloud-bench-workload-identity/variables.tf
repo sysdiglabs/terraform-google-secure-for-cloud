@@ -17,6 +17,12 @@ variable "project_id" {
   default     = ""
 }
 
+variable "gcp_project_id" {
+  type = string
+  description = "gcp project id"
+  default = ""
+}
+
 # For organizational
 variable "project_ids" {
   type        = list(string)

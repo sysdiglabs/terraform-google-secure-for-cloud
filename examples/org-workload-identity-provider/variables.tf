@@ -31,7 +31,11 @@ variable "repository_project_ids" {
   description = "Projects were a `gcr`-named topic will be to subscribe to its repository events. If empty, all organization projects will be defaulted."
 }
 
-
+variable "gcp_project_id" {
+  type        = string
+  description = "ID of project to run the benchmark on"
+  default     = ""
+}
 #
 # benchmark
 #

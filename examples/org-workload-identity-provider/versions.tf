@@ -13,8 +13,8 @@ terraform {
       configuration_aliases = [google-beta.multiproject]
     }
     sysdig = {
-      source  = "sysdiglabs/sysdig"
-      version = ">= 0.5.21"
+      source  = "local/sysdiglabs/sysdig"
+      version = "~> 1.0.0"
     }
   }
 }

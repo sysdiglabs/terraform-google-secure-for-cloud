@@ -1,6 +1,6 @@
-variable "project_id" {
+variable "gcp_project_id" {
   type        = string
-  description = "ID of project to run the benchmark on"
+  description = "ID of project to create the service account"
   default     = ""
 }
 
@@ -13,6 +13,7 @@ variable "role_name" {
 variable "organization_id" {
   type        = string
   description = "Numeric ID of the organization to be exported to the sink"
+  default = ""
 }
 
 variable "project_ids" {

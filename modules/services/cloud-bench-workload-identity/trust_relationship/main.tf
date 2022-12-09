@@ -11,7 +11,7 @@ data "sysdig_secure_trusted_cloud_identity" "trusted_identity" {
 }
 
 data "google_project" "project" {
-  project_id = local.project_ids[0]
+  project_id = var.gcp_project_id
 }
 
 data "google_organization" "org" {
@@ -32,7 +32,7 @@ resource "sysdig_secure_cloud_account" "cloud_account" {
   cloud_provider = "gcp"
   role_enabled   = "true"
   role_name      = var.role_name
-  //  workLoad_identity_account_id = data.google_organization.org.org_id
+  workload_identity_account_id = data.google_project.project.project_id
 }
 
 ###################################################
@@ -40,7 +40,7 @@ resource "sysdig_secure_cloud_account" "cloud_account" {
 ###################################################
 
 resource "google_service_account" "sa" {
-  project      = var.project_id
+  project      = data.google_project.project.project_id
   account_id   = var.role_name
   display_name = "Service account for cloud-bench"
 }
@@ -82,14 +82,14 @@ resource "google_organization_iam_binding" "sa_pool_binding" {
 ###################################################
 
 resource "google_iam_workload_identity_pool" "pool" {
-  project = var.project_id
+  project = data.google_project.project.project_id
 
   provider                  = google-beta
   workload_identity_pool_id = "sysdigcloud"
 }
 
 resource "google_iam_workload_identity_pool_provider" "pool_provider" {
-  project = var.project_id
+  project = data.google_project.project.project_id
 
   provider                           = google-beta
   workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
