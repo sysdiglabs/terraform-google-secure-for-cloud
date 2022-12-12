@@ -11,7 +11,9 @@ data "google_project" "project" {
 }
 
 locals {
-  external_id = sysdig_secure_cloud_account.cloud_account.external_id
+  workload_identity_pool_name = "sysdigcloud"
+  external_id                 = sysdig_secure_cloud_account.cloud_account.external_id
+  workload_identity_pool_id   = var.reuse_workload_identity_pool ? data.google_iam_workload_identity_pool.pool.workload_identity_pool_id : google_iam_workload_identity_pool.pool[0].workload_identity_pool_id
 }
 
 ###################################################
@@ -65,7 +67,7 @@ resource "google_service_account_iam_binding" "sa_pool_binding" {
   role               = "roles/iam.workloadIdentityUser"
 
   members = [
-    "principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.pool.workload_identity_pool_id}/attribute.aws_role/arn:aws:sts::${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id}:assumed-role/${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_role_name}/${local.external_id}",
+    "principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${local.workload_identity_pool_id}/attribute.aws_role/arn:aws:sts::${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id}:assumed-role/${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_role_name}/${local.external_id}",
   ]
 }
 
@@ -75,19 +77,37 @@ resource "google_service_account_iam_binding" "sa_pool_binding" {
 # See https://cloud.google.com/iam/docs/access-resources-aws
 ###################################################
 
-resource "google_iam_workload_identity_pool" "pool" {
+
+data "google_iam_workload_identity_pool" "pool" {
   project = var.project_id
 
   provider                  = google-beta
-  workload_identity_pool_id = "sysdigcloud"
+  workload_identity_pool_id = local.workload_identity_pool_name
 }
 
-resource "google_iam_workload_identity_pool_provider" "pool_provider" {
+data "google_iam_workload_identity_pool_provider" "pool_provider" {
   project = var.project_id
 
   provider                           = google-beta
-  workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
-  workload_identity_pool_provider_id = "sysdigcloud"
+  workload_identity_pool_id          = local.workload_identity_pool_id
+  workload_identity_pool_provider_id = local.workload_identity_pool_name
+}
+
+resource "google_iam_workload_identity_pool" "pool" {
+  count   = var.reuse_workload_identity_pool ? 0 : 1
+  project = var.project_id
+
+  provider                  = google-beta
+  workload_identity_pool_id = local.workload_identity_pool_name
+}
+
+resource "google_iam_workload_identity_pool_provider" "pool_provider" {
+  count   = var.reuse_workload_identity_pool ? 0 : 1
+  project = var.project_id
+
+  provider                           = google-beta
+  workload_identity_pool_id          = local.workload_identity_pool_id
+  workload_identity_pool_provider_id = local.workload_identity_pool_name
   display_name                       = "Sysdigcloud"
   description                        = "Sysdig Secure for Cloud"
   disabled                           = false

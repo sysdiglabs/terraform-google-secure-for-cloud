@@ -35,3 +35,9 @@ variable "organization_domain" {
   description = "Organization domain. e.g. sysdig.com"
   default     = ""
 }
+
+variable "reuse_workload_identity_pool" {
+  type        = bool
+  description = "Reuse existing workload identity pool"
+  default     = false
+}

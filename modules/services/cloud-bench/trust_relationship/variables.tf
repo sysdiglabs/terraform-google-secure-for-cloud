@@ -9,3 +9,9 @@ variable "role_name" {
   description = "The name of the Service Account that will be created."
   default     = "sysdigcloudbench"
 }
+
+variable "reuse_workload_identity_pool" {
+  type        = bool
+  description = "Reuse existing workload identity pool"
+  default     = false
+}

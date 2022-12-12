@@ -31,6 +31,11 @@ variable "benchmark_role_name" {
   default     = "sysdigcloudbench"
 }
 
+variable "reuse_workload_identity_pool" {
+  type        = bool
+  description = "Reuse existing workload identity pool"
+  default     = false
+}
 
 #
 # general
