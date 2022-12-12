@@ -28,3 +28,10 @@ variable "organization_domain" {
   default     = ""
 }
 
+# For single project
+variable "project_id" {
+  type        = string
+  description = "ID of project to run the benchmark on"
+  default     = ""
+}
+

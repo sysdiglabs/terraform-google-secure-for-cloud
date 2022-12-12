@@ -9,6 +9,7 @@ module "trust_relationship" {
   project_ids         = local.project_ids
   gcp_project_id      = var.gcp_project_id
   organization_domain = var.organization_domain
+  project_id = var.project_id
 }
 
 module "task" {
