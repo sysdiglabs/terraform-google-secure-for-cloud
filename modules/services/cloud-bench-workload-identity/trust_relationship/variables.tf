@@ -1,9 +1,3 @@
-variable "gcp_project_id" {
-  type        = string
-  description = "ID of project to create the service account"
-  default     = ""
-}
-
 variable "role_name" {
   type        = string
   description = "The name of the Service Account that will be created."

@@ -64,24 +64,24 @@ module "secure_secrets" {
   name                    = var.name
 }
 
-//module "cloud_connector" {
-//  source = "../../modules/services/cloud-connector"
-//
-//  cloud_connector_sa_email   = google_service_account.connector_sa.email
-//  sysdig_secure_endpoint     = data.sysdig_secure_connection.current.secure_url
-//  sysdig_secure_api_token    = data.sysdig_secure_connection.current.secure_api_token
-//  connector_pubsub_topic_id  = module.connector_organization_sink.pubsub_topic_id
-//  secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
-//  max_instances              = var.max_instances
-//  project_id                 = data.google_client_config.current.project
-//
-//  #defaults
-//  name              = "${var.name}-cloudconnector"
-//  verify_ssl        = local.verify_ssl
-//  is_organizational = true
-//
-//  deploy_scanning = var.deploy_scanning
-//}
+module "cloud_connector" {
+  source = "../../modules/services/cloud-connector"
+
+  cloud_connector_sa_email   = google_service_account.connector_sa.email
+  sysdig_secure_endpoint     = data.sysdig_secure_connection.current.secure_url
+  sysdig_secure_api_token    = data.sysdig_secure_connection.current.secure_api_token
+  connector_pubsub_topic_id  = module.connector_organization_sink.pubsub_topic_id
+  secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
+  max_instances              = var.max_instances
+  project_id                 = data.google_client_config.current.project
+
+  #defaults
+  name              = "${var.name}-cloudconnector"
+  verify_ssl        = local.verify_ssl
+  is_organizational = true
+
+  deploy_scanning = var.deploy_scanning
+}
 
 #--------------------
 # scanning
@@ -96,20 +96,20 @@ module "cloud_build_permission" {
 }
 
 
-//module "pubsub_http_subscription" {
-//  for_each = toset(local.repository_project_ids)
-//  source   = "../../modules/infrastructure/pubsub_subscription"
-//
-//  topic_project_id        = each.key
-//  subscription_project_id = data.google_client_config.current.project
-//  gcr_topic_name          = "gcr"
-//  name                    = "${var.name}-gcr"
-//  service_account_email   = google_service_account.connector_sa.email
-//
-//  push_http_endpoint = "${module.cloud_connector.cloud_run_service_url}/gcr_scanning"
-//  push_to_cloudrun   = true
-//  deploy_scanning    = var.deploy_scanning
-//}
+module "pubsub_http_subscription" {
+  for_each = toset(local.repository_project_ids)
+  source   = "../../modules/infrastructure/pubsub_subscription"
+
+  topic_project_id        = each.key
+  subscription_project_id = data.google_client_config.current.project
+  gcr_topic_name          = "gcr"
+  name                    = "${var.name}-gcr"
+  service_account_email   = google_service_account.connector_sa.email
+
+  push_http_endpoint = "${module.cloud_connector.cloud_run_service_url}/gcr_scanning"
+  push_to_cloudrun   = true
+  deploy_scanning    = var.deploy_scanning
+}
 
 
 #--------------------
@@ -135,6 +135,5 @@ module "cloud_bench_workload_identity" {
   regions             = var.benchmark_regions
   project_ids         = local.benchmark_projects_ids
   org_id              = data.google_organization.org.org_id
-  gcp_project_id      = var.gcp_project_id
   project_id          = data.google_client_config.current.project
 }

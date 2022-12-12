@@ -7,7 +7,6 @@ module "trust_relationship" {
   role_name           = var.role_name
   organization_id     = var.org_id
   project_ids         = local.project_ids
-  gcp_project_id      = var.gcp_project_id
   organization_domain = var.organization_domain
   project_id = var.project_id
 }
