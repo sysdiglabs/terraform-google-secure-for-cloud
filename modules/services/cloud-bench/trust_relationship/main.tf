@@ -82,7 +82,7 @@ resource "google_iam_workload_identity_pool" "pool" {
   project = var.project_id
 
   provider                  = google-beta
-  workload_identity_pool_id = "sysdigcloud-${random_uuid.pool_id.result}"
+  workload_identity_pool_id = "sysdigcloud-${substr(random_uuid.pool_id.result, -6, -1)}"
 }
 
 resource "google_iam_workload_identity_pool_provider" "pool_provider" {
@@ -90,7 +90,7 @@ resource "google_iam_workload_identity_pool_provider" "pool_provider" {
 
   provider                           = google-beta
   workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
-  workload_identity_pool_provider_id = "sysdigcloud-${random_uuid.pool_id.result}"
+  workload_identity_pool_provider_id = "sysdigcloud-${substr(random_uuid.pool_id.result, -6, -1)}"
   display_name                       = "Sysdigcloud"
   description                        = "Sysdig Secure for Cloud"
   disabled                           = false
