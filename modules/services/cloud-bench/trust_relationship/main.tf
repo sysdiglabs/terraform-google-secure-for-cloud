@@ -75,11 +75,14 @@ resource "google_service_account_iam_binding" "sa_pool_binding" {
 # See https://cloud.google.com/iam/docs/access-resources-aws
 ###################################################
 
+resource "random_uuid" "pool_id" {
+}
+
 resource "google_iam_workload_identity_pool" "pool" {
   project = var.project_id
 
   provider                  = google-beta
-  workload_identity_pool_id = "sysdigcloud"
+  workload_identity_pool_id = "sysdigcloud-${random_uuid.pool_id.result}"
 }
 
 resource "google_iam_workload_identity_pool_provider" "pool_provider" {
@@ -87,7 +90,7 @@ resource "google_iam_workload_identity_pool_provider" "pool_provider" {
 
   provider                           = google-beta
   workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
-  workload_identity_pool_provider_id = "sysdigcloud"
+  workload_identity_pool_provider_id = "sysdigcloud-${random_uuid.pool_id.result}"
   display_name                       = "Sysdigcloud"
   description                        = "Sysdig Secure for Cloud"
   disabled                           = false
