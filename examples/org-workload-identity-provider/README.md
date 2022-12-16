@@ -4,6 +4,7 @@ This example deploys Secure for Cloud into a GCP organizational account.
 
 ### Notice
 * Sysdig workload will be deployed in the `project_id` defined in the required input parameter.
+* This will create a single workload identity on the org-level, instead of the current projet-level.
 * All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameters.<br/>
 * This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
 * For **free subscription** users, beware that this example may not deploy properly due to the [1 cloud-account limitation](https://docs.sysdig.com/en/docs/administration/administration-settings/subscription/#cloud-billing-free-tier). Open an Issue so we can help you here!
