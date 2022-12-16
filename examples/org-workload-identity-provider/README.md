@@ -50,49 +50,6 @@ For quick testing, use this snippet on your terraform files and provide followin
 - `PROJECT_ID` GCP project where workload will be deployed
 - `REGION_ID` for the workload to be deployed
 
-
-```terraform
-terraform {
-   required_providers {
-      sysdig = {
-         source  = "sysdiglabs/sysdig"
-      }
-   }
-}
-
-provider "sysdig" {
-   sysdig_secure_url         = "<SYSDIG_SECURE_URL>"
-   sysdig_secure_api_token   = "<SYSDIG_SECURE_API_TOKEN>"
-}
-
-provider "google" {
-   project = "<PROJECT_ID>"
-   region  = "<REGION_ID>; ex. us-central1"
-}
-
-# This two "multiproject" providers are required for benchmark trust-identity activation on the organizational level
-provider "google" {
-   alias  = "multiproject"
-   region = "<REGION_ID>; ex. us-central1"
-}
-
-provider "google-beta" {
-   alias  = "multiproject"
-   region = "<REGION_ID>; ex. us-central1"
-}
-
-
-module "secure-for-cloud_example_organization" {
-  providers = {
-    google.multiproject      = google.multiproject
-    google-beta.multiproject = google-beta.multiproject
-  }
-
-  source = "sysdiglabs/secure-for-cloud/google//examples/org-workload-identity-provider"
-   organization_domain = "<ORG_DOMAIN>"
-   name                = "<NAME>"
-}
-```
 ```terraform
 terraform {
   required_version = ">= 0.15.0"
