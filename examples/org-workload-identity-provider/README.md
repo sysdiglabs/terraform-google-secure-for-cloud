@@ -88,9 +88,58 @@ module "secure-for-cloud_example_organization" {
     google-beta.multiproject = google-beta.multiproject
   }
 
-  source = "sysdiglabs/secure-for-cloud/google//examples/organization"
-  organization_domain       = "<ORG_DOMAIN>"
+  source = "sysdiglabs/secure-for-cloud/google//examples/org-workload-identity-provider"
+   organization_domain = "<ORG_DOMAIN>"
+   name                = "<NAME>"
 }
+```
+```terraform
+terraform {
+  required_version = ">= 0.15.0"
+
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.21.0"
+    }
+    sysdig = {
+      source  = "local/sysdiglabs/sysdig"
+      version = "~> 1.0.0"
+    }
+  }
+}
+
+provider "sysdig" {
+  sysdig_secure_url          = "<SYSDIG_SECURE_URL>"
+  sysdig_secure_api_token    = "<SYSDIG_SECURE_API_TOKEN>"
+}
+
+provider "google" {
+  project = "<PROJECT_ID>"
+  region  = "<REGION_ID>; ex. us-central1"
+}
+
+provider "google" {
+  alias  = "multiproject"
+  region = "<REGION_ID>; ex. us-central1"
+}
+
+provider "google-beta" {
+  alias  = "multiproject"
+  region = "<REGION_ID>; ex. us-central1"
+}
+
+module "secure-for-cloud_example_organization" {
+  providers = {
+    google.multiproject      = google.multiproject
+    google-beta.multiproject = google-beta.multiproject
+  }
+  source = "../terraform-google-secure-for-cloud/examples/org-workload-identity-provider"
+
+  organization_domain = "<ORG_DOMAIN>"
+  name                = "<NAME>"
+}
+
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
