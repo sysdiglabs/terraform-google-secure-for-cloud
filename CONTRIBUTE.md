@@ -58,7 +58,7 @@ We're using **pre-commit** |  https://pre-commit.com
   <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
   <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
   ```
-- pre-requirement download, for [terrascan](https://github.com/tenable/terrascan#step-1-install)
+- pre-requirement download, see [Makefile](./Makefile)
 
 ## 2. Check::Integration tests
 
