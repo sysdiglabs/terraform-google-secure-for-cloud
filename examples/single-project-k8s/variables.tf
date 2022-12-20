@@ -30,7 +30,7 @@ variable "benchmark_role_name" {
 
 variable "reuse_workload_identity_pool" {
   type        = bool
-  description = "Reuse existing workload identity pool"
+  description = "Reuse existing workload identity pool, with name 'sysdigcloud'. Can be used when redeploying after destroy, by undeleting the previous workload identity pool, which is kept for 30 days and results in an error in redeployment."
   default     = false
 }
 

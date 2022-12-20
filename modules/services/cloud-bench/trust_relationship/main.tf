@@ -85,14 +85,6 @@ data "google_iam_workload_identity_pool" "pool" {
   workload_identity_pool_id = local.workload_identity_pool_name
 }
 
-data "google_iam_workload_identity_pool_provider" "pool_provider" {
-  project = var.project_id
-
-  provider                           = google-beta
-  workload_identity_pool_id          = local.workload_identity_pool_id
-  workload_identity_pool_provider_id = local.workload_identity_pool_name
-}
-
 resource "google_iam_workload_identity_pool" "pool" {
   count   = var.reuse_workload_identity_pool ? 0 : 1
   project = var.project_id
