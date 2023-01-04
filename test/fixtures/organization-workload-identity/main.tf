@@ -11,6 +11,7 @@ terraform {
     }
     sysdig = {
       source = "sysdiglabs/sysdig"
+      version = ">= 0.5.45"
     }
   }
 }
@@ -53,8 +54,7 @@ module "sfc_example_organization" {
 
   organization_domain = "draios.com"
   name                = "sfc${random_string.random.result}"
-  repository_project_ids = [var.project_id]
-  deploy_scanning        = true
-  deploy_benchmark       = false
+//  repository_project_ids = [var.project_id]
+//  deploy_benchmark       = false
 }
 
