@@ -60,8 +60,8 @@ terraform {
       version = ">= 4.21.0"
     }
     sysdig = {
-      source  = "local/sysdiglabs/sysdig"
-      version = "~> 1.0.0"
+      source  = "sysdiglabs/sysdig"
+      version = ">= 0.5.45"
     }
   }
 }
