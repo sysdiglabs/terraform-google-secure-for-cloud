@@ -27,11 +27,11 @@ locals {
 ###################################################
 
 resource "sysdig_secure_cloud_account" "cloud_account" {
-  account_id     = data.google_project.project.number
-  alias          = data.google_project.project.project_id
-  cloud_provider = "gcp"
-  role_enabled   = "true"
-  role_name      = var.role_name
+  account_id                   = data.google_project.project.number
+  alias                        = data.google_project.project.project_id
+  cloud_provider               = "gcp"
+  role_enabled                 = "true"
+  role_name                    = var.role_name
   workload_identity_account_id = data.google_project.project.project_id
 }
 
@@ -64,7 +64,7 @@ resource "google_organization_iam_custom_role" "custom" {
   role_id     = var.role_name
   title       = "Sysdig Cloud Benchmark Role"
   description = "A Role providing the required permissions for Sysdig Cloud Benchmarks that are not included in roles/viewer"
-  permissions = ["storage.buckets.getIamPolicy", "bigquery.tables.list", "cloudasset.assets.listIamPolicy", "cloudasset.assets.listResource"]
+  permissions = ["storage.buckets.getIamPolicy", "bigquery.tables.list", "cloudasset.assets.listIamPolicy", "cloudasset.assets.listResource", "iam.serviceAccounts.actAs", "iam.serviceAccounts.getAccessToken"]
 }
 
 resource "google_organization_iam_binding" "sa_pool_binding" {

@@ -7,7 +7,7 @@ variable "role_name" {
 variable "organization_id" {
   type        = string
   description = "Numeric ID of the organization to be exported to the sink"
-  default = ""
+  default     = ""
 }
 
 variable "project_ids" {
