@@ -2,9 +2,9 @@
 # Fetch & compute required data
 ###################################################
 
-locals {
-  project_ids = var.project_ids
-}
+//locals {
+//  project_ids = var.project_ids
+//}
 
 data "sysdig_secure_trusted_cloud_identity" "trusted_identity" {
   cloud_provider = "gcp"
@@ -32,7 +32,7 @@ resource "sysdig_secure_cloud_account" "cloud_account" {
   cloud_provider               = "gcp"
   role_enabled                 = "true"
   role_name                    = var.role_name
-  workload_identity_account_id = data.google_project.project.project_id
+  workload_identity_account_id = data.google_project.project.number
 }
 
 ###################################################
