@@ -64,7 +64,7 @@ resource "google_organization_iam_custom_role" "custom" {
   role_id     = var.role_name
   title       = "Sysdig Cloud Benchmark Role"
   description = "A Role providing the required permissions for Sysdig Cloud Benchmarks that are not included in roles/viewer"
-  permissions = ["storage.buckets.getIamPolicy", "bigquery.tables.list", "cloudasset.assets.listIamPolicy", "cloudasset.assets.listResource", "iam.serviceAccounts.actAs", "iam.serviceAccounts.getAccessToken"]
+  permissions = ["storage.buckets.getIamPolicy", "bigquery.tables.list", "cloudasset.assets.listIamPolicy", "cloudasset.assets.listResource"]
 }
 
 resource "google_organization_iam_binding" "sa_pool_binding" {
@@ -85,7 +85,7 @@ resource "google_iam_workload_identity_pool" "pool" {
   project = var.project_id
 
   provider                  = google-beta
-  workload_identity_pool_id = "sysdigcloud-5"
+  workload_identity_pool_id = "sysdigcloud"
 }
 
 resource "google_iam_workload_identity_pool_provider" "pool_provider" {
@@ -93,8 +93,8 @@ resource "google_iam_workload_identity_pool_provider" "pool_provider" {
 
   provider                           = google-beta
   workload_identity_pool_id          = google_iam_workload_identity_pool.pool.workload_identity_pool_id
-  workload_identity_pool_provider_id = "sysdigcloud-5"
-  display_name                       = "Sysdigcloud-5"
+  workload_identity_pool_provider_id = "sysdigcloud"
+  display_name                       = "Sysdigcloud"
   description                        = "Sysdig Secure for Cloud"
   disabled                           = false
 

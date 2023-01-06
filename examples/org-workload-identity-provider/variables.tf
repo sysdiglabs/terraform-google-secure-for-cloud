@@ -58,7 +58,6 @@ variable "benchmark_role_name" {
   default     = "sysdigcloudbench"
 }
 
-
 #
 # general
 #

@@ -45,7 +45,7 @@ resource "random_string" "random" {
   upper   = false
 }
 
-module "sfc_example_organization" {
+module "sfc_example_organization_workload" {
   providers = {
     google.multiproject      = google.multiproject
     google-beta.multiproject = google-beta.multiproject
