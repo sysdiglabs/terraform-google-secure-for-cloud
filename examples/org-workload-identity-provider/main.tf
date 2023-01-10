@@ -117,7 +117,8 @@ module "pubsub_http_subscription" {
 #--------------------
 
 locals {
-  benchmark_projects_ids = length(var.benchmark_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.benchmark_project_ids
+  benchmark_projects_ids   = length(var.benchmark_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.benchmark_project_ids
+  project_id_to_number_map = { for p in data.google_projects.all_projects.projects : p.project_id => p.number }
 }
 
 module "cloud_bench_workload_identity" {
@@ -129,11 +130,12 @@ module "cloud_bench_workload_identity" {
   count  = var.deploy_benchmark ? 1 : 0
   source = "../../modules/services/cloud-bench-workload-identity"
 
-  is_organizational   = true
-  organization_domain = var.organization_domain
-  role_name           = var.benchmark_role_name
-  regions             = var.benchmark_regions
-  project_ids         = local.benchmark_projects_ids
-  org_id              = data.google_organization.org.org_id
-  project_id          = data.google_client_config.current.project
+  is_organizational     = true
+  organization_domain   = var.organization_domain
+  role_name             = var.benchmark_role_name
+  regions               = var.benchmark_regions
+  project_ids           = local.benchmark_projects_ids
+  org_id                = data.google_organization.org.org_id
+  project_id            = data.google_client_config.current.project
+  project_id_number_map = local.project_id_to_number_map
 }

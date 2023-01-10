@@ -24,6 +24,12 @@ variable "project_ids" {
   default     = []
 }
 
+variable "project_id_number_map" {
+  type        = map(string)
+  description = "GCP project id to project number map"
+  default     = {}
+}
+
 variable "is_organizational" {
   type        = bool
   description = "Whether this task is being created at the org or project level"

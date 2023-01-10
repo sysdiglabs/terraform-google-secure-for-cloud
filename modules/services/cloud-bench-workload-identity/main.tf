@@ -3,12 +3,13 @@ locals {
 }
 
 module "trust_relationship" {
-  source              = "./trust_relationship"
-  role_name           = var.role_name
-  organization_id     = var.org_id
-  project_ids         = local.project_ids
-  organization_domain = var.organization_domain
-  project_id = var.project_id
+  source                = "./trust_relationship"
+  role_name             = var.role_name
+  organization_id       = var.org_id
+  project_ids           = local.project_ids
+  organization_domain   = var.organization_domain
+  project_id            = var.project_id
+  project_id_number_map = var.project_id_number_map
 }
 
 module "task" {

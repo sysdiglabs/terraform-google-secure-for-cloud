@@ -2,9 +2,9 @@
 # Fetch & compute required data
 ###################################################
 
-//locals {
-//  project_ids = var.project_ids
-//}
+locals {
+  project_ids = var.project_ids
+}
 
 data "sysdig_secure_trusted_cloud_identity" "trusted_identity" {
   cloud_provider = "gcp"
@@ -18,21 +18,18 @@ data "google_organization" "org" {
   domain = var.organization_domain
 }
 
-locals {
-  external_id = sysdig_secure_cloud_account.cloud_account.external_id
-}
-
 ###################################################
 # Configure Sysdig Backend
 ###################################################
 
 resource "sysdig_secure_cloud_account" "cloud_account" {
-  account_id                   = data.google_project.project.number
-  alias                        = data.google_project.project.project_id
+  for_each                     = toset(local.project_ids)
+  account_id                   = var.project_id_number_map[each.key]
+  alias                        = each.key
   cloud_provider               = "gcp"
   role_enabled                 = "true"
   role_name                    = var.role_name
-  workload_identity_account_id = data.google_project.project.number
+  workload_identity_account_id = var.project_id_number_map[var.project_id]
 }
 
 ###################################################
@@ -68,11 +65,12 @@ resource "google_organization_iam_custom_role" "custom" {
 }
 
 resource "google_organization_iam_binding" "sa_pool_binding" {
-  org_id = data.google_organization.org.org_id
-  role   = "roles/iam.workloadIdentityUser"
+  for_each = toset(local.project_ids)
+  org_id   = data.google_organization.org.org_id
+  role     = "roles/iam.workloadIdentityUser"
 
   members = [
-    "principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.pool.workload_identity_pool_id}/attribute.aws_role/arn:aws:sts::${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id}:assumed-role/${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_role_name}/${local.external_id}",
+    "principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.pool.workload_identity_pool_id}/attribute.aws_role/arn:aws:sts::${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_account_id}:assumed-role/${data.sysdig_secure_trusted_cloud_identity.trusted_identity.aws_role_name}/${sysdig_secure_cloud_account.cloud_account[each.key].external_id}",
   ]
 }
 
