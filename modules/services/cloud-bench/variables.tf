@@ -6,7 +6,7 @@ variable "regions" {
 
 variable "role_name" {
   type        = string
-  description = "The name of the Service Account that will be created."
+  description = "The name of the Service Account/Role that will be created. Modify this value in case of conflict / 409 error to bypass Google soft delete"
   default     = "sysdigcloudbench"
 }
 
