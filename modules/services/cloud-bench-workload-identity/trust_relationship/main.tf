@@ -23,13 +23,14 @@ data "google_organization" "org" {
 ###################################################
 
 resource "sysdig_secure_cloud_account" "cloud_account" {
-  for_each                     = toset(local.project_ids)
-  account_id                   = var.project_id_number_map[each.key]
-  alias                        = each.key
-  cloud_provider               = "gcp"
-  role_enabled                 = "true"
-  role_name                    = var.role_name
-  workload_identity_account_id = var.project_id_number_map[var.project_id]
+  for_each                        = toset(local.project_ids)
+  account_id                      = var.project_id_number_map[each.key]
+  alias                           = each.key
+  cloud_provider                  = "gcp"
+  role_enabled                    = "true"
+  role_name                       = var.role_name
+  workload_identity_account_id    = var.project_id_number_map[var.project_id]
+  workload_identity_account_alias = var.project_id
 }
 
 ###################################################
