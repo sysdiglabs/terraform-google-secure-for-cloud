@@ -1,3 +1,12 @@
+# Cloud Bench deploy for GCP
+
+Deployed on the **target GCP account(s)**:
+- The required Workload Identity Pool + Provider + Service Account,  to allow Sysdig to run GCP Benchmarks on your behalf.
+
+Deployed on **Sysdig Backend**
+- An `gcp_foundations_bench-1.2.0` benchmark task schedule on a random hour of the day `rand rand * * *`
+- coped to the configured `gcp.projectId` and `gcp.region`
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 

@@ -65,7 +65,7 @@ variable "benchmark_role_name" {
 #
 variable "name" {
   type        = string
-  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
+  description = "Suffix to be assigned to all created resources. Modify this value in case of conflict / 409 error to bypass Google soft delete issues"
   default     = "sfc"
 
   validation {
