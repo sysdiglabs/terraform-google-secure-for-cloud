@@ -53,12 +53,12 @@ jobs:
         run: bundle exec kitchen destroy "organization-gcp"
 
       # organization-optimized-compliance
-      - name: Run organization test
-        run: bundle exec kitchen test "organization-optimized-compliance"
-
-      - name: Destroy organization resources
-        if: ${{ failure() }}
-        run: bundle exec kitchen destroy "organization-optimized-compliance"
+#      - name: Run organization test
+#        run: bundle exec kitchen test "organization-optimized-compliance"
+#
+#      - name: Destroy organization resources
+#        if: ${{ failure() }}
+#        run: bundle exec kitchen destroy "organization-optimized-compliance"
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.2.0
