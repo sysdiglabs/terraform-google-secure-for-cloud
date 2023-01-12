@@ -58,12 +58,6 @@ variable "benchmark_role_name" {
   default     = "sysdigcloudbench"
 }
 
-variable "project_id_number_map" {
-  type        = map(string)
-  description = "GCP project id to project number map"
-  default     = {}
-}
-
 #
 # general
 #

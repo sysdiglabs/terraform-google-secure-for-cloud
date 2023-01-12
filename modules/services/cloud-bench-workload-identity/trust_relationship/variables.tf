@@ -4,12 +4,6 @@ variable "role_name" {
   default     = "sysdigcloudbench"
 }
 
-variable "organization_id" {
-  type        = string
-  description = "Numeric ID of the organization to be exported to the sink"
-  default     = ""
-}
-
 variable "project_ids" {
   type        = list(string)
   description = "List of all gcp projects in org"
