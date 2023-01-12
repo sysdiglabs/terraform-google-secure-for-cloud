@@ -23,4 +23,4 @@ suites:
       root_module_directory: test/fixtures/organization
   - name: organization-optimized-compliance
     driver:
-      root_module_directory: test/fixtures/organization_org_compliance
+      root_module_directory: test/fixtures/organization-org_compliance
