@@ -2,13 +2,17 @@
 
 This example deploys Secure for Cloud into a GCP organizational account.
 
+> :warning: This module will soon be deprecated in favor of [/examples/organization-org_compliance](../organization-org_compliance)
+> This new example will create a single workload identity on the org-level, instead of the current project-level.
+
 ### Notice
 * Sysdig workload will be deployed in the `project_id` defined in the required input parameter.
 * All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameters.<br/>
 * This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
 * For **free subscription** users, beware that this example may not deploy properly due to the [1 cloud-account limitation](https://docs.sysdig.com/en/docs/administration/administration-settings/subscription/#cloud-billing-free-tier). Open an Issue so we can help you here!
 
-![single project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples/organization/diagram-org.png?raw=true)
+![organizational project diagram](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/examples
+/organization/diagram-org.png?raw=true)
 
 ## Prerequisites
 
@@ -87,7 +91,7 @@ module "secure-for-cloud_example_organization" {
     google-beta.multiproject = google-beta.multiproject
   }
 
-  source = "sysdiglabs/secure-for-cloud/google//examples/organization"
+  source = "sysdiglabs/secure-for-cloud/google//examples/organization-org_compliance"
   organization_domain       = "<ORG_DOMAIN>"
 }
 ```
