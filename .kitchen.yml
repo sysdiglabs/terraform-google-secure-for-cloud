@@ -15,9 +15,15 @@ suites:
   - name: single-project
     driver:
       root_module_directory: test/fixtures/single-project
-  - name: organization
-    driver:
-      root_module_directory: test/fixtures/organization
   - name: single-project-k8s
     driver:
       root_module_directory: test/fixtures/single-project-k8s
+  - name: organization
+    driver:
+      root_module_directory: test/fixtures/organization
+
+# this test does not make sense, since its the same as the organization
+# besides, with org compliance, but on both tests
+#  - name: organization-optimized-compliance
+#    driver:
+#      root_module_directory: test/fixtures/organization-org_compliance
