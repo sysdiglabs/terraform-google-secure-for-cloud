@@ -15,9 +15,12 @@ suites:
   - name: single-project
     driver:
       root_module_directory: test/fixtures/single-project
-  - name: organization
-    driver:
-      root_module_directory: test/fixtures/organization
   - name: single-project-k8s
     driver:
       root_module_directory: test/fixtures/single-project-k8s
+  - name: organization
+    driver:
+      root_module_directory: test/fixtures/organization
+  - name: organization-optimized-compliance
+    driver:
+      root_module_directory: test/fixtures/organization_org_compliance
