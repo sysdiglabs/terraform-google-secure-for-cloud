@@ -34,7 +34,6 @@ with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr,
         orgBenchRole = Iam("Cloud Bench Role")
 
     with Cluster("Secure for Cloud (children project)"):
-        ccBenchRole = Iam("Cloud Bench Role")
         ccPubSub = PubSub("CC PubSub Topic")
         ccEventarc = Code("CloudRun\nEventarc Trigger")
         ccCloudRun = Run("Cloud Connector")
@@ -63,5 +62,4 @@ with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr,
     csCloudBuild >> sds
     ccCloudRun >> sds
 
-    ccBenchRole <<  Edge(color=color_non_important) <<  bench
     orgBenchRole <<  Edge(color=color_non_important) <<  bench
