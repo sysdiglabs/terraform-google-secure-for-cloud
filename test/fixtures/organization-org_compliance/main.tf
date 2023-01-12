@@ -51,9 +51,6 @@ module "sfc_example_organization_org-compliance" {
   }
   source = "../../../examples/organization-org_compliance"
 
-  organization_domain    = var.organization_domain
-  name                   = "sfc${random_string.random.result}"
-  repository_project_ids = [var.project_id]
-  deploy_scanning        = true
-  deploy_benchmark       = false # we cannot enable this since we cannot reuse current workload pool if its softdeleted
+  organization_domain = var.organization_domain
+  name                = "sfc${random_string.random.result}"
 }

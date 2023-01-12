@@ -21,6 +21,9 @@ suites:
   - name: organization
     driver:
       root_module_directory: test/fixtures/organization
-  - name: organization-optimized-compliance
-    driver:
-      root_module_directory: test/fixtures/organization-org_compliance
+
+# this test does not make sense, since its the same as the organization
+# besides, with org compliance, but on both tests
+#  - name: organization-optimized-compliance
+#    driver:
+#      root_module_directory: test/fixtures/organization-org_compliance
