@@ -34,4 +34,3 @@ variable "project_id" {
   description = "ID of project to run the benchmark on"
   default     = ""
 }
-
