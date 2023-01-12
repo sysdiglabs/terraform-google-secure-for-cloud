@@ -91,7 +91,7 @@ module "secure-for-cloud_example_organization" {
     google.multiproject      = google.multiproject
     google-beta.multiproject = google-beta.multiproject
   }
-  source = "../terraform-google-secure-for-cloud/examples/org-workload-identity-provider"
+  source = "../terraform-google-secure-for-cloud/examples/organization-org_compliance"
 
   organization_domain = "<ORG_DOMAIN>"
   name                = "<NAME>"

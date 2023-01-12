@@ -49,7 +49,7 @@ module "sfc_example_organization_workload" {
     google.multiproject      = google.multiproject
     google-beta.multiproject = google-beta.multiproject
   }
-  source = "../../../examples/org-workload-identity-provider"
+  source = "../../../examples/organization-org_compliance"
 
   organization_domain = "draios.com"
   name                = "sfc${random_string.random.result}"
