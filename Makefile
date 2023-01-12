@@ -25,6 +25,7 @@ clean:
 # 'missing provider provider["registry.terraform.io/hashicorp/google"].multiproject'
 generate-terraform-providers:
 	./examples/organization/.generate-providers.sh
+	./examples/org-workload-identity-provider/.generate-providers.sh
 
 terraform-init: generate-terraform-providers
 	find -name "*.tf" | xargs dirname | uniq | xargs -I% -P0 sh -c 'cd %; terraform init --backend=false' 1>/dev/null
