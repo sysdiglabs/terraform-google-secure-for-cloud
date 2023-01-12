@@ -88,8 +88,7 @@ module "secure-for-cloud_example_organization" {
   }
 
   source = "sysdiglabs/secure-for-cloud/google//examples/organization"
-  organization_domain = "<ORG_DOMAIN>"
-  name                = "<NAME>" 
+  organization_domain       = "<ORG_DOMAIN>"
 }
 ```
 

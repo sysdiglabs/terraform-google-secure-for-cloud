@@ -54,7 +54,5 @@ module "sfc_example_organization_workload" {
 
   organization_domain = "draios.com"
   name                = "sfc${random_string.random.result}"
-//  repository_project_ids = [var.project_id]
-//  deploy_benchmark       = false
 }
 
