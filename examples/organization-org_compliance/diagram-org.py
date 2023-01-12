@@ -31,7 +31,7 @@ with Diagram("Sysdig Secure for Cloud\n(organization)", graph_attr=diagram_attr,
 
     with Cluster("GCP organization project", graph_attr={"bgcolor": "pink"}):
         ccProjectSink = Custom("\nLog Router \n Sink", "../../resources/sink.png")
-        orgBenchRole = Iam("Cloud Bench Role")
+        orgBenchRole = Iam("WorkloadIdentityPool\n+ServiceAccount\n+Role")
 
     with Cluster("Secure for Cloud (children project)"):
         ccPubSub = PubSub("CC PubSub Topic")
