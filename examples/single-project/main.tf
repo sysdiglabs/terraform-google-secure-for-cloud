@@ -40,6 +40,7 @@ module "cloud_connector" {
   cloud_connector_sa_email   = google_service_account.connector_sa.email
   connector_pubsub_topic_id  = module.connector_project_sink.pubsub_topic_id
   secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
+  image_name                 = var.cloud_connector_image
 
   deploy_scanning = var.deploy_scanning
 }

@@ -31,6 +31,12 @@ variable "benchmark_role_name" {
   default     = "sysdigcloudbench"
 }
 
+variable "cloud_connector_image" {
+  type        = string
+  description = "The image to use for the Cloud Connector."
+  default     = "us-docker.pkg.dev/sysdig-public-registry/secure-for-cloud/cloud-connector:latest"
+}
+
 
 #
 # general
