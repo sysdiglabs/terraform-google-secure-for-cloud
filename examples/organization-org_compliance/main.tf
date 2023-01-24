@@ -124,9 +124,9 @@ module "cloud_bench_workload_identity" {
   count  = var.deploy_benchmark ? 1 : 0
   source = "../../modules/services/cloud-bench-workload-identity"
 
-  organization_domain   = var.organization_domain
-  role_name             = var.benchmark_role_name
-  regions               = var.benchmark_regions
-  project_ids           = var.benchmark_project_ids
-  project_id            = data.google_client_config.current.project
+  organization_domain = var.organization_domain
+  role_name           = var.benchmark_role_name
+  regions             = var.benchmark_regions
+  project_ids         = var.benchmark_project_ids
+  project_id          = data.google_client_config.current.project
 }
