@@ -207,7 +207,7 @@ $ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_
 $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool.pool' <PROJECT_ID>/sysdigcloud
 $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' <PROJECT_ID>/sysdigcloud/sysdigcloud
  ```
- 
+
  The import resource to use, is the one pointed out in your terraform plan/apply error messsage
  ```
  -- for
@@ -215,13 +215,13 @@ Error: Error creating WorkloadIdentityPool: googleapi: Error 409: Requested enti
   with module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool,
   on .... in resource "google_iam_workload_identity_pool" "pool":
   resource "google_iam_workload_identity_pool" "pool" {
-  
+
  -- use
  ' module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool' as your import resource
- 
+
  -- such as
  $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool' 'org-child-project-1/sysdigcloud'
- 
+
  ```
 
  Note: if you're using terragrunt, run `terragrunt import`
