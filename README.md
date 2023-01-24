@@ -187,7 +187,7 @@ A: Some resources we use, such as the [`google_iam_workload_identity_pool_provid
 
 ### Q: Getting "Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists"<br/>
 A: Currently Sysdig Backend does not support dynamic WorkloadPool and it's name is fixed to `sysdigcloud`.
-<br/>Besides, Google, only performs a soft-deletion of this resource.
+<br/>Moreover, Google, only performs a soft-deletion of this resource.
 https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers#delete-pool
 > You can undelete a pool for up to 30 days after deletion. After 30 days, deletion is permanent. Until a pool is permanently deleted, you cannot reuse its   name when creating a new workload identity pool.<br/>
 
@@ -206,6 +206,22 @@ $ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_
 # ex.: for organization example you should change its reference too, per project
 $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool.pool' <PROJECT_ID>/sysdigcloud
 $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' <PROJECT_ID>/sysdigcloud/sysdigcloud
+ ```
+ 
+ The import resource to use, is the one pointed out in your terraform plan/apply error messsage
+ ```
+ -- for
+Error: Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists
+  with module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool,
+  on .... in resource "google_iam_workload_identity_pool" "pool":
+  resource "google_iam_workload_identity_pool" "pool" {
+  
+ -- use
+ ' module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool' as your import resource
+ 
+ -- such as
+ $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool' 'org-child-project-1/sysdigcloud'
+ 
  ```
 
  Note: if you're using terragrunt, run `terragrunt import`
