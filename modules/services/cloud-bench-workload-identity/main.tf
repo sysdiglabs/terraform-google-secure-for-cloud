@@ -1,14 +1,26 @@
+data "google_organization" "org" {
+  domain = var.organization_domain
+}
+
+data "google_projects" "all_projects" {
+  filter = "parent.id:${data.google_organization.org.org_id} parent.type:organization lifecycleState:ACTIVE"
+}
+
 locals {
-  project_ids = var.is_organizational ? var.project_ids : [var.project_id]
+  # If specific projects are specified, use that list. Otherwise, use all active projects in the org
+  project_ids = length(var.project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.project_ids
+
+  # Fetch both the project ID and project number (Needed by Workload Identity Federation)
+  project_id_to_number_map = { for p in data.google_projects.all_projects.projects : p.project_id => p.number }
 }
 
 module "trust_relationship" {
   source                = "./trust_relationship"
   role_name             = var.role_name
-  project_ids           = local.project_ids
   organization_domain   = var.organization_domain
   project_id            = var.project_id
-  project_id_number_map = var.project_id_number_map
+  project_ids           = local.project_ids
+  project_id_number_map = local.project_id_to_number_map
 }
 
 module "task" {
@@ -16,7 +28,7 @@ module "task" {
   project_id          = var.project_id
   project_ids         = local.project_ids
   regions             = var.regions
-  is_organizational   = var.is_organizational
+  is_organizational   = true
   organization_domain = var.organization_domain
 
   depends_on = [module.trust_relationship]

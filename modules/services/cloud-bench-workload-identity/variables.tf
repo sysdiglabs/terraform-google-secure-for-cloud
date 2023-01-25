@@ -10,34 +10,18 @@ variable "role_name" {
   default     = "sysdigcloudbench"
 }
 
-#For single project
 variable "project_id" {
   type        = string
-  description = "Google cloud project ID to run Benchmarks on. It will create a trust-relationship, to allow Sysdig usage."
-  default     = ""
+  description = "Google cloud project ID in which Workload Identity Federation resources will be provisioned."
 }
 
-# For organizational
 variable "project_ids" {
   type        = list(string)
-  description = "Google cloud project IDs to run Benchmarks on. It will create a trust-relationship on each, to allow Sysdig usage. If empty, all organization projects will be defaulted."
+  description = "Google cloud project IDs to onboard. If empty, all projects within the organization will be onboarded."
   default     = []
-}
-
-variable "project_id_number_map" {
-  type        = map(string)
-  description = "GCP project id to project number map"
-  default     = {}
-}
-
-variable "is_organizational" {
-  type        = bool
-  description = "Whether this task is being created at the org or project level"
-  default     = false
 }
 
 variable "organization_domain" {
   type        = string
   description = "Organization domain. e.g. sysdig.com"
-  default     = ""
 }
