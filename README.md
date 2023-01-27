@@ -39,10 +39,12 @@ If you're unsure about what/how to use this module, please fill the [questionnai
 * [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available)
   * Do not confuse required `region` with GCP location or zone. [Identifying a region or zone](https://cloud.google.com/compute/docs/regions-zones/#identifying_a_region_or_zone)
 * All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameter of each example.<br/>
-* This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
 * For **free subscription** users, beware that organizational examples may not deploy properly due to the [1 cloud-account limitation](https://docs.sysdig.com/en/docs/administration/administration-settings/subscription/#cloud-billing-free-tier). Open an Issue so we can help you here!
-
-
+* This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
+  * For a normal load, it should be <150$/month aprox.
+  * [Cloud Logging API](https://cloud.google.com/service-usage/docs/enabled-service#default) is activated by default so no extra cost here
+  * Cloud Run instance comes as the most expensive service. Default [cpu/memory specs](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/modules/services/cloud-connector/variables.tf#L73-L83), for an ingestion of 35KK events/hour, for 2 instances 24x7 usage
+  * Cloud Run ingests events from a pub/sub topic, with no retention. It's cost is quite descpreciable, but you can check with the calculator based on the events of the  Log Explorer console and 4KB of size per event aprox.<br/>Beware that the logs we consume are scoped to the projects, and we exclude kubernetes events `logName=~"^projects/SCOPED_PROJECT_OR_ORG/logs/cloudaudit.googleapis.com"`
 <br/>
 
 ## Prerequisites
