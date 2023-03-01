@@ -193,7 +193,10 @@ A: Currently Sysdig Backend does not support dynamic WorkloadPool and it's name 
 https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers#delete-pool
 > You can undelete a pool for up to 30 days after deletion. After 30 days, deletion is permanent. Until a pool is permanently deleted, you cannot reuse its   name when creating a new workload identity pool.<br/>
 
-<br/>S: For the moment, federation workload identity pool+provider have fixed name. In case you want to reuse it, you can reactivate and import it, into your terraform state manually.
+<br/>S: For the moment, federation workload identity pool+provider have fixed name. In case you want to reuse it,
+you can make use of the `reuse_workload_identity_pool` attribute available in some examples.
+
+Alternatively, you can reactivate and import it, into your terraform state manually.
 ```bash
 # re-activate pool and provider
 $ gcloud iam workload-identity-pools undelete sysdigcloud  --location=global
