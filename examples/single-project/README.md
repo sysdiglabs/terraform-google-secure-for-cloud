@@ -114,7 +114,7 @@ module "secure-for-cloud_example_single-project" {
 | <a name="input_deploy_benchmark"></a> [deploy\_benchmark](#input\_deploy\_benchmark) | whether benchmark module is to be deployed | `bool` | `true` | no |
 | <a name="input_deploy_scanning"></a> [deploy\_scanning](#input\_deploy\_scanning) | true/false whether scanning module is to be deployed | `bool` | `false` | no |
 | <a name="input_name"></a> [name](#input\_name) | Suffix to be assigned to all created resources. Modify this value in case of conflict / 409 error to bypass Google soft delete issues | `string` | `"sfc"` | no |
-| <a name="input_reuse_workload_identity_pool"></a> [reuse\_workload\_identity\_pool](#input\_reuse\_workload\_identity\_pool) | Reuse existing workload identity pool | `bool` | `false` | no |
+| <a name="input_reuse_workload_identity_pool"></a> [reuse\_workload\_identity\_pool](#input\_reuse\_workload\_identity\_pool) | Reuse existing workload identity pool, with name 'sysdigcloud'. Can be used when redeploying after destroy, by undeleting the previous workload identity pool, which is kept for 30 days and results in an error in redeployment. | `bool` | `false` | no |
 
 ## Outputs
 
