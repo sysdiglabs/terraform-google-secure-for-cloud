@@ -12,6 +12,6 @@ variable "role_name" {
 
 variable "reuse_workload_identity_pool" {
   type        = bool
-  description = "Reuse existing workload identity pool, with name 'sysdigcloud'. Can be used when redeploying after destroy, by undeleting the previous workload identity pool, which is kept for 30 days and results in an error in redeployment."
+  description = "Reuse existing workload identity pool, from previous deployment, with name 'sysdigcloud'. <br/> Will help overcome <a href='https://github.com/sysdiglabs/terraform-google-secure-for-cloud#q-getting-error-creating-workloadidentitypool-googleapi-error-409-requested-entity-already-exists'>redeploying error due to GCP softdelete</a><br/>"
   default     = false
 }
