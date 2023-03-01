@@ -48,7 +48,7 @@
 
 ## 1. Check::Pre-Commit
 
-Technical validation for terraform **lint**, **validation**, and **documentation**
+Technical validation for terraform **lint**, **validation**, **documentation** and **security scan**.
 
 We're using **pre-commit** |  https://pre-commit.com
 - Defined in `/.pre-commit-config.yaml`
@@ -58,6 +58,7 @@ We're using **pre-commit** |  https://pre-commit.com
   <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
   <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
   ```
+- pre-requirement download, see [Makefile](./Makefile)
 
 ## 2. Check::Integration tests
 
