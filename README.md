@@ -39,10 +39,12 @@ If you're unsure about what/how to use this module, please fill the [questionnai
 * [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available)
   * Do not confuse required `region` with GCP location or zone. [Identifying a region or zone](https://cloud.google.com/compute/docs/regions-zones/#identifying_a_region_or_zone)
 * All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameter of each example.<br/>
-* This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
 * For **free subscription** users, beware that organizational examples may not deploy properly due to the [1 cloud-account limitation](https://docs.sysdig.com/en/docs/administration/administration-settings/subscription/#cloud-billing-free-tier). Open an Issue so we can help you here!
-
-
+* This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
+  * For a normal load, it should be <150$/month aprox.
+  * [Cloud Logging API](https://cloud.google.com/service-usage/docs/enabled-service#default) is activated by default so no extra cost here
+  * Cloud Run instance comes as the most expensive service. Default [cpu/memory specs](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/modules/services/cloud-connector/variables.tf#L73-L83), for an ingestion of 35KK events/hour, for 2 instances 24x7 usage
+  * Cloud Run ingests events from a pub/sub topic, with no retention. It's cost is quite descpreciable, but you can check with the calculator based on the events of the  Log Explorer console and 4KB of size per event aprox.<br/>Beware that the logs we consume are scoped to the projects, and we exclude kubernetes events `logName=~"^projects/SCOPED_PROJECT_OR_ORG/logs/cloudaudit.googleapis.com"`
 <br/>
 
 ## Prerequisites
@@ -187,7 +189,7 @@ A: Some resources we use, such as the [`google_iam_workload_identity_pool_provid
 
 ### Q: Getting "Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists"<br/>
 A: Currently Sysdig Backend does not support dynamic WorkloadPool and it's name is fixed to `sysdigcloud`.
-<br/>Besides, Google, only performs a soft-deletion of this resource.
+<br/>Moreover, Google, only performs a soft-deletion of this resource.
 https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers#delete-pool
 > You can undelete a pool for up to 30 days after deletion. After 30 days, deletion is permanent. Until a pool is permanently deleted, you cannot reuse its   name when creating a new workload identity pool.<br/>
 
@@ -200,12 +202,28 @@ $ gcloud iam workload-identity-pools providers undelete sysdigcloud --workload-i
 # import to terraform state
 # for this you have to adapt the import resource to your specific usage
 # ex.: for single-project, input your project-id
-$ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool.pool' sysdigcloud
-$ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
+$ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool.pool' <PROJECT_ID>/sysdigcloud
+$ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' <PROJECT_ID>/sysdigcloud/sysdigcloud
 
 # ex.: for organization example you should change its reference too, per project
-$ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool.pool' sysdigcloud
-$ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<YOUR_PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' sysdigcloud/sysdigcloud
+$ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool.pool' <PROJECT_ID>/sysdigcloud
+$ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' <PROJECT_ID>/sysdigcloud/sysdigcloud
+ ```
+
+ The import resource to use, is the one pointed out in your terraform plan/apply error messsage
+ ```
+ -- for
+Error: Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists
+  with module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool,
+  on .... in resource "google_iam_workload_identity_pool" "pool":
+  resource "google_iam_workload_identity_pool" "pool" {
+
+ -- use
+ ' module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool' as your import resource
+
+ -- such as
+ $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool' 'org-child-project-1/sysdigcloud'
+
  ```
 
  Note: if you're using terragrunt, run `terragrunt import`

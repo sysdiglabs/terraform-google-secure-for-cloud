@@ -31,6 +31,13 @@ variable "benchmark_role_name" {
   default     = "sysdigcloudbench"
 }
 
+
+variable "cloud_connector_image" {
+  type        = string
+  description = "The image to use for the Cloud Connector."
+  default     = "us-docker.pkg.dev/sysdig-public-registry/secure-for-cloud/cloud-connector:latest"
+}
+
 variable "reuse_workload_identity_pool" {
   type        = bool
   description = "Reuse existing workload identity pool, with name 'sysdigcloud'. Can be used when redeploying after destroy, by undeleting the previous workload identity pool, which is kept for 30 days and results in an error in redeployment."
@@ -42,7 +49,7 @@ variable "reuse_workload_identity_pool" {
 #
 variable "name" {
   type        = string
-  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
+  description = "Suffix to be assigned to all created resources. Modify this value in case of conflict / 409 error to bypass Google soft delete issues"
   default     = "sfc"
 
   validation {

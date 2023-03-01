@@ -31,7 +31,6 @@ variable "repository_project_ids" {
   description = "Projects were a `gcr`-named topic will be to subscribe to its repository events. If empty, all organization projects will be defaulted."
 }
 
-
 #
 # benchmark
 #
@@ -59,13 +58,12 @@ variable "benchmark_role_name" {
   default     = "sysdigcloudbench"
 }
 
-
 #
 # general
 #
 variable "name" {
   type        = string
-  description = "Suffix to be assigned to all created resources. Modify this value in case of conflict / 409 error to bypass Google soft delete issues"
+  description = "Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances"
   default     = "sfc"
 
   validation {

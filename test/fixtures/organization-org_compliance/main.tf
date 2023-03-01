@@ -44,16 +44,13 @@ resource "random_string" "random" {
   upper   = false
 }
 
-module "sfc_example_organization" {
+module "sfc_example_organization_org-compliance" {
   providers = {
     google.multiproject      = google.multiproject
     google-beta.multiproject = google-beta.multiproject
   }
-  source = "../../../examples/organization"
+  source = "../../../examples/organization-org_compliance"
 
-  organization_domain    = var.organization_domain
-  name                   = "sfc${random_string.random.result}"
-  repository_project_ids = [var.project_id]
-  deploy_scanning        = true
-  deploy_benchmark       = false # we cannot enable this since we cannot reuse current workload pool if its softdeleted
+  organization_domain = var.organization_domain
+  name                = "sfc${random_string.random.result}"
 }

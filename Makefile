@@ -1,7 +1,11 @@
 deps:
 	go install github.com/terraform-docs/terraform-docs@v0.16.0
 	go install github.com/hashicorp/terraform-config-inspect@latest
-	curl -L "`curl -s https://api.github.com/repos/terraform-linters/tflint/releases/latest | grep -o -E "https://.+?_linux_amd64.zip"`" -o tflint.zip && \
+
+# not working- fixme
+#	curl -L "`curl -s https://api.github.com/repos/terraform-linters/tflint/releases/latest | grep -o -E "https://.+?_linux_amd64.zip"`" -o tflint.zip && \
+
+	curl -L https://github.com/terraform-linters/tflint/releases/download/v0.44.1/tflint_linux_amd64.zip -o tflint.zip && \
 		unzip tflint.zip && \
 		rm tflint.zip && \
 		mv tflint "`go env GOPATH`/bin"
@@ -21,6 +25,7 @@ clean:
 # 'missing provider provider["registry.terraform.io/hashicorp/google"].multiproject'
 generate-terraform-providers:
 	./examples/organization/.generate-providers.sh
+	./examples/organization-org_compliance/.generate-providers.sh
 
 terraform-init: generate-terraform-providers
 	find -name "*.tf" | xargs dirname | uniq | xargs -I% -P0 sh -c 'cd %; terraform init --backend=false' 1>/dev/null

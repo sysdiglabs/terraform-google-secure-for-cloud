@@ -38,4 +38,4 @@ override.tf.json
 #Kitchen test
 .kitchen/*
 test/fixtures/tf_module/.kitchen/
-examples/organization/aliased-providers.tf.json
+**/aliased-providers.tf.json
