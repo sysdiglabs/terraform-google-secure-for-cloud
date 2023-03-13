@@ -93,7 +93,7 @@ module "secure-for-cloud_example_organization" {
     google.multiproject      = google.multiproject
     google-beta.multiproject = google-beta.multiproject
   }
-  source = "../terraform-google-secure-for-cloud/examples/organization-org_compliance"
+  source = "sysdiglabs/secure-for-cloud/google//examples/organization-org_compliance"
 
   organization_domain = "<ORG_DOMAIN>"
   name                = "<NAME>"
