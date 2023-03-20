@@ -6,8 +6,15 @@ variable "cloud_connector_sa_email" {
 
 variable "sysdig_secure_api_token" {
   type        = string
-  description = "Sysdig's Secure API Token"
+  description = "Sysdig's Secure API Token. Deprecated, use sysdig_secure_api_token_secret_id instead, with a secret manager secret."
+  default     = ""
   sensitive   = true
+}
+
+variable "sysdig_secure_api_token_secret_id" {
+  type        = string
+  description = "Sysdig's Secure API Token secret id"
+  default     = ""
 }
 
 variable "sysdig_secure_endpoint" {

@@ -32,9 +32,9 @@ module "cloud_connector" {
   source = "../../modules/services/cloud-connector"
   name   = "${var.name}-cloudconnector"
 
-  sysdig_secure_endpoint  = data.sysdig_secure_connection.current.secure_url
-  sysdig_secure_api_token = data.sysdig_secure_connection.current.secure_api_token
-  verify_ssl              = local.verify_ssl
+  sysdig_secure_endpoint            = data.sysdig_secure_connection.current.secure_url
+  sysdig_secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
+  verify_ssl                        = local.verify_ssl
 
   project_id                 = data.google_client_config.current.project
   cloud_connector_sa_email   = google_service_account.connector_sa.email

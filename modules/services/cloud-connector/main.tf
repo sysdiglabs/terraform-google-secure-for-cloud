@@ -78,11 +78,29 @@ resource "google_cloud_run_service" "cloud_connector" {
           container_port = 5000
         }
 
-        env {
-          #TODO: Put secrets in secretsmanager?
-          name  = "SECURE_API_TOKEN"
-          value = var.sysdig_secure_api_token
+        dynamic "env" {
+          for_each = var.sysdig_secure_api_token == "" ? [] : [1]
+
+          content {
+            name  = "SECURE_API_TOKEN"
+            value = var.sysdig_secure_api_token
+          }
         }
+
+        dynamic "env" {
+          for_each = var.sysdig_secure_api_token_secret_id == "" ? [] : [1]
+
+          content {
+            name = "SECURE_API_TOKEN"
+            value_from {
+              secret_key_ref {
+                name = var.sysdig_secure_api_token_secret_id
+                key  = "latest"
+              }
+            }
+          }
+        }
+
 
         dynamic "env" {
           for_each = toset(local.task_env_vars)
