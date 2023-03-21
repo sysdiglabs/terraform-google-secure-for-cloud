@@ -1,9 +1,3 @@
-variable "regions" {
-  type        = list(string)
-  description = "List of regions in which to run the benchmark. If empty, the task will contain all regions by default."
-  default     = []
-}
-
 variable "role_name" {
   type        = string
   description = "The name of the Service Account/Role that will be created. Modify this value in case of conflict / 409 error to bypass Google soft delete"

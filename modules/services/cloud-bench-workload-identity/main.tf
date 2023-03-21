@@ -22,14 +22,3 @@ module "trust_relationship" {
   project_ids           = local.project_ids
   project_id_number_map = local.project_id_to_number_map
 }
-
-module "task" {
-  source              = "./task"
-  project_id          = var.project_id
-  project_ids         = local.project_ids
-  regions             = var.regions
-  is_organizational   = true
-  organization_domain = var.organization_domain
-
-  depends_on = [module.trust_relationship]
-}

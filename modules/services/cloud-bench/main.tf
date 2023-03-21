@@ -10,14 +10,3 @@ module "trust_relationship" {
   role_name                    = var.role_name
   reuse_workload_identity_pool = var.reuse_workload_identity_pool
 }
-
-module "task" {
-  source              = "./task"
-  project_id          = var.project_id
-  project_ids         = local.project_ids
-  regions             = var.regions
-  is_organizational   = var.is_organizational
-  organization_domain = var.organization_domain
-
-  depends_on = [module.trust_relationship]
-}
