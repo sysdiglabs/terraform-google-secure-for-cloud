@@ -59,7 +59,6 @@ No modules.
 | <a name="input_connector_pubsub_topic_id"></a> [connector\_pubsub\_topic\_id](#input\_connector\_pubsub\_topic\_id) | Cloud Connector PubSub single account topic id | `string` | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | organizational member project ID where the secure-for-cloud workload is going to be deployed | `string` | n/a | yes |
 | <a name="input_secure_api_token_secret_id"></a> [secure\_api\_token\_secret\_id](#input\_secure\_api\_token\_secret\_id) | Sysdig Secure API token secret id | `string` | n/a | yes |
-| <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token | `string` | n/a | yes |
 | <a name="input_sysdig_secure_endpoint"></a> [sysdig\_secure\_endpoint](#input\_sysdig\_secure\_endpoint) | Sysdig's Secure API URL | `string` | n/a | yes |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | Amount of CPU to reserve for cloud-connector cloud run service | `string` | `"1"` | no |
 | <a name="input_deploy_scanning"></a> [deploy\_scanning](#input\_deploy\_scanning) | true/false whether scanning module is to be deployed | `bool` | `false` | no |
@@ -69,6 +68,8 @@ No modules.
 | <a name="input_max_instances"></a> [max\_instances](#input\_max\_instances) | Max number of instances for the Cloud Connector | `number` | `1` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | Amount of memory to reserve for cloud-connector cloud run service | `string` | `"500Mi"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to be assigned to all child resources. A suffix may be added internally when required. Use default value unless you need to install multiple instances | `string` | `"sfc-cloudconnector"` | no |
+| <a name="input_sysdig_secure_api_token"></a> [sysdig\_secure\_api\_token](#input\_sysdig\_secure\_api\_token) | Sysdig's Secure API Token. Deprecated, use sysdig\_secure\_api\_token\_secret\_id instead, with a secret manager secret. | `string` | `""` | no |
+| <a name="input_sysdig_secure_api_token_secret_id"></a> [sysdig\_secure\_api\_token\_secret\_id](#input\_sysdig\_secure\_api\_token\_secret\_id) | Sysdig's Secure API Token secret id | `string` | `""` | no |
 | <a name="input_verify_ssl"></a> [verify\_ssl](#input\_verify\_ssl) | Verify the SSL certificate of the Secure endpoint | `bool` | `true` | no |
 
 ## Outputs

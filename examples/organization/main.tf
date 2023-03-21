@@ -1,9 +1,11 @@
 locals {
-  verify_ssl             = length(regexall("^https://.*?\\.sysdig.com/?", data.sysdig_secure_connection.current.secure_url)) != 0
-  connector_filter       = <<EOT
+  verify_ssl       = length(regexall("^https://.*?\\.sysdig.com/?", data.sysdig_secure_connection.current.secure_url)) != 0
+  connector_filter = <<EOT
   logName=~"/logs/cloudaudit.googleapis.com%2Factivity$" AND -resource.type="k8s_cluster"
 EOT
-  repository_project_ids = var.deploy_scanning ? length(var.repository_project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.repository_project_ids : []
+  repository_project_ids = var.deploy_scanning ? length(var.repository_project_ids) == 0 ? [
+    for p in data.google_projects.all_projects.projects : p.project_id
+  ] : var.repository_project_ids : []
 }
 
 data "google_organization" "org" {
@@ -67,13 +69,13 @@ module "secure_secrets" {
 module "cloud_connector" {
   source = "../../modules/services/cloud-connector"
 
-  cloud_connector_sa_email   = google_service_account.connector_sa.email
-  sysdig_secure_endpoint     = data.sysdig_secure_connection.current.secure_url
-  sysdig_secure_api_token    = data.sysdig_secure_connection.current.secure_api_token
-  connector_pubsub_topic_id  = module.connector_organization_sink.pubsub_topic_id
-  secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
-  max_instances              = var.max_instances
-  project_id                 = data.google_client_config.current.project
+  cloud_connector_sa_email          = google_service_account.connector_sa.email
+  sysdig_secure_endpoint            = data.sysdig_secure_connection.current.secure_url
+  sysdig_secure_api_token_secret_id = module.secure_secrets.secure_api_token_secret_name
+  connector_pubsub_topic_id         = module.connector_organization_sink.pubsub_topic_id
+  secure_api_token_secret_id        = module.secure_secrets.secure_api_token_secret_name
+  max_instances                     = var.max_instances
+  project_id                        = data.google_client_config.current.project
 
   #defaults
   name              = "${var.name}-cloudconnector"
