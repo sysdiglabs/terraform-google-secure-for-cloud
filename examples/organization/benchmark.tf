@@ -14,6 +14,5 @@ module "cloud_bench" {
   is_organizational   = true
   organization_domain = var.organization_domain
   role_name           = "${var.name}${var.benchmark_role_name}"
-  regions             = var.benchmark_regions
   project_ids         = local.benchmark_projects_ids
 }
