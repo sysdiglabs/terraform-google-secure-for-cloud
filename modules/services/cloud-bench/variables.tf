@@ -24,6 +24,8 @@ variable "is_organizational" {
   default     = false
 }
 
+# Linting ignored as published snippets still reference this param, and will fail if it is removed.
+# tflint-ignore: terraform_unused_declarations
 variable "organization_domain" {
   type        = string
   description = "Organization domain. e.g. sysdig.com"
