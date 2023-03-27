@@ -124,28 +124,7 @@ Check that deployment logs throw no errors and can go to [confirm services are w
 <br/>
 <br/>
 
-2. Register **Benchmark Task**
-    - Create a single task to scope the organization group ids to be assessed.
-    - This script does not cover it, but specific regions can be scoped too. Check `Benchmarks-V2` REST-API for more detail
-   ```shell
-    $ curl -s "https://<SYSDIG_SECURE_ENDPOINT>/api/benchmarks/v2/tasks" \
-    --header "Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>" \
-    -X POST \
-    -H 'Accept: application/json' \
-    -H 'Content-Type: application/json' \
-    -d '{
-    "name": "Sysdig Secure for Cloud (GCP) - Organization",
-    "schedule": "0 3 * * *",
-    "schema": "gcp_foundations_bench-1.2.0",
-    "scope": "gcp.projectId in ('<GCP_PROJECT_ID1>',...,'<GCP_PROJECT_IDN>')'",
-    "enabled": true
-    }'
-    ```
-
-<br/>
-<br/>
-
-3. Get **Sysdig Federation Trusted Identity**
+2. Get **Sysdig Federation Trusted Identity**
    - For later usage, fetch the Trusted Identity, which is composed by the parts `SYSDIG_AWS_ACCOUNT_ID` and `SYSDIG_AWS_ROLE_NAME`
     ```shell
     $ curl -s 'https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/gcp/trustedIdentity' \
@@ -156,7 +135,7 @@ Check that deployment logs throw no errors and can go to [confirm services are w
     arn:aws:iam::SYSDIG_AWS_ACCOUNT_ID:role/SYSDIG_AWS_ROLE_NAME
     ```
    <br/><br/>
-4. Get **Sysdig ExternalId**
+3. Get **Sysdig ExternalId**
     - For later usage, fetch `SYSDIG_AWS_EXTERNAL_ID` from one of the previously registered GCP projects. All accounts will have same id (you only need to run it once).
     ```shell
     $ curl -s "https://<SYSDIG_SECURE_ENDPOINT>/api/cloud/v2/accounts/<GCP_PROJECT_ID>?includeExternalId=true" \
