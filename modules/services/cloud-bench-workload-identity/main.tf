@@ -18,7 +18,6 @@ locals {
   project_ids = length(var.project_ids) == 0 ? [for p in data.google_projects.all_projects.projects : p.project_id] : var.project_ids
 
   # Fetch both the project ID and project number (Needed by Workload Identity Federation)
-//  project_id_to_number_map = { for p in data.google_projects.all_projects.projects : p.project_id => p.number }
   project_id_to_number_map = { for project_id, project in data.google_project.project : project_id => project.number }
 }
 
