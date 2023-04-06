@@ -8,7 +8,7 @@ data "google_projects" "all_projects" {
 
 data "google_project" "project" {
   for_each = {
-  for project_id in local.project_ids : project_id => project_id
+    for project_id in local.project_ids : project_id => project_id
   }
   project_id = each.key
 }
