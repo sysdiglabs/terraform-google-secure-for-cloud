@@ -15,7 +15,7 @@ list_projects_recursive() {
 }
 
 # List projects under the root organization
-org_id=""
+org_id="933620940614"
 projectIds=()
 projectIds+=$(gcloud projects list --filter="parent.type=organization AND parent.id=$org_id" --format="value(projectId)")
 
@@ -27,4 +27,13 @@ for folder in $folders; do
   projectIds+=$(list_projects_recursive "$folder")
 done
 
-echo $projectIds
+projectList="["
+
+for value in $projectIds; do
+  projectList="$projectList\"$value\", "
+done
+
+# Remove the trailing comma and space
+projectList="${projectList%, }]"
+
+echo $projectList
