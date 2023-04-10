@@ -15,7 +15,8 @@ list_projects_recursive() {
 }
 
 # List projects under the root organization
-org_id="933620940614"
+# Please enter a valid org-id
+org_id=""
 projectIds=()
 projectIds+=$(gcloud projects list --filter="parent.type=organization AND parent.id=$org_id" --format="value(projectId)")
 
