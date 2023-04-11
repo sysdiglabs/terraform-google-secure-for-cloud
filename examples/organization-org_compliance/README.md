@@ -16,10 +16,15 @@ This example deploys Secure for Cloud into a GCP organizational account.
 ## Prerequisites
 
 1. Configure [Terraform **GCP** Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs)
-2. Following **roles** are required in your GCP organization/project credentials
+2. Run the script at `resources/fetch-gcp-projects.sh`. copy the output and provide it as input in the module
+   as benchmark_project_ids. e.g benchmark_project_ids = ["id1","id2"]. This script provides list of 
+   all projects under folders and subfolders under an organization. If you don't provide this list
+   by default only those projects are selected which are directly under the org.
+3. Following **roles** are required in your GCP organization/project credentials
    * _Owner_
    * _Organization Admin_
-3. Besides, the following GCP **APIs must be enabled** to deploy resources correctly for:
+   * _Organization ID_
+4. Besides, the following GCP **APIs must be enabled** to deploy resources correctly for:
 
 ### Cloud Connector
 
