@@ -1,6 +1,17 @@
 #!/bin/bash
 
+#
+# usage
+# ./fetch-gcp-projects.sh <ORG-ID>
+
+# will return
+# ["A", "B", "C"]
+#
+
+
+#
 # Function to list projects under a folder recursively
+#
 list_projects_recursive() {
   local folder_id="$1"
 
@@ -14,9 +25,20 @@ list_projects_recursive() {
   done
 }
 
-# List projects under the root organization
-# Please enter a valid org-id
-org_id=""
+
+
+#
+# main flow
+#
+
+if [ $# -ne 1 ]; then
+  echo "script must be launched with the organization id"
+  echo "usage $0 organizationId"
+  exit 1
+fi
+
+
+org_id=$1
 projectIds=()
 projectIds+=$(gcloud projects list --filter="parent.type=organization AND parent.id=$org_id" --format="value(projectId)")
 
