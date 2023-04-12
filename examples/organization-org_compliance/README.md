@@ -17,7 +17,7 @@ This example deploys Secure for Cloud into a GCP organizational account.
 
 1. Configure [Terraform **GCP** Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs)
 2. Run the script at `resources/fetch-gcp-projects.sh <organization_ID>`. copy the output and provide it as input in the module
-   as benchmark_project_ids. e.g benchmark_project_ids = ["id1","id2"]. This script provides list of 
+   as benchmark_project_ids. e.g benchmark_project_ids = ["id1","id2"]. This script provides list of
    all projects under folders and subfolders under an organization. If you don't provide this list
    by default only those projects are selected which are directly under the org.
 3. To find your organization id please visit https://cloud.google.com/resource-manager/reference/rest/v1/projects/getAncestry
