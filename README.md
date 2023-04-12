@@ -152,8 +152,14 @@ output "me" {
 ```
 
 ### Q: In organizaitonal setup, Compliance trust-relationship is not being deployed on our projects
-A: If your organizational uses folders we currently don't support that.
-<br/>S: A workaround would be to use the `benchmark_project_ids` parameter so you can define the projects where compliance role is to be deployed explicitly. Let us know if this workaround won't be enough and we will work on implementing a solution.
+
+As for 2023 April, organizations with projects under organizational unit folders, is supported with the
+[organizational compliance example](./examples/organization-org_compliance)
+
+<br/>S: If you want to target specific projects, you can still use the `benchmark_project_ids` parameter so you can define
+the projects where compliance role is to be deployed explicitly.
+<br/>You can use the [fetch-gcp-rojects.sh](./resources/fetch-gcp-projects.sh) utility to list organization member projects
+<br/>Let us know if this workaround won't be enough, and we will work on implementing a solution.
 
 ### Q: Compliance is not working. How can I check everything is properly setup
 
