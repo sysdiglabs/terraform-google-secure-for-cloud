@@ -202,43 +202,43 @@ https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers#delet
 <br/>S: For the moment, federation workload identity pool+provider have fixed name.
 Therea are several options here
 
-In case you want to reuse it, you can make use of the `reuse_workload_identity_pool` attribute available in some
+- For single-account, in case you want to reuse it, you can make use of the `reuse_workload_identity_pool` attribute available in some
 examples.
+- For organizational setups, you can make use of a single workload-identity for all the organization, with the [/organization-org_compliance](./examples/organization-org_compliance)
+- Alternatively, you can reactivate and import it, into your terraform state manually.
+  ```bash
+  # re-activate pool and provider
+  $ gcloud iam workload-identity-pools undelete sysdigcloud  --location=global
+  $ gcloud iam workload-identity-pools providers undelete sysdigcloud --workload-identity-pool="sysdigcloud" --location=global
 
-Alternatively, you can reactivate and import it, into your terraform state manually.
-```bash
-# re-activate pool and provider
-$ gcloud iam workload-identity-pools undelete sysdigcloud  --location=global
-$ gcloud iam workload-identity-pools providers undelete sysdigcloud --workload-identity-pool="sysdigcloud" --location=global
+  # import to terraform state
+  # for this you have to adapt the import resource to your specific usage
+  # ex.: for single-project, input your project-id
+  $ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool.pool' <PROJECT_ID>/sysdigcloud
+  $ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' <PROJECT_ID>/sysdigcloud/sysdigcloud
 
-# import to terraform state
-# for this you have to adapt the import resource to your specific usage
-# ex.: for single-project, input your project-id
-$ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool.pool' <PROJECT_ID>/sysdigcloud
-$ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' <PROJECT_ID>/sysdigcloud/sysdigcloud
+  # ex.: for organization example you should change its reference too, per project
+  $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool.pool' <PROJECT_ID>/sysdigcloud
+  $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' <PROJECT_ID>/sysdigcloud/sysdigcloud
+   ```
 
-# ex.: for organization example you should change its reference too, per project
-$ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool.pool' <PROJECT_ID>/sysdigcloud
-$ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' <PROJECT_ID>/sysdigcloud/sysdigcloud
- ```
+   The import resource to use, is the one pointed out in your terraform plan/apply error messsage
+   ```
+   -- for
+  Error: Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists
+    with module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool,
+    on .... in resource "google_iam_workload_identity_pool" "pool":
+    resource "google_iam_workload_identity_pool" "pool" {
 
- The import resource to use, is the one pointed out in your terraform plan/apply error messsage
- ```
- -- for
-Error: Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists
-  with module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool,
-  on .... in resource "google_iam_workload_identity_pool" "pool":
-  resource "google_iam_workload_identity_pool" "pool" {
+   -- use
+   ' module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool' as your import resource
 
- -- use
- ' module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool' as your import resource
+   -- such as
+   $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool' 'org-child-project-1/sysdigcloud'
 
- -- such as
- $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool' 'org-child-project-1/sysdigcloud'
+   ```
 
- ```
-
- Note: if you're using terragrunt, run `terragrunt import`
+   Note: if you're using terragrunt, run `terragrunt import`
 
 ### Q: Getting "Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=gcr)"
 ```text
