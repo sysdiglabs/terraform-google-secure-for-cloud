@@ -131,6 +131,11 @@ And a CloudBuild being launched successfully.
 
 ## Troubleshooting
 
+### Q: Error fails not able to find selected project id
+A: Review you're ussing actual project ID, and not number nor name.
+https://cloud.google.com/resource-manager/docs/creating-managing-projects#before_you_begin
+
+
 ### Q: How can I check enabled API Services?
 A: On your Google Cloud account, search for "APIs & Services > Enabled APIs & Services" or run following command
 ```bash
