@@ -13,7 +13,7 @@ Deployed on **Sysdig Backend**
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.21.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | < 4.65.0 |
 | <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | >= 4.21.0 |
 | <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 0.5.21 |
 

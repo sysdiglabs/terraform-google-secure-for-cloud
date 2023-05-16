@@ -25,14 +25,14 @@ module "cloud_connector_gcp" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | = 4.64.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | < 4.65.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | = 4.64.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | < 4.65.0 |
 
 ## Modules
 
@@ -42,14 +42,14 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [google_cloud_run_service.cloud_connector](https://registry.terraform.io/providers/hashicorp/google/4.64.0/docs/resources/cloud_run_service) | resource |
-| [google_cloud_run_service_iam_member.run_invoker](https://registry.terraform.io/providers/hashicorp/google/4.64.0/docs/resources/cloud_run_service_iam_member) | resource |
-| [google_eventarc_trigger.trigger](https://registry.terraform.io/providers/hashicorp/google/4.64.0/docs/resources/eventarc_trigger) | resource |
-| [google_project_iam_member.event_receiver](https://registry.terraform.io/providers/hashicorp/google/4.64.0/docs/resources/project_iam_member) | resource |
-| [google_project_iam_member.run_viewer](https://registry.terraform.io/providers/hashicorp/google/4.64.0/docs/resources/project_iam_member) | resource |
-| [google_project_iam_member.token_creator](https://registry.terraform.io/providers/hashicorp/google/4.64.0/docs/resources/project_iam_member) | resource |
-| [google_client_config.current](https://registry.terraform.io/providers/hashicorp/google/4.64.0/docs/data-sources/client_config) | data source |
-| [google_project.project](https://registry.terraform.io/providers/hashicorp/google/4.64.0/docs/data-sources/project) | data source |
+| [google_cloud_run_service.cloud_connector](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_service) | resource |
+| [google_cloud_run_service_iam_member.run_invoker](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_service_iam_member) | resource |
+| [google_eventarc_trigger.trigger](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/eventarc_trigger) | resource |
+| [google_project_iam_member.event_receiver](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
+| [google_project_iam_member.run_viewer](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
+| [google_project_iam_member.token_creator](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
+| [google_client_config.current](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config) | data source |
+| [google_project.project](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project) | data source |
 
 ## Inputs
 
