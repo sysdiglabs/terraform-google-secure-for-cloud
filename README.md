@@ -82,6 +82,7 @@ Besides, the following GCP **APIs must be enabled** ([how do I check it?](#q-how
 * [Secret Manager API](https://console.cloud.google.com/marketplace/product/google/secretmanager.googleapis.com)
 * [Cloud Build API](https://console.cloud.google.com/marketplace/product/google/cloudbuild.googleapis.com)
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
+* [Recommendations API](https://console.developers.google.com/apis/api/recommender.googleapis.com)
 
 ##### Cloud Benchmarks
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
