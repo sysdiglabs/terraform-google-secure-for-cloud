@@ -75,7 +75,7 @@ Besides, the following GCP **APIs must be enabled** ([how do I check it?](#q-how
 * [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
 * [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
 
-##### Image Cloud Scanning
+##### Cloud Scanning
 * [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
 * [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
 * [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
@@ -84,6 +84,11 @@ Besides, the following GCP **APIs must be enabled** ([how do I check it?](#q-how
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 
 ##### Cloud Infra Entitlement Management
+* [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
+* [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
+* [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
+* [Secret Manager API](https://console.cloud.google.com/marketplace/product/google/secretmanager.googleapis.com)
+* [Cloud Build API](https://console.cloud.google.com/marketplace/product/google/cloudbuild.googleapis.com)
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 * [Recommendations API](https://console.developers.google.com/apis/api/recommender.googleapis.com)
 
