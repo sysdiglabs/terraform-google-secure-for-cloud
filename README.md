@@ -75,16 +75,20 @@ Besides, the following GCP **APIs must be enabled** ([how do I check it?](#q-how
 * [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
 * [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
 
-##### Cloud Scanning
+##### Image Cloud Scanning
 * [Cloud Pub/Sub API](https://console.cloud.google.com/marketplace/product/google/pubsub.googleapis.com)
 * [Cloud Run API](https://console.cloud.google.com/marketplace/product/google/run.googleapis.com)
 * [Eventarc API](https://console.cloud.google.com/marketplace/product/google/eventarc.googleapis.com)
 * [Secret Manager API](https://console.cloud.google.com/marketplace/product/google/secretmanager.googleapis.com)
 * [Cloud Build API](https://console.cloud.google.com/marketplace/product/google/cloudbuild.googleapis.com)
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
+
+##### Cloud Infra Entitlement Management
+* [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 * [Recommendations API](https://console.developers.google.com/apis/api/recommender.googleapis.com)
 
-##### Cloud Benchmarks
+
+##### Compliance
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 * [IAM Service Account Credentials API](https://console.cloud.google.com/marketplace/product/google/iamcredentials.googleapis.com)
 * [Cloud Resource Manager API](https://console.cloud.google.com/marketplace/product/google/cloudresourcemanager.googleapis.com)
