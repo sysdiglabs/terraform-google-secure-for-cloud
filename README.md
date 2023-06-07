@@ -52,6 +52,7 @@ If you're unsure about what/how to use this module, please fill the [questionnai
 Your user **must** have following **roles** in your GCP credentials
 * _Owner_
 * _Organization Admin_ (organizational usage only)
+  - [required](https://github.com/search?l=HCL&q=repo%3Asysdiglabs%2Fterraform-google-secure-for-cloud+%22google_organization%22+language%3AHCL&type=code) for org-wide roles both for image scanning and compliance. also some queries are performed to dig into the org domain, folders and projects.
 
 ### Google Cloud CLI Authentication
 To authorize the cloud CLI to be used by Terraform check the following [Terraform Google Provider docs](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#configuring-the-provider)
