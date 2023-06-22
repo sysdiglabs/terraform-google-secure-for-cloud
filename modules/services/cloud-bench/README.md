@@ -2,6 +2,9 @@
 
 Deployed on the **target GCP account(s)**:
 - The required Workload Identity Pool + Provider + Service Account,  to allow Sysdig to run GCP Benchmarks on your behalf.
+- Service Account will have following [role/permissions](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/modules/services/cloud-bench/trust_relationship/main.tf#L42-L72)
+  - `roles/viewer` role
+  - custom role containing the `storage.buckets.getIamPolicy`, `bigquery.tables.list`, `cloudasset.assets.listIamPolicy` and `cloudasset.assets.listResource` permissions
 
 Deployed on **Sysdig Backend**
 - An `gcp_foundations_bench-1.2.0` benchmark task schedule on a random hour of the day `rand rand * * *`
