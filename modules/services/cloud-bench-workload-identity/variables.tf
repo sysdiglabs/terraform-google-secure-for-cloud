@@ -19,3 +19,7 @@ variable "organization_domain" {
   type        = string
   description = "Organization domain. e.g. sysdig.com"
 }
+variable "parent_folder_id" {
+  type        = string
+  description = "Google cloud parent folder ID to start scarping."
+}
