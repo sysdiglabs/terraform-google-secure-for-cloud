@@ -79,6 +79,7 @@ resource "google_service_account_iam_binding" "sa_pool_binding" {
 
 
 data "google_iam_workload_identity_pool" "pool" {
+  count   = var.reuse_workload_identity_pool ? 1 : 0
   project = var.project_id
 
   provider                  = google-beta
