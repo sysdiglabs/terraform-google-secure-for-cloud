@@ -55,7 +55,7 @@ jobs:
       - name: Install Terraform v${{ steps.minMax.outputs.minVersion }}
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: ${{ steps.minMax.outputs.minVersion }}
+          terraform_version: 1.6.0 # ${{ steps.minMax.outputs.minVersion }}
       - name: Install pre-commit dependencies
         run: |
           pip install pre-commit
