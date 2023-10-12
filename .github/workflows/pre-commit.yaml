@@ -109,7 +109,7 @@ jobs:
       - name: Install Terraform v${{ matrix.version }}
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: ${{ matrix.version }}
+          terraform_version: 1.5 #${{ matrix.version }}
       - name: Install pre-commit dependencies
         run: |
           pip install pre-commit
