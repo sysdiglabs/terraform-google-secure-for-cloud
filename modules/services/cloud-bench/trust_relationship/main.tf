@@ -13,7 +13,7 @@ data "google_project" "project" {
 locals {
   workload_identity_pool_name = "sysdigcloud"
   external_id                 = sysdig_secure_cloud_account.cloud_account.external_id
-  workload_identity_pool_id   = var.reuse_workload_identity_pool ? data.google_iam_workload_identity_pool.pool.workload_identity_pool_id : google_iam_workload_identity_pool.pool[0].workload_identity_pool_id
+  workload_identity_pool_id   = var.reuse_workload_identity_pool ? data.google_iam_workload_identity_pool.pool[0].workload_identity_pool_id : google_iam_workload_identity_pool.pool[0].workload_identity_pool_id
 }
 
 ###################################################
@@ -79,6 +79,7 @@ resource "google_service_account_iam_binding" "sa_pool_binding" {
 
 
 data "google_iam_workload_identity_pool" "pool" {
+  count   = var.reuse_workload_identity_pool ? 1 : 0
   project = var.project_id
 
   provider                  = google-beta
