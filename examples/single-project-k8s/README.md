@@ -71,7 +71,7 @@ See [inputs summary](#inputs) or module module [`variables.tf`](./variables.tf) 
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0, < 1.6.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.21.0, < 5.0.0 |
 | <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | >= 4.21.0, < 5.0.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >=2.3.0 |

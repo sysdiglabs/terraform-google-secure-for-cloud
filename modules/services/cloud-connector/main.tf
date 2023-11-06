@@ -79,7 +79,7 @@ resource "google_cloud_run_service" "cloud_connector" {
         }
 
         dynamic "env" {
-          for_each = var.sysdig_secure_api_token == "" ? toset([]) : toset([1])
+          for_each = nonsensitive(var.sysdig_secure_api_token) == "" ? [] : [1]
 
           content {
             name  = "SECURE_API_TOKEN"
