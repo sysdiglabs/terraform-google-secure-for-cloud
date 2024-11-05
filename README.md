@@ -1,49 +1,19 @@
-# Sysdig Secure for Cloud in GCP
+# Sunset Notice
 
-Terraform module that deploys the [**Sysdig Secure for Cloud** stack in **Google Cloud**](https://docs.sysdig.com/en/docs/installation/sysdig-secure-for-cloud/deploy-sysdig-secure-for-cloud-on-gcp/).
-<br/>
-
-Provides unified threat-detection, forensics and analysis through these major components:
-
-
-* **[Threat Detection](https://docs.sysdig.com/en/docs/sysdig-secure/insights/)**: Tracks abnormal and suspicious activities in your cloud environment based on Falco language. Managed through `cloud-connector` module. <br/>
-
-* **[Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/)**: Automatically scans all container images pushed to the registry (GCR) and the images that run on the GCP workload (currently CloudRun). Managed through `cloud-connector`. <br/>Disabled by Default, can be enabled through `deploy_scanning` input variable parameters.<br/>
-
-For other Cloud providers check: [AWS](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud), [Azure](https://github.com/sysdiglabs/terraform-azurerm-secure-for-cloud)
-
-<br/>
+> [!CAUTION]
+> Sysdig released a new onboarding experience for GCP in November 2024. We recommend connecting your cloud accounts by [following these instructions](https://docs.sysdig.com/en/docs/sysdig-secure/connect-cloud-accounts/).
+>
+> This repository should be used solely in cases where Agentless Threat Detection cannot be used.
 
 ## Usage
 
 There are several ways to deploy Secure for Cloud in you GCP infrastructure,
 
-- **[`/examples`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples)** for the most common scenarios
-  - [Single Project](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project/)
-  - [Single Project with a pre-existing Kubernetes Cluster](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project-k8s/README.md)
-  - [Organizational](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/organization/README.md)
-  - Many module,examples and use-cases, we provide ways to **re-use existing resources (as optionals)** in your
-infrastructure. Check input summary on each example/module.
-- **[`/use-cases`](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/use-cases)** with self-baked customer-specific alternative scenarios.
+- [Single Project](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project/)
+- [Single Project with a pre-existing Kubernetes Cluster](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/single-project-k8s/README.md)
+- [Organizational](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/tree/master/examples/organization/README.md)
 
-Find specific overall service arquitecture diagrams attached to each example/use-case.
-
-In the long-term our purpose is to evaluate those use-cases and if they're common enough, convert them into examples to make their usage easier.
-
-If you're unsure about what/how to use this module, please fill the [questionnaire](https://github.com/sysdiglabs/terraform-aws-secure-for-cloud/blob/master/use-cases/_questionnaire.md) report as an issue and let us know your context, we will be happy to help.
-
-
-### Notice
-* [GCP regions](https://cloud.google.com/compute/docs/regions-zones/#available)
-  * Do not confuse required `region` with GCP location or zone. [Identifying a region or zone](https://cloud.google.com/compute/docs/regions-zones/#identifying_a_region_or_zone)
-* All Sysdig Secure for Cloud features but [Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/) are enabled by default. You can enable it through `deploy_scanning` input variable parameter of each example.<br/>
-* For **free subscription** users, beware that organizational examples may not deploy properly due to the [1 cloud-account limitation](https://docs.sysdig.com/en/docs/administration/administration-settings/subscription/#cloud-billing-free-tier). Open an Issue so we can help you here!
-* This example will create resources that **cost money**. Run `terraform destroy` when you don't need them anymore.
-  * For a normal load, it should be <150$/month aprox.
-  * [Cloud Logging API](https://cloud.google.com/service-usage/docs/enabled-service#default) is activated by default so no extra cost here
-  * Cloud Run instance comes as the most expensive service. Default [cpu/memory specs](https://github.com/sysdiglabs/terraform-google-secure-for-cloud/blob/master/modules/services/cloud-connector/variables.tf#L73-L83), for an ingestion of 35KK events/hour, for 2 instances 24x7 usage
-  * Cloud Run ingests events from a pub/sub topic, with no retention. It's cost is quite descpreciable, but you can check with the calculator based on the events of the  Log Explorer console and 4KB of size per event aprox.<br/>Beware that the logs we consume are scoped to the projects, and we exclude kubernetes events `logName=~"^projects/SCOPED_PROJECT_OR_ORG/logs/cloudaudit.googleapis.com"`
-<br/>
+If you're unsure about how to use this module, please contact your Sysdig representative. Our experts will guide you through the process and assist you in setting up your account securely and correctly.
 
 ## Prerequisites
 
@@ -82,8 +52,6 @@ Besides, the following GCP **APIs must be enabled** ([how do I check it?](#q-how
 * [Cloud Build API](https://console.cloud.google.com/marketplace/product/google/cloudbuild.googleapis.com)
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 
-<br/>
-
 ## Confirm the Services are Working
 
 Check official documentation on [Secure for cloud - GCP, Confirm the Services are working](https://docs.sysdig.com/en/docs/installation/sysdig-secure-for-cloud/deploy-sysdig-secure-for-cloud-on-gcp/#confirm-the-services-are-working)
@@ -117,8 +85,6 @@ It may take some time, but you should see logs detecting the new image in the `c
 > Starting GCR scanning for 'europe-west2-docker.pkg.dev/test-repo/alpine/alpine:latest
 
 And a CloudBuild being launched successfully.
-
-<br/>
 
 ## Troubleshooting
 
