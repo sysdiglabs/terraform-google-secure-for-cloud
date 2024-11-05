@@ -26,18 +26,6 @@ provider "google" {
   region  = var.location
 }
 
-
-# This two "multiproject" providers are required for benchmark trust-identity activation on the organizational level
-provider "google" {
-  alias  = "multiproject"
-  region = var.region
-}
-
-provider "google-beta" {
-  alias  = "multiproject"
-  region = var.region
-}
-
 resource "random_string" "random" {
   length  = 5
   special = false
@@ -45,15 +33,10 @@ resource "random_string" "random" {
 }
 
 module "sfc_example_organization" {
-  providers = {
-    google.multiproject      = google.multiproject
-    google-beta.multiproject = google-beta.multiproject
-  }
   source = "../../../examples/organization"
 
   organization_domain    = var.organization_domain
   name                   = "sfc${random_string.random.result}"
   repository_project_ids = [var.project_id]
   deploy_scanning        = true
-  deploy_benchmark       = false # we cannot enable this since we cannot reuse current workload pool if its softdeleted
 }

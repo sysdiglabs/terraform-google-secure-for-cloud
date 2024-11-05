@@ -3,12 +3,10 @@
 Terraform module that deploys the [**Sysdig Secure for Cloud** stack in **Google Cloud**](https://docs.sysdig.com/en/docs/installation/sysdig-secure-for-cloud/deploy-sysdig-secure-for-cloud-on-gcp/).
 <br/>
 
-Provides unified threat-detection, compliance, forensics and analysis through these major components:
+Provides unified threat-detection, forensics and analysis through these major components:
 
 
 * **[Threat Detection](https://docs.sysdig.com/en/docs/sysdig-secure/insights/)**: Tracks abnormal and suspicious activities in your cloud environment based on Falco language. Managed through `cloud-connector` module. <br/>
-
-* **[Compliance](https://docs.sysdig.com/en/docs/sysdig-secure/posture/compliance/compliance-unified-/)**: Enables the evaluation of standard compliance frameworks. Requires both modules  `cloud-connector` and `cloud-bench`. <br/>
 
 * **[Image Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/)**: Automatically scans all container images pushed to the registry (GCR) and the images that run on the GCP workload (currently CloudRun). Managed through `cloud-connector`. <br/>Disabled by Default, can be enabled through `deploy_scanning` input variable parameters.<br/>
 
@@ -84,14 +82,6 @@ Besides, the following GCP **APIs must be enabled** ([how do I check it?](#q-how
 * [Cloud Build API](https://console.cloud.google.com/marketplace/product/google/cloudbuild.googleapis.com)
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 
-##### Cloud Benchmarks
-* [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
-* [IAM Service Account Credentials API](https://console.cloud.google.com/marketplace/product/google/iamcredentials.googleapis.com)
-* [Cloud Resource Manager API](https://console.cloud.google.com/marketplace/product/google/cloudresourcemanager.googleapis.com)
-* [Security Token Service API](https://console.cloud.google.com/marketplace/product/google/sts.googleapis.com)
-* [Cloud Asset API](https://console.cloud.google.com/marketplace/product/google/cloudasset.googleapis.com)
-
-
 <br/>
 
 ## Confirm the Services are Working
@@ -155,29 +145,6 @@ output "me" {
 }
 ```
 
-### Q: In organizaitonal setup, Compliance trust-relationship is not being deployed on our projects
-
-As for 2023 April, organizations with projects under organizational unit folders, is supported with the
-[organizational compliance example](./examples/organization-org_compliance)
-
-<br/>S: If you want to target specific projects, you can still use the `benchmark_project_ids` parameter so you can define
-the projects where compliance role is to be deployed explicitly.
-<br/>You can use the [fetch-gcp-rojects.sh](./resources/fetch-gcp-projects.sh) utility to list organization member projects
-<br/>Let us know if this workaround won't be enough, and we will work on implementing a solution.
-
-### Q: Compliance is not working. How can I check everything is properly setup
-
-A: On your GCP infrastructure, per-project where Comliance has been setup, check following points<br/>
-1. there is a Workload Identity Pool and associated Workload Identity Pool Provider configured, which must have an ID of `sysdigcloud` (display name doesn't matter)
-2. the pool should have a connected service account with the name `sfcsysdigcloudbench`, with the email `sfcsysdigcloudbench@PROJECTID.iam.gserviceaccount.com`
-3. this serviceaccount should allow access to the following format `principalset: principalSet://iam.googleapis.com/projects/<PROJECTID>/locations/global/workloadIdentityPools/sysdigcloud/attribute.aws_role/arn:aws:sts::***:assumed-role/***`
-4. the serviceaccount should have the `viewer role` on the target project, as well as a custom role containing the "storage.buckets.getIamPolicy", "bigquery.tables.list", "cloudasset.assets.listIamPolicy" and "cloudasset.assets.listResource" permissions
-5. the pool provider should allow access to Sysdig's  trusted identity, retrieved through
-  ```
-  $ curl https://<SYSDIG_SECURE_URL>/api/cloud/v2/gcp/trustedIdentity \
-  --header 'Authorization: Bearer <SYSDIG_SECURE_API_TOKEN>'
-  ```
-
 ### Q: Getting "Error creating Service: googleapi: got HTTP response code 404" "The requested URL /serving.knative.dev/v1/namespaces/***/services was not found on this server"
 
 ```
@@ -192,57 +159,6 @@ A: This error is given by the Terraform GCP provider when an invalid region is u
 
 ### Q: Error  because it cannot resolve the address below, "https://-run.googleapis.com/apis/serving.knative.dev"
 A: GCP region was not provided in the provider block
-
-### Q: Why do we need `google-beta` provider?
-
-A: Some resources we use, such as the [`google_iam_workload_identity_pool_provider`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iam_workload_identity_pool_provider) are only available in the beta version.<br/>
-
-### Q: Getting "Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists"<br/>
-A: Currently Sysdig Backend does not support dynamic WorkloadPool and it's name is fixed to `sysdigcloud`.
-<br/>Moreover, Google, only performs a soft-deletion of this resource.
-https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers#delete-pool
-> You can undelete a pool for up to 30 days after deletion. After 30 days, deletion is permanent. Until a pool is permanently deleted, you cannot reuse its   name when creating a new workload identity pool.<br/>
-
-<br/>S: For the moment, federation workload identity pool+provider have fixed name.
-Therea are several options here
-
-- For single-account, in case you want to reuse it, you can make use of the `reuse_workload_identity_pool` attribute available in some
-examples.
-- For organizational setups, you can make use of a single workload-identity for all the organization, with the [/organization-org_compliance](./examples/organization-org_compliance)
-- Alternatively, you can reactivate and import it, into your terraform state manually.
-  ```bash
-  # re-activate pool and provider
-  $ gcloud iam workload-identity-pools undelete sysdigcloud  --location=global
-  $ gcloud iam workload-identity-pools providers undelete sysdigcloud --workload-identity-pool="sysdigcloud" --location=global
-
-  # import to terraform state
-  # for this you have to adapt the import resource to your specific usage
-  # ex.: for single-project, input your project-id
-  $ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool.pool' <PROJECT_ID>/sysdigcloud
-  $ terraform import 'module.secure-for-cloud_example_single-project.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' <PROJECT_ID>/sysdigcloud/sysdigcloud
-
-  # ex.: for organization example you should change its reference too, per project
-  $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool.pool' <PROJECT_ID>/sysdigcloud
-  $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["<PROJECT_ID>"].google_iam_workload_identity_pool_provider.pool_provider' <PROJECT_ID>/sysdigcloud/sysdigcloud
-   ```
-
-   The import resource to use, is the one pointed out in your terraform plan/apply error messsage
-   ```
-   -- for
-  Error: Error creating WorkloadIdentityPool: googleapi: Error 409: Requested entity already exists
-    with module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool,
-    on .... in resource "google_iam_workload_identity_pool" "pool":
-    resource "google_iam_workload_identity_pool" "pool" {
-
-   -- use
-   ' module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool' as your import resource
-
-   -- such as
-   $ terraform import 'module.secure-for-cloud_example_organization.module.cloud_bench[0].module.trust_relationship["org-child-project-1"].google_iam_workload_identity_pool.pool' 'org-child-project-1/sysdigcloud'
-
-   ```
-
-   Note: if you're using terragrunt, run `terragrunt import`
 
 ### Q: Getting "Error creating Topic: googleapi: Error 409: Resource already exists in the project (resource=gcr)"
 ```text

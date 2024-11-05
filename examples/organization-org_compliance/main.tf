@@ -112,22 +112,3 @@ module "pubsub_http_subscription" {
   push_to_cloudrun   = true
   deploy_scanning    = var.deploy_scanning
 }
-
-
-#--------------------
-# benchmark
-#--------------------
-module "cloud_bench_workload_identity" {
-  providers = {
-    google      = google.multiproject
-    google-beta = google-beta.multiproject
-  }
-
-  count  = var.deploy_benchmark ? 1 : 0
-  source = "../../modules/services/cloud-bench-workload-identity"
-
-  organization_domain = var.organization_domain
-  role_name           = var.benchmark_role_name
-  project_ids         = var.benchmark_project_ids
-  project_id          = data.google_client_config.current.project
-}

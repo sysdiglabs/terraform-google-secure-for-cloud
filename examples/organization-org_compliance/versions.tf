@@ -3,14 +3,8 @@ terraform {
 
   required_providers {
     google = {
-      source                = "hashicorp/google"
-      version               = ">= 4.21.0, < 5.0.0"
-      configuration_aliases = [google.multiproject]
-    }
-    google-beta = {
-      source                = "hashicorp/google-beta"
-      version               = ">= 4.21.0, < 5.0.0"
-      configuration_aliases = [google-beta.multiproject]
+      source  = "hashicorp/google"
+      version = ">= 4.21.0, < 5.0.0"
     }
     sysdig = {
       source  = "sysdiglabs/sysdig"

@@ -26,11 +26,6 @@ provider "google" {
   region  = var.location
 }
 
-provider "google-beta" {
-  project = var.project_id
-  region  = var.location
-}
-
 provider "helm" {
   kubernetes {
     config_path = "~/.kube/config"
@@ -46,7 +41,6 @@ resource "random_string" "random" {
 module "sfc_example_single_project" {
   source = "../../../examples/single-project-k8s"
 
-  name             = "sfck8s${random_string.random.result}"
-  deploy_scanning  = true
-  deploy_benchmark = false
+  name            = "sfck8s${random_string.random.result}"
+  deploy_scanning = true
 }
