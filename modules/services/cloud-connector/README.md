@@ -32,7 +32,7 @@ module "cloud_connector_gcp" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.58.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 4.21.0, < 5.0.0 |
 
 ## Modules
 

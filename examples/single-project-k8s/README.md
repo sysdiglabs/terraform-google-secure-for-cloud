@@ -75,9 +75,9 @@ See [inputs summary](#inputs) or module module [`variables.tf`](./variables.tf) 
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.58.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.9.0 |
-| <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | 0.7.4 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 4.21.0, < 5.0.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | >=2.3.0 |
+| <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | >= 0.5.21 |
 
 ## Modules
 
