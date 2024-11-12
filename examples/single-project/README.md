@@ -29,12 +29,6 @@ This example deploys Secure For Cloud into a single GCP project.<br/>
 * [Cloud Build API](https://console.cloud.google.com/marketplace/product/google/cloudbuild.googleapis.com)
 * [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
 
- ### Cloud Benchmarks
-* [Identity and access management API](https://console.cloud.google.com/marketplace/product/google/iam.googleapis.com)
-* [IAM Service Account Credentials API](https://console.cloud.google.com/marketplace/product/google/iamcredentials.googleapis.com)
-* [Cloud Resource Manager API](https://console.cloud.google.com/marketplace/product/google/cloudresourcemanager.googleapis.com)
-* [Security Token Service API](https://console.cloud.google.com/marketplace/product/google/sts.googleapis.com)
-
 ## Usage
 
 For quick testing, use this snippet on your terraform files
@@ -58,11 +52,6 @@ provider "google" {
    region  = "<REGION_ID>; ex. us-central1"
 }
 
-provider "google-beta" {
-   project = "<PROJECT_ID>"
-   region  = "<REGION_ID>; ex. us-central1"
-}
-
 module "secure-for-cloud_example_single-project" {
   source = "sysdiglabs/secure-for-cloud/google//examples/single-project"
 }
@@ -75,7 +64,6 @@ module "secure-for-cloud_example_single-project" {
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.21.0, < 5.0.0 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | >= 4.21.0, < 5.0.0 |
 | <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 0.5.21 |
 
 ## Providers
@@ -89,7 +77,6 @@ module "secure-for-cloud_example_single-project" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cloud_bench"></a> [cloud\_bench](#module\_cloud\_bench) | ../../modules/services/cloud-bench | n/a |
 | <a name="module_cloud_build_permission"></a> [cloud\_build\_permission](#module\_cloud\_build\_permission) | ../../modules/infrastructure/cloud_build_permission | n/a |
 | <a name="module_cloud_connector"></a> [cloud\_connector](#module\_cloud\_connector) | ../../modules/services/cloud-connector | n/a |
 | <a name="module_connector_project_sink"></a> [connector\_project\_sink](#module\_connector\_project\_sink) | ../../modules/infrastructure/project_sink | n/a |
@@ -108,12 +95,9 @@ module "secure-for-cloud_example_single-project" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_benchmark_role_name"></a> [benchmark\_role\_name](#input\_benchmark\_role\_name) | The name of the Service Account that will be created. | `string` | `"sysdigcloudbench"` | no |
 | <a name="input_cloud_connector_image"></a> [cloud\_connector\_image](#input\_cloud\_connector\_image) | The image to use for the Cloud Connector. | `string` | `"us-docker.pkg.dev/sysdig-public-registry/secure-for-cloud/cloud-connector:latest"` | no |
-| <a name="input_deploy_benchmark"></a> [deploy\_benchmark](#input\_deploy\_benchmark) | whether benchmark module is to be deployed | `bool` | `true` | no |
 | <a name="input_deploy_scanning"></a> [deploy\_scanning](#input\_deploy\_scanning) | true/false whether scanning module is to be deployed | `bool` | `false` | no |
 | <a name="input_name"></a> [name](#input\_name) | Suffix to be assigned to all created resources. Modify this value in case of conflict / 409 error to bypass Google soft delete issues | `string` | `"sfc"` | no |
-| <a name="input_reuse_workload_identity_pool"></a> [reuse\_workload\_identity\_pool](#input\_reuse\_workload\_identity\_pool) | Reuse existing workload identity pool, from previous deployment, with name 'sysdigcloud'. <br/> Will help overcome <a href='https://github.com/sysdiglabs/terraform-google-secure-for-cloud#q-getting-error-creating-workloadidentitypool-googleapi-error-409-requested-entity-already-exists'>redeploying error due to GCP softdelete</a><br/> | `bool` | `false` | no |
 
 ## Outputs
 

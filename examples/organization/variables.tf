@@ -33,28 +33,6 @@ variable "repository_project_ids" {
 
 
 #
-# benchmark
-#
-variable "deploy_benchmark" {
-  type        = bool
-  description = "whether benchmark module is to be deployed"
-  default     = true
-}
-
-variable "benchmark_project_ids" {
-  default     = []
-  type        = list(string)
-  description = "Google cloud project IDs to run Benchmarks on. It will create a trust-relationship on each, to allow Sysdig usage. If empty, all organization projects will be defaulted."
-}
-
-variable "benchmark_role_name" {
-  type        = string
-  description = "The name of the Service Account that will be created."
-  default     = "sysdigcloudbench"
-}
-
-
-#
 # general
 #
 variable "name" {
