@@ -1,9 +1,8 @@
 # Sunset Notice
 
 > [!CAUTION]
-> Sysdig released a new onboarding experience for GCP in November 2024. We recommend connecting your cloud accounts by [following these instructions](https://docs.sysdig.com/en/docs/sysdig-secure/connect-cloud-accounts/).
+> Sysdig released a new onboarding experience for GCP in November 2024. Follow [these instructions](https://docs.sysdig.com/en/docs/sysdig-secure/connect-cloud-accounts/) to connect your cloud environment.
 >
-> This repository should be used solely in cases where Agentless Threat Detection cannot be used.
 
 ## Usage
 
