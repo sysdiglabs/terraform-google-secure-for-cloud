@@ -68,7 +68,7 @@ See [inputs summary](#inputs) or module module [`variables.tf`](./variables.tf) 
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.21.0, < 5.0.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >=2.3.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >=2.3.0, <3.0.0 |
 | <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 0.5.21 |
 
 ## Providers
@@ -76,7 +76,7 @@ See [inputs summary](#inputs) or module module [`variables.tf`](./variables.tf) 
 | Name | Version |
 |------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | >= 4.21.0, < 5.0.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | >=2.3.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | >=2.3.0, <3.0.0 |
 | <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | >= 0.5.21 |
 
 ## Modules
